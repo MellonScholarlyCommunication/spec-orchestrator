@@ -92,6 +92,10 @@ Triggers {#triggers}
 
 <dfn>trigger</dfn>
 
+- incoming notification
+- observed data change
+- internal timer
+
 :: Issue: TODO
 
 Actions {#actions}
