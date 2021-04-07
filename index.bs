@@ -1,16 +1,150 @@
 <pre class='metadata'>
-Title: Your Spec Title
-Shortname: your-spec
+Title: Orchestrator for a decentralized Digital Heritage Network
+Shortname: orchestrator
 Level: 1
 Status: LS
-URL: http://example.com/url-this-spec-will-live-at
-Editor: Your Name, Your Company http://example.com/your-company, your-email@example.com, http://example.com/your-personal-website
-Abstract: A short description of your spec, one or two sentences.
+URL: https://erfgoedpod.github.io/orchestrator
+Editor: Miel Vander Sande, meemoo http://meemoo.be, miel.vandersande@meemoo.be
+Abstract: This specification describes the implementation requirements for the Ochestrator component.
+Markup Shorthands: markdown yes
 </pre>
 
 Introduction {#intro}
 =====================
 
-Introduction here.
+In a <a href="">Decentralized Digital Heritage Network</a>, data, and services the services that use them, do not resort in one place, but are intentionally distributed.
+As a result, actors on the network, such as Cultural Heritage Institutions, need to potentionally involve and communicate with multiple services in order to execute a business process or workflow, 
+where each services executes a dedicated task (eg. registering or archiving a dataset).
+Hence, to avoid excessive manual work, this document specifies the Orchestrator component, which is able to automate such task orchestration.
 
-Test build: d929bb9
+Actors (e.g, Cultural Heritage Institutions) in the network maintain their data in a <a href="https://erfgoedpod.github.io/usecases/#digital-heritage-pod-erfgoedpod">Digital Heritage Pod</a>, 
+which is by design a "passive" component: it offers secure data access via <a href="https://www.w3.org/TR/ldp/">Linked Data Platform</a> to others, but cannot perform actions such as invoking remote services on the network or reading and writing network content.
+These capabilities are therefore delegated to the Orchestrator. On behalf of the actor, the Orchestrator responds to [=triggers=] by executing a number of [=actions=] dictated by a machine-readable [=policy=].
+Possible triggers are incoming notifications, perceived changes in the data, or manual invocation by an actor.
+Possible actions are sending notifications to other actors, requesting access to resources in a Digital Heritage Pod, reading data from a Digital Heritage Pod, or writing data to a Digital Heritage Pod.
+
+The Orchestrator implements the autonomous agent model: an intelligent software instance that operates on an actor's behalf but without any interference of that actor.
+In practice, an Orchestrator is dedicated to a single Digital Heritage Pod for which is has access rights to all relevant resources, including the <a href="https://www.w3.org/TR/ldp/">Linked Data Notification</a> <a href="">Inbox</a>. 
+Its autonomy is supplied by the Policy, which dictates business rules in a declarative manner using a {{policy language}}.
+
+The remainder of this document specifies the requirements for implementing an Orchestrator component. 
+
+
+High-level overview {#high-level}
+=====================
+
+An <dfn export>Orchestrator</dfn> is an [=Autonomous Agent=] and <a href="https://solidproject.org/TR/protocol#solid-app">Solid app</a> dedicated to a single Data Pod that interprets and executes business rules described in the Policy. 
+It watches the Data Pod's resources and notification inbox for possible triggers.
+
+<pre class='include'>
+path: images/high-level.svg
+</pre>
+
+the Orchestrator inte
+
+: <dfn export>Actor</dfn>
+:: A entity (person, application or service) that participates in the network.
+: <dfn export>Human Agent</dfn>
+:: A person that operates directly as an [=Actor=] on the network.
+: <dfn export>Autonomous Agent</dfn>
+:: An intelligent software instance that operates on an [=Actor=]'s behalf but without any interference of that [=Actor=].
+: <dfn export>Maintainer</dfn>
+:: A [=Human Agent=] that can manually perform actions (see [[#actions]]) on the network using a [=Dashboard=] application.
+:: Usually a person employed by an organisation (e.g., a Cultural Heritage Institution) to maintain data and datasets owned by that organisation. 
+: <dfn export>Data Pod</dfn>
+:: As defined by the Solid protocol, a <a href="https://solidproject.org/TR/protocol#data-pod">Data Pod</a> is a place for storing documents, with mechanisms for controlling who can access what.
+: <dfn export>Service Hub</dfn>
+:: A <a href="https://solidproject.org/TR/protocol#solid-app">Solid app</a> with inbox that 
+: <dfn export>Policy</dfn>
+:: A set of machine-readable business rules that instruct the [=Orchestrator=] on what actions to take in response to a trigger such as incoming notifications, perceived changes in the data, or manual invocation by an [=Actor=].
+: <dfn export>Dashboard</dfn>
+:: A user application and <a href="https://solidproject.org/TR/protocol#solid-app">Solid app</a> that enables users to interact with the contents of the [=Data Pod=], the [=Orchestrator=], or other [=Actors=] in the Digital Heritage Network. 
+
+Deployment
+=====================
+
+An Orchestrator MUST be deployable as a <dfn>local background process</dfn> or as a <dfn>remote web service</dfn>.
+In case of the latter, an actor should be able to spawn, initialize and trigger the instance over [[!HTTP11]] using the Linked Data Notifications defined in [[#init]] and [[#triggers]]. 
+Else, a custom local API MAY be used to perform these actions.
+
+
+Initialization {#init}
+=====================
+
+
+To operate autonomeously, an Orchestrator has to obtain access to some resources in the [=Data Pod=], 
+which <a href="https://solidproject.org/TR/protocol#web-access-control">conforms</a> to the Web Access Control specification [[WAC]].
+Therefore, an Orchestrator MUST request access to the following operations (noted in the <a href="http://www.w3.org/ns/auth/acl">Access Control List (ACL)</a> ontology):
+
+- `acl:Read` to the <a href="">Inbox resource</a> (denoted with `http://www.w3.org/ns/ldp#inbox`)
+- `acl:Write` to the [=Event Log=] resource.
+
+
+Event log {#event-log}
+======================
+
+<dfn>Event log</dfn>
+
+:: Issue: TODO
+
+Triggers {#triggers}
+=====================
+
+<dfn>trigger</dfn>
+
+:: Issue: TODO
+
+Actions {#actions}
+=====================
+
+<dfn>action</dfn>
+
+An Orchestrator performs actions on behalf of an actor in the network. 
+There are three types of actions: 
+-  sending Linked Data Notifications [[!LDN]] to the inbox of a [=Service Hub=] or [=Data Pod=].
+-  manipulating [[!LDP]] resources of a [=Data Pod=].
+-  reading any [[!HTTP11]] resource 
+
+
+## Sending Linked Data notifications
+
+- <a href="https://www.w3.org/ns/activitystreams#Update">Update</a>
+
+
+## Manipulating LDP
+
+
+An Orchestrator MUST implement the following 
+
+
+- Notify: send a LDN
+- Create: 
+- Read
+- Update
+- Delete
+
+Policy {#policy}
+=====================
+
+Set of rules that dictates what actions need to be taken when a lifecycle event occurs. These originate from the digital heritage network participation agreement, possibly amended with procedures imposed by the institution, the discipline, or personal preference.
+
+## Policy language {#policy-language}
+
+<dfn>policy language</dfn>
+
+<pre class=biblio>
+{
+	"wac": {
+		"authors": [
+			"Sarven Capadisli"
+		],
+		"href": "https://solid.github.io/web-access-control-spec/",
+		"title": "Web Access Control (WAC)",
+		"status": "ED",
+		"publisher": "Solid project",
+		"deliveredBy": [
+			"https://www.w3.org/community/solid/"
+		]
+	}
+}
+</pre>
