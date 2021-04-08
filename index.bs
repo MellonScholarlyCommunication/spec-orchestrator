@@ -13,19 +13,19 @@ Introduction {#intro}
 =====================
 
 In a <a href="">Decentralized Digital Heritage Network</a>, data, and services the services that use them, do not resort in one place, but are intentionally distributed.
-As a result, actors on the network, such as Cultural Heritage Institutions, need to potentionally involve and communicate with multiple services in order to execute a business process or workflow, 
+As a result, actors in the network, such as institutions or service providers, need to potentionally involve and communicate with multiple services in order to execute a business process or workflow, 
 where each services executes a dedicated task (eg. registering or archiving a dataset).
 Hence, to avoid excessive manual work, this document specifies the Orchestrator component, which is able to automate such task orchestration.
 
-Actors (e.g, Cultural Heritage Institutions) in the network maintain their data in a <a href="https://erfgoedpod.github.io/usecases/#digital-heritage-pod-erfgoedpod">Digital Heritage Pod</a>, 
-which is by design a "passive" component: it offers secure data access via <a href="https://www.w3.org/TR/ldp/">Linked Data Platform</a> to others, but cannot perform actions such as invoking remote services on the network or reading and writing network content.
+Network actors maintain their data in a [=Data Pod=], 
+which is by design a "passive" component: it offers secure data access via Linked Data Platform [[!LDP]] to others, but cannot perform actions such as invoking remote services on the network or reading and writing network content.
 These capabilities are therefore delegated to the Orchestrator. On behalf of the actor, the Orchestrator responds to [=triggers=] by executing a number of [=actions=] dictated by a machine-readable [=policy=].
 Possible triggers are incoming notifications, perceived changes in the data, or manual invocation by an actor.
-Possible actions are sending notifications to other actors, requesting access to resources in a Digital Heritage Pod, reading data from a Digital Heritage Pod, or writing data to a Digital Heritage Pod.
+Possible actions are sending notifications to other actors, requesting access to resources in a [=Data Pod=], reading data from a [=Data Pod=], or writing data to a [=Data Pod=].
 
 The Orchestrator implements the autonomous agent model: an intelligent software instance that operates on an actor's behalf but without any interference of that actor.
-In practice, an Orchestrator is dedicated to a single Digital Heritage Pod for which is has access rights to all relevant resources, including the <a href="https://www.w3.org/TR/ldp/">Linked Data Notification</a> <a href="">Inbox</a>. 
-Its autonomy is supplied by the Policy, which dictates business rules in a declarative manner using a {{policy language}}.
+In practice, an Orchestrator is dedicated to a single Digital Heritage Pod for which is has access rights to all relevant resources, including the Linked Data Notification [[!LDN]] [=inbox=]. 
+Its autonomy is supplied by the Policy, which dictates business rules in a declarative manner using a [=policy language=].
 
 The remainder of this document specifies the requirements for implementing an Orchestrator component. 
 
@@ -33,7 +33,9 @@ The remainder of this document specifies the requirements for implementing an Or
 High-level overview {#high-level}
 =====================
 
-An <dfn export>Orchestrator</dfn> is an [=Autonomous Agent=] and <a href="https://solidproject.org/TR/protocol#solid-app">Solid app</a> dedicated to a single Data Pod that interprets and executes business rules described in the Policy. 
+An <dfn export>Orchestrator</dfn> is an [=Autonomous Agent=] dedicated to a single [=Data Pod=] that interprets and executes business rules described in a [=policy=]. 
+
+This incudes
 It watches the Data Pod's resources and notification inbox for possible triggers.
 
 <pre class='include'>
@@ -52,59 +54,105 @@ the Orchestrator inte
 :: A [=Human Agent=] that can manually perform actions (see [[#actions]]) on the network using a [=Dashboard=] application.
 :: Usually a person employed by an organisation (e.g., a Cultural Heritage Institution) to maintain data and datasets owned by that organisation. 
 : <dfn export>Data Pod</dfn>
-:: As defined by the Solid protocol, a <a href="https://solidproject.org/TR/protocol#data-pod">Data Pod</a> is a place for storing documents, with mechanisms for controlling who can access what.
+:: As defined by [[solid-protocol]], a <a href="https://solidproject.org/TR/protocol#data-pod">Data Pod</a> is a place for storing documents, with mechanisms for controlling who can access what.
+: <dfn>Inbox</dfn>
+:: An [[!LDP]] resource where others can POST Linked Data Notifications [[!LDN]] in order to notify the actor of a change an artefact's lifecycle.
+: <dfn>Artefact Lifecycle Event Log</dfn>
+:: An HTTP resource served by an actor (e.g., as a resource in the [=Data Pod=]) that represents a log of occurred lifecycle events related to artefacts known by the actor.
+:: Artefacts are considered known when they reside in the actor's [=Data Pod=] or if the actor has been made aware via [[!LDN]].
 : <dfn export>Service Hub</dfn>
-:: A <a href="https://solidproject.org/TR/protocol#solid-app">Solid app</a> with inbox that 
+:: An [=Actor=] that provides a service to other actors in the network. It is a <a href="https://solidproject.org/TR/protocol#solid-app">Solid app</a> and serves an [=Inbox=].
 : <dfn export>Policy</dfn>
 :: A set of machine-readable business rules that instruct the [=Orchestrator=] on what actions to take in response to a trigger such as incoming notifications, perceived changes in the data, or manual invocation by an [=Actor=].
 : <dfn export>Dashboard</dfn>
 :: A user application and <a href="https://solidproject.org/TR/protocol#solid-app">Solid app</a> that enables users to interact with the contents of the [=Data Pod=], the [=Orchestrator=], or other [=Actors=] in the Digital Heritage Network. 
 
-Deployment
+Creating an orchestrator {#init}
 =====================
+
+## Deployment
 
 An Orchestrator MUST be deployable as a <dfn>local background process</dfn> or as a <dfn>remote web service</dfn>.
-In case of the latter, an actor should be able to spawn, initialize and trigger the instance over [[!HTTP11]] using the Linked Data Notifications defined in [[#init]] and [[#triggers]]. 
-Else, a custom local API MAY be used to perform these actions.
+In case of the latter, an actor SHOULD be able to spawn, initialize and trigger the instance over [[!HTTP11]], as defined in [[#init]] and [[#triggers]].
+The Orchestrator MAY also serve an [=inbox=] for communicating with third-parties using Linked Data Notifications [[LDN]] .
 
+Example of spawning an orchestrator using Linked Data Notifications:
+```
 
-Initialization {#init}
-=====================
+POST /inbox HTTP/1.1
+Host: example.org
+Content-Type: application/ld+json;profile="https://www.w3.org/ns/activitystreams"
+Content-Language: en
 
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "summary": "Spawn orchestrator",
+  "type": "Create",
+  "actor": "http://kb.nl#me",
+  "object": "http://example.org/orchestrator/1"
+}
+```
+
+If deployed as a [=local background process=], an (custom) API MUST be present that is able perform these actions.
+
+## Solid app compliance
+
+An orchestrator is a <a href="https://solidproject.org/TR/protocol#solid-app">Solid client</a> and MUST be fully compliant with the [[solid protocol]] Client-Side Implementation requirements.
+Orchestrators SHOULD also implement [[SOLID-OIDC]] to authenticate to most Solid [=data pods=] and implement the client requirements for [[solidwebac]] to receive authorization, such as checking the `WAC-Allow` header value.
+
+## Additional interface 
+
+When a new instance is created, 
+an Orchestrator MUST allow actors to supply an [[URI]] pointing to an [=inbox=] to watch and read.
+It MAY also allow a list of [[LDP]] <a href="https://www.w3.org/TR/ldp/#ldpr-resource">resources</a> to watch.
+
+Note: MVS: because I'm not sure it's realistic to poll any HTTP resource, I limited the scope to LDP resources. But even then, I'm not sure how you would do this in practice without keeping a lot of state.
+
+Issue: MVS: is this registration of inbox, resources something we want to do at initialization or do we write this in the policy? 
+
+Orchestrators solely execute business logic catured in [=policies=].
+Thus, they MUST allow actors to supply one or more [[URI]]s pointing to a [=policy=].
+These policies MUST be written in the [=policy language=].
+An actor SHOULD supply at least one [=policy=] in order to allow the orchestrator to function.
 
 To operate autonomeously, an Orchestrator has to obtain access to some resources in the [=Data Pod=], 
-which <a href="https://solidproject.org/TR/protocol#web-access-control">conforms</a> to the Web Access Control specification [[WAC]].
-Therefore, an Orchestrator MUST request access to the following operations (noted in the <a href="http://www.w3.org/ns/auth/acl">Access Control List (ACL)</a> ontology):
+which <a href="https://solidproject.org/TR/protocol#web-access-control">conforms</a> to the Web Access Control specification [[solidwebac]].
+If access is not granted, an Orchestrator MUST request access to the following resources (noted in the <a href="http://www.w3.org/ns/auth/acl">Access Control List (ACL)</a> ontology):
 
-- `acl:Read` to the <a href="">Inbox resource</a> (denoted with `http://www.w3.org/ns/ldp#inbox`)
-- `acl:Write` to the [=Event Log=] resource.
+- `acl:Read` to the [=inbox=] resource (discoverable with `http://www.w3.org/ns/ldp#inbox`)
+- `acl:Read` and `acl:Write` to the [=Artefact Lifecycle Event Log=] resource.
+- `acl:Read` to any watched [[LDP]] resource.
 
-
-Event log {#event-log}
-======================
-
-<dfn>Event log</dfn>
-
-:: Issue: TODO
+Issue: are there more necessary authorizations?
 
 Triggers {#triggers}
 =====================
 
-<dfn>trigger</dfn>
+A <dfn>trigger</dfn> is an event to which an orchestrator can respond by taking [=actions=]. 
+An orchestrator MUST respond to the following three types of triggers:
 
-- incoming notification
-- observed data change
-- internal timer
+- an new incoming Linked Data Notification [[!LDN]] in the [=inbox=]
+- an observed state changes to watched [=data pod=] resources
+- a scheduled trigger from the internal time-based event scheduler
 
-:: Issue: TODO
+## Receving incoming Linked Data Notification
+
+Issue: TODO
+
+## Obsering a resource state change
+
+Issue: TODO
+
+## Scheduled trigger
+
+Issue: TODO
 
 Actions {#actions}
 =====================
 
-<dfn>action</dfn>
-
-An Orchestrator performs actions on behalf of an actor in the network. 
-There are three types of actions: 
+An <dfn>action</dfn> is a form of interation with other actors or resources in the network.
+Orchestrator performs such actions on behalf of a network [=actor=]. 
+There are three types of actions that an orchestrator can take: 
 -  sending Linked Data Notifications [[!LDN]] to the inbox of a [=Service Hub=] or [=Data Pod=].
 -  manipulating [[!LDP]] resources of a [=Data Pod=].
 -  reading any [[!HTTP11]] resource 
@@ -112,39 +160,75 @@ There are three types of actions:
 
 ## Sending Linked Data notifications
 
-- <a href="https://www.w3.org/ns/activitystreams#Update">Update</a>
+An orchestrator MUST be a compliant [[LDN]] <a href="https://www.w3.org/TR/ldn/#sender">Sender</a>. 
+It MUST be able to send the following notifications from the [[activitystreams-vocabulary]]:
 
+- <a href="https://www.w3.org/ns/activitystreams#Update">`as:Update`</a>
+- <a href="https://www.w3.org/ns/activitystreams#Create">`as:Create`</a>
+- <a href="https://www.w3.org/ns/activitystreams#Delete">`as:Delete`</a>
+- <a href="https://www.w3.org/ns/activitystreams#Update">`as:Update`</a>
 
 ## Manipulating LDP
 
+An Orchestrator MUST implement the following :
 
-An Orchestrator MUST implement the following 
+Issue: TODO
+
+- Create: `PUT`
+- Read: `GET`
+- Update: `PATCH`
+- Delete: `DELETE`
+
+## Reading HTTP resources
+
+An Orchestrator MUST implement the following :
+
+Issue: TODO
+
+- Read: `GET`
 
 
-- Notify: send a LDN
-- Create: 
-- Read
-- Update
-- Delete
 
-Policy {#policy}
+
+
+
+Policy {#policy-sec}
 =====================
 
 Set of rules that dictates what actions need to be taken when a lifecycle event occurs. These originate from the digital heritage network participation agreement, possibly amended with procedures imposed by the institution, the discipline, or personal preference.
 
-## Policy language {#policy-language}
+## Policy language {#policy-language-sec}
 
-<dfn>policy language</dfn>
+Alert-Act-Notify is a <dfn>policy language</dfn>.
 
 <pre class=biblio>
 {
-	"wac": {
+	"solid-oidc": {
 		"authors": [
-			"Sarven Capadisli"
+			"Aaron Coburn (Inrupt)",
+			"elf Pavlik",
+			"Dmitri Zagidulin" 
 		],
-		"href": "https://solid.github.io/web-access-control-spec/",
-		"title": "Web Access Control (WAC)",
-		"status": "ED",
+		"href": "https://solid.github.io/authentication-panel/solid-oidc/",
+		"title": "SOLID-OIDC",
+		"status": "Editor’s Draft",
+		"publisher": "Solid project",
+		"deliveredBy": [
+			"https://www.w3.org/community/solid/"
+		]
+	},
+	"solid-protocol": {
+		"authors": [
+			"Sarven Capadisli",
+			"Tim Berners-Lee",
+			"Ruben Verborgh",
+			"Kjetil Kjernsmo",
+			"Justin Bingham",
+			"Dmitri Zagidulin"
+		],
+		"href": "https://solidproject.org/TR/protocol/",
+		"title": "The Solid Protocol",
+		"status": "Editor’s Draft",
 		"publisher": "Solid project",
 		"deliveredBy": [
 			"https://www.w3.org/community/solid/"
