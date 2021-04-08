@@ -98,7 +98,7 @@ If deployed as a [=local background process=], an (custom) API MUST be present t
 ## Solid app compliance
 
 An orchestrator is a <a href="https://solidproject.org/TR/protocol#solid-app">Solid client</a> and MUST be fully compliant with the [[solid protocol]] Client-Side Implementation requirements.
-Orchestrators SHOULD also implement [[SOLID-OIDC]] to authenticate to most Solid [=data pods=] and implement the client requirements for [[WAC]] to receive authorization, such as checking the `WAC-Allow` header value.
+Orchestrators SHOULD also implement [[SOLID-OIDC]] to authenticate to most Solid [=data pods=] and implement the client requirements for [[solidwebac]] to receive authorization, such as checking the `WAC-Allow` header value.
 
 ## Additional interface 
 
@@ -116,7 +116,7 @@ These policies MUST be written in the [=policy language=].
 An actor SHOULD supply at least one [=policy=] in order to allow the orchestrator to function.
 
 To operate autonomeously, an Orchestrator has to obtain access to some resources in the [=Data Pod=], 
-which <a href="https://solidproject.org/TR/protocol#web-access-control">conforms</a> to the Web Access Control specification [[WAC]].
+which <a href="https://solidproject.org/TR/protocol#web-access-control">conforms</a> to the Web Access Control specification [[solidwebac]].
 If access is not granted, an Orchestrator MUST request access to the following resources (noted in the <a href="http://www.w3.org/ns/auth/acl">Access Control List (ACL)</a> ontology):
 
 - `acl:Read` to the [=inbox=] resource (discoverable with `http://www.w3.org/ns/ldp#inbox`)
@@ -192,24 +192,26 @@ Issue: TODO
 
 
 
-Policy {#policy}
+Policy {#policy-sec}
 =====================
 
 Set of rules that dictates what actions need to be taken when a lifecycle event occurs. These originate from the digital heritage network participation agreement, possibly amended with procedures imposed by the institution, the discipline, or personal preference.
 
-## Policy language {#policy-language}
+## Policy language {#policy-language-sec}
 
 Alert-Act-Notify is a <dfn>policy language</dfn>.
 
 <pre class=biblio>
 {
-	"wac": {
+	"solid-oidc": {
 		"authors": [
-			"Sarven Capadisli"
+			"Aaron Coburn (Inrupt)",
+			"elf Pavlik",
+			"Dmitri Zagidulin" 
 		],
-		"href": "https://solid.github.io/web-access-control-spec/",
-		"title": "Web Access Control (WAC)",
-		"status": "ED",
+		"href": "https://solid.github.io/authentication-panel/solid-oidc/",
+		"title": "SOLID-OIDC",
+		"status": "Editor’s Draft",
 		"publisher": "Solid project",
 		"deliveredBy": [
 			"https://www.w3.org/community/solid/"
@@ -222,11 +224,11 @@ Alert-Act-Notify is a <dfn>policy language</dfn>.
 			"Ruben Verborgh",
 			"Kjetil Kjernsmo",
 			"Justin Bingham",
-			Dmitri Zagidulin
+			"Dmitri Zagidulin"
 		],
-		"href": "https://solidproject.org/TR/protocol",
+		"href": "https://solidproject.org/TR/protocol/",
 		"title": "The Solid Protocol",
-		"status": "ED",
+		"status": "Editor’s Draft",
 		"publisher": "Solid project",
 		"deliveredBy": [
 			"https://www.w3.org/community/solid/"
