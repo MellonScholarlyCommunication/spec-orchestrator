@@ -33,16 +33,23 @@ The remainder of this document specifies the requirements for implementing an Or
 High-level overview {#high-level}
 =====================
 
-An <dfn export>Orchestrator</dfn> is an [=Autonomous Agent=] dedicated to a single [=Data Pod=] that interprets and executes business rules described in a [=policy=]. 
+An <dfn export>Orchestrator</dfn> is an [=Autonomous Agent=] dedicated to a single [=Data Pod=], [=Service Hub=], or any other actor hosting the [=Artefact Lifecycle Event Log=] and a [=Inbox=] resources.
+It interprets and executes business rules described in a [=policy=]. 
+The Orchestrator watches the [=Inbox=] for possible triggers, while it records the actions it takes to the to the [=Artefact Lifecycle Event Log=]. 
 
-This incudes
-It watches the Data Pod's resources and notification inbox for possible triggers.
+## Data Pod perspective
 
 <pre class='include'>
 path: images/high-level.svg
 </pre>
 
-the Orchestrator inte
+## Service Hub perspective
+
+<pre class='include'>
+path: images/high-level-servicehub.svg
+</pre>
+
+## Components
 
 : <dfn export>Actor</dfn>
 :: A entity (person, application or service) that participates in the network.
