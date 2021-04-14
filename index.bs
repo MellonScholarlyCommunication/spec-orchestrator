@@ -65,8 +65,10 @@ An <dfn export>Orchestrator</dfn> is an [=Autonomous Agent=] dedicated to a sing
 It interprets and executes business rules described in a [=policy=]. 
 The Orchestrator watches the [=Inbox=] for possible triggers, while it records the actions it takes to the to the [=Artefact Lifecycle Event Log=]. 
 
+## Perspectives
+
 From a [=Data Pod=] perspective, 
-the [=Orchestrator=] participates in the network on behalf of the [=Data Pod=]'s owner or [=Maintainer=] ().
+the [=Orchestrator=] participates in the network on behalf of the [=Data Pod=]'s owner or [=Maintainer=].
 At instantiation time, 
 a [=Maintainer=] connects the [=Orchestrator=] with the [=Artefact Lifecycle Event Log=] and [=Inbox=] resources from its [=Data Pod=], 
 which it watches in order to receive a possible [=Trigger=].
@@ -75,43 +77,41 @@ From that point on,
 the [=Maintainer=] only interacts _indirectly_ with the [=Orchestrator=] via the [=Data Pod=], by using a [=Dashboard=] to append the [=Artefact Lifecycle Event Log=] and/or [=Inbox=]. 
 
 When a trigger arrives,
-the [=Orchestrator=] consults a set of business rules set by the [=Maintainer=] (which it maintains using the [=Dashboard=]),
-which results in zero or more [=Actions=] to take.
-An [=Action=] involves reading resources from or sending notifications to [=Data Pods=] (including the one it's connected to) or [=Service Hubs=].
+the [=Orchestrator=] consults the [=policy=] - a set of business rules fixed an maintained by the [=Maintainer=] using the [=Dashboard=],
+which results in zero or more [=actions=] to take.
+An [=Action=] involves reading resources from or sending notifications to [=data pods=] (including the one it's connected to) or [=Service Hubs=].
 
-The [=Orchestrator=] records every taken [=Action=] in the [=Data Pod=]'s [=Artefact Lifecycle Event Log=].
+The [=Orchestrator=] records every taken [=action=] in the [=data pod=]'s [=Artefact Lifecycle Event Log=].
 When the [=Orchestrator=] requires input from the [=Maintainer=], 
 it can communicate this via the [=Artefact Lifecycle Event Log=],
 which is shared with the [=Dashboard=].
-The [=Dashboard=] presents this event to the [=Maintainer=] in an actionable way, resulting in a new [=Trigger=].
+The [=Dashboard=] presents this event to the [=Maintainer=] in an actionable way, resulting in a new [=trigger=].
 
 <pre class='include'>
 path: images/high-level.svg
 </pre>
 
 From a [=Service Hub=] perspective,
-
-
-
- for which is has access rights to all relevant resources, including the Linked Data Notification [[!LDN]] [=inbox=].
-
-allows the actor associated with the [=Data Pod=] to participate in the network using  without being actively present.
-
-
-
-
-with the contents of the Data Pod
-A 
-
-
-
-## Service Hub perspective
+the [=Orchestrator=] establishes automated response to notifications from other network [=actors=] and [=orchestrators=] in context of the provided service. 
+As a possible side-effect, it can also actively consults additional [=actors=] in order to complete the service.
+The [=Orchestrator=] responds by delivering a new notification in the [=inbox=] of the actor that invoked the service.
+It is the [=policy=] that dictates what response to construct and what consecutive [=actions=] (reading resources from or sending notifications to [=data pods=] or other [=service hubs=]) need to be performed.
 
 <pre class='include'>
 path: images/high-level-servicehub.svg
 </pre>
 
-## Common communication pattern
+
+## Common interaction pattern
+
+A common activity is the [=Maintainer=] of a [=Data Pod=] invoking a service provided by a [=Service Hub=].
+Both [=actors=] can be considered operating an [=orchestrator=] to automate their participation in the network.
+Hence, a common interaction pattern is as follows:
+
+1. A [=maintainer=]
+
+
+
 
 <pre class='include'>
 path: images/high-level-comm.svg
@@ -187,15 +187,27 @@ An orchestrator MUST respond to the following three types of triggers:
 - an observed state changes to watched [=data pod=] resources
 - a scheduled trigger from the internal time-based event scheduler
 
-## Receving incoming Linked Data Notification
+## Receving incoming Linked Data Notification 
 
-Issue: TODO
+An orchestrator MUST be a compliant [[!LDN]] [Consumer](https://www.w3.org/TR/ldn/#consumer). 
+The following incoming [[!LDN]] using the [[!ACTIVITYSTREAMS-VOCABULARY]] MUST be supported:
 
-## Obsering a resource state change
+- [as:Create](https://www.w3.org/ns/activitystreams#Create)
+- [as:Announce](https://www.w3.org/ns/activitystreams#Announce)
+- [as:Update](https://www.w3.org/ns/activitystreams#Update)
+- [as:Delete](https://www.w3.org/ns/activitystreams#Delete)
 
-Issue: TODO
+## Observing a resource state change
+
+An orchestrator MAY implement a mechanism to watch [[HTTP11]] resources and detect changes, 
+for instance through polling or HTTP Push [[!RFC8030]]].
+Observed changes MUST result in behavior equivalent to the [[!LDN]] with [as:Update](https://www.w3.org/ns/activitystreams#Update),
+with the watched resource as [as:object]().
 
 ## Scheduled trigger
+
+An orchestrator MUST implement a timer for scheduled events, such as cron.
+A scheduled event MUST produce the ...
 
 Issue: TODO
 
@@ -212,17 +224,55 @@ There are three types of actions that an orchestrator can take:
 
 ## Sending Linked Data notifications
 
-An orchestrator MUST be a compliant [[LDN]] <a href="https://www.w3.org/TR/ldn/#sender">Sender</a>. 
-It MUST be able to send the following notifications from the [[activitystreams-vocabulary]]:
+An orchestrator MUST be a compliant [[LDN]] [Sender](https://www.w3.org/TR/ldn/#sender). 
+It MUST be able to send the following notifications from the [[ACTIVITYSTREAMS-VOCABULARY]]:
 
-- <a href="https://www.w3.org/ns/activitystreams#Update">`as:Update`</a>
-- <a href="https://www.w3.org/ns/activitystreams#Create">`as:Create`</a>
-- <a href="https://www.w3.org/ns/activitystreams#Delete">`as:Delete`</a>
-- <a href="https://www.w3.org/ns/activitystreams#Update">`as:Update`</a>
+- [as:Create](https://www.w3.org/ns/activitystreams#Create)
+- [as:Announce](https://www.w3.org/ns/activitystreams#Announce)
+- [as:Update](https://www.w3.org/ns/activitystreams#Update)
+- [as:Delete](https://www.w3.org/ns/activitystreams#Delete)
 
-## Manipulating LDP
+Within a notification, the following [Actor type](https://www.w3.org/TR/activitystreams-core/#actors) mapping MUST be used:
+- [=Service Hub=] --> [as:Service](https://www.w3.org/ns/activitystreams#Service)
+- [=Maintainer=] --> [as:Organization](https://www.w3.org/ns/activitystreams#Organization) or [as:Person](https://www.w3.org/ns/activitystreams#Person)
 
-An Orchestrator MUST implement the following :
+The object MUST contain the artefact to which the action has effect.
+It SHOULD have one of the following types:
+- https://www.w3.org/ns/activitystreams#Object
+
+
+Example:
+
+``` json
+
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "summary": "Koninklijke Bibliotheek announces Alba",
+  "type": "Create",
+  "actor": {
+    "@context": "https://schema.org/",
+    "@type": "Organization",
+    "name": "Koninklijke Bibliotheek",
+    "@id": "https://www.kb.nl/"
+  },
+  "object": {
+    "@context": "https://schema.org/",
+    "@type": "Dataset",
+    "@id": "https://data.bibliotheken.nl/doc/dataset/rise-alba",
+  },
+  "origin": {
+    "@context": "https://schema.org/",
+    "@id": "http://example.org/Adlib",
+    "@type": "SoftwareApplication"
+  },
+  "updated": "2021-01-28T19:56:20.114Z"
+}
+
+```
+
+## Manipulating LDP resources
+
+An Orchestrator MUST implement the following [[HTTP11]]  :
 
 Issue: TODO
 
