@@ -195,9 +195,9 @@ In this case, the Orchestrator MUST retrieve incoming Linked Data Notifications 
 Inbox security is discussed in the [security considerations](#security-considerations) sections.
 
 Linked Data Notification triggers are defined as RDF data shapes.
-The used data shape MUST conform to either a [SHACL](https://www.w3.org/TR/shacl/) shape or a [SHEX](https://shex.io/) shape.
+The used data shape MUST conform to either a [shacl](https://www.w3.org/TR/shacl/) shape or a [shex](https://shex.io/) shape.
 On receiving a notification, the Orchestrator MUST try to validate the received notification to all notification based triggers in the policies in its policy set.
-For this, the Orchestrator MUST provide validation for both[SHACL](https://www.w3.org/TR/shacl/) shapes and [SHEX](https://shex.io/) shapes.
+For this, the Orchestrator MUST provide validation for both[shex](https://www.w3.org/TR/shacl/) shapes and [shex](https://shex.io/) shapes.
 
 Example of a trigger using Linked Data Notifications:
 ```
@@ -205,9 +205,10 @@ Example of a trigger using Linked Data Notifications:
   "@context": "https://www.example.org/ns/policy",
   "summary": "Linked Data Notification Trigger",
   "type": "NotificationTrigger",
-	"shape": "https://mypod.org/shapes/triggershape",
+  "shape": "https://mypod.org/shapes/triggershape",
 }
 ```
+
 
 
 
@@ -227,8 +228,8 @@ Example of a trigger using resource state changes:
   "@context": "https://www.example.org/ns/policy",
   "summary": "Linked Data Notification Trigger",
   "type": "StateTrigger",
-	"resource": "https://mypod.org/resources/
-	"state": ["Create", "Update"]
+  "resource": "https://mypod.org/resources/,
+  "state": ["Create", "Update"]
 }
 ```
 
@@ -243,23 +244,23 @@ A datetime trigger can define multiple points in time to trigger an action.
 All passed ```datetime``` values MUST be valid ```xsd:dateTime``` literals.
 
 Example of a datetime trigger:
-```
+``` 
 {
   "@context": "https://www.example.org/ns/policy",
   "summary": "Linked Data Notification Trigger",
   "type": "DateTimeTrigger",
-	"datetime": [
-			{
-				"@value": "2021-12-12T20:20:20.201Z"
-				"@type": xsd:dateTime
-			}, 
-			{
-				"@value": "2021-12-12T21:21:21.211Z"
-				"@type": xsd:dateTime
-			}
-		]
+  "dateTime":[
+    {
+      "@value": "2021-12-12T20:20:20.201Z",
+      "@type": xsd:dateTime
+    }, 
+    {
+      "@value": "2021-12-12T21:21:21.211Z",
+      "@type": xsd:dateTime
+    }]
 }
 ```
+
 ### time interval trigger
 A time interval trigger is a trigger that is fired at set intervals in time.
 A time interval trigger MUST trigger an action on every matching time interval during the time the trigger is active and the orchestrator is running.
@@ -271,9 +272,8 @@ Example of a time interval trigger:
   "@context": "https://www.example.org/ns/policy",
   "summary": "Linked Data Notification Trigger",
   "type": "StateTrigger",
-	""
-	"resource": "https://mypod.org/resources/
-	"state": ["Create", "Update"]
+  "resource": "https://mypod.org/resources/
+  "state": ["Create", "Update"]
 }
 ```
 
