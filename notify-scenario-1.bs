@@ -1,0 +1,94 @@
+<pre class='metadata'>
+Title: Scenario 1 : Author requests review with possible endorsement (via overlay journal)
+Shortname: orchestrator
+Level: 1
+Status: LS
+Editor: Patrick Hochstenbach, UGent, patrick.hochstenbach@ugent.be
+Markup Shorthands: markdown yes
+</pre>
+
+Description
+=================================================================================
+
+From [COAR](https://notify.coar-repositories.org/scenarios/1/):
+The corresponding author requests a review from an overlay journal for one of their papers, held in a repository. The overlay journal notifies the repository of any successful reviews and endorsements.
+
+<img src="images/scenario-1.svg" width="80%">
+
+- The **Maintainer** starts a review process at a *Journal* website
+    - It is not specified how this process should be started
+    - It is assumed that the journal website knows or discovers the location of the Scholarly inbox of the maintainer
+- The **Journal** website starts a review workflow and sends after a while an `Announce` AS2 notification to the (Scholarly) **Inbox**
+of the **Data Pod**
+    - The `Announce` contains as `object` a link to the published review
+    - The `Announce` contains as `object` a link to an artefact on the data pod
+    - It is assumed that the data pod will respond with a HTTP 200 or 202 to inbox submission by the journal
+    - The scholarly inbox MAY be the main inbox of the data pod or a specialized inbox created for the orchestrator
+    - The data pod may MAY shape validation mechanisms in place and return HTTP 4** codes when an unknown
+    notification shape was submitted to the inbox
+
+## Orchestrator reads the inbox of a data pod and updates an event log
+
+<img src="images/scenario-1-a.svg" width="80%">
+
+- The **Orchestrator** polls the (scholarly) **Inbox** of the **Data Pod**
+- The **Orchestrator** lists incoming notifications
+    - The orchestrator MAY filter the inbox list for resource shapes
+    - The orchestrator MAY ignore untrusted , invalid notifications
+    - The orchestrator MAY filter out notifications about resources that don't exist (anymore) in the data pod
+    - The orchestrator SHALL processes each notification only once
+    - The orchestrator MAY only have read permission to the inbox
+    - In a shared inbox scenario, multiple applications plus the maintainer MAY want to act on incoming notifications
+- The **Orchestrator** selected the notification it wants to process
+- The **Artefact Lifecycle Event Log** must updated with the notification event by the **Orchestrator**
+    - The orchestrator MAY store a processed version of the `Announce` notification in the event log
+    - The stored notification `@id` MUST be unique in all event logs of the data pod
+    - The event update time SHALL be the time of writing the event log resource
+    - The artefact lifecycle event log SHALL be public readable
+
+Issue: What are the requirement on the shape of the event log.
+
+Issue: An orchestrator that is triggered by an update to the data pod artefacts by some other mechanism is left out of this discussion.
+
+## A client App reads the event log and updates the artefact
+
+<img src="images/scenario-1-b.svg" width="80%">
+
+- The **App** polls the **Artefact Lifecycle Event Log** of the **Data Pod**
+     - The app knows that the event log is a trusted append only resource for relevant notifications
+       that should be processed
+         - The app doesn't need to redo the work of the orchestrator to clean the data pod (scholarly) inbox
+     - The app MAY filter the event log for shapes
+     - The app MAY filter out self-referencing notifications
+         - This is for cases where any update to the data pod could trigger an event log update
+- The **App** list new events events not yet processed
+- The **App** discovers the `Announce` event
+- The **App** is configured by the maintainer to automatically update the artefact metadata with a review link
+     - The app MAY send a notification to the Scholarly inbox to update the orchestrator of this fact
+
+## A maintainer uses the dashboard to read the event log and updates the artefacts
+
+<img src="images/scenario-1-c.svg" width="80%">
+
+- The **Maintainer** opens the (Scholarly) **Dashboard** and list new events
+    - The dashboard knows that the event log is a trusted append only resource for relevant notifications
+      that should be processed
+        - The dashboard doesn't need to redo the work of the orchestrator to clean the data pod (scholarly) inbox
+    - The dashboard MAY filter the event log for shapes
+    - The dashboard MAY filter out self-referencing notifications
+        - This is for cases where any update to the data pod could trigger an event log update
+- The **Maintainer** discovers the `Announce` event
+- The **Dashboard** suggest to update the artefact metadata in the **Data Pod** with the review link
+- The **Maintainer** approves and the **Dashboard** updates the artefact metadata
+
+## The orchstrator use policies to update service hubs
+
+<img src="images/scenario-1-d.svg" width="80%">
+
+- The **Orchestrator** has a policy to update a range of **Service Hubs**
+    - This can be the same Orchestrator that processes the inbox or an institutional orchestrator
+    - The orchestrator uses the event log as a trusted append only resource for relevant Notifications
+      that should be processed
+- The **Orchestrator** can poll a local or remote event log
+- The **Orchestrator** discovers the `Announce` event
+- The **Orchestrator** matches the notification to a set of policies and notifies relevant services
