@@ -33,10 +33,12 @@ The remainder of this document specifies the requirements for implementing an [=
 
 This document uses the following defined terms:
 
-Issue: replace the term Policy by Rulebook to avoid confusion?
+Issue(ErfgoedPod/orchestrator#6): replace the term Policy by Rulebook to avoid confusion?
 
 : <dfn export>Actor</dfn>
 :: A entity (person, application or service) that participates in the network.
+: <dfn export>Artefact</dfn>
+:: A digital object such as a file or document that serves as the object of exchange between actors and therefore is the smallest divisable unit on the network.
 : <dfn export>Human Agent</dfn>
 :: A person that operates directly as an [=Actor=] on the network.
 : <dfn export>Autonomous Agent</dfn>
@@ -108,10 +110,18 @@ A common activity is the [=Maintainer=] of a [=Data Pod=] invoking a service pro
 Both [=actors=] can be considered operating an [=orchestrator=] to automate their participation in the network.
 Hence, a common interaction pattern is as follows:
 
-1. A [=maintainer=]
-
-
-
+1. The [=maintainer=] performs an action that affects or interests other actors in the network (eg. adding a new artefact in the data pod).
+2. The [=maintainer=] uses the [=Dashboard=] to reflect this action on the [=Artefact Lifecycle Event Log=] `event log A` that is stored in the [=Data Pod=].
+3. The new event triggers the `Orchestrator A` to take consecutive [=action=].
+4. `Orchestrator A` consults its `Policy A` for the received [=trigger=], which dictates that it needs to inform the [=service hub=] about the event.
+5. `Orchestrator A` sends a notification to `Inbox B` of the [=service hub=].
+6. The notification's reception triggers `Orchestrator B` to take consecutive [=action=].
+7. `Orchestrator B` consults its `Policy B` for the received [=trigger=], which dictates that it needs to process the artefact and inform the [=maintainer=] about the outcome.
+8. `Orchestrator B` processes the contents of the notification using an internal process (eg. index the new artefact in the repository).
+9. When completed, `Orchestrator B` adds to `Event log B` that the contents of the notification have been processed.
+10. `Orchestrator B` sends a notification to `Inbox A` of the [=maintainer=].
+11. `Orchestrator B` adds to `Event log A` that the original event has been processed by the [=service hub=].
+12. The [=Dashboard=] displays `Event log A` to the [=maintainer=] to show that the necessary actions have been taken.
 
 <pre class='include'>
 path: images/high-level-comm.svg
