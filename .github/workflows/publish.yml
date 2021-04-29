@@ -6,6 +6,31 @@ on:
       - master
 
 jobs:
+  build-diagrams:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Output high-level-comm to SVG
+      uses: Burnett01/actions-drawio@1.0
+      with:
+        scale: 1.0
+        src: diagrams/high-level-comm.drawio
+        dest: images/high-level-comm.svg
+
+    - name: Output high-level-datapod to SVG
+      uses: Burnett01/actions-drawio@1.0
+      with:
+        scale: 1.0
+        src: diagrams/high-level-datapod.drawio
+        dest: images/high-level-datapod.svg
+
+    - name: Output high-level-servicehub to SVG
+      uses: Burnett01/actions-drawio@1.0
+      with:
+        scale: 1.0
+        src: diagrams/high-level-servicehub.drawio
+        dest: images/high-level-servicehub.svg
+
   build:
     runs-on: ubuntu-18.04
 
