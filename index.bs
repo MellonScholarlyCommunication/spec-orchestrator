@@ -9,10 +9,19 @@ Abstract: This specification describes the implementation requirements for the O
 Markup Shorthands: markdown yes
 </pre>
 
+# Set of documents
+
+This document is one of the *Decentralized Digital Heritage Network* specifications produced by the ErfgoedPod project by [Netwerk Digitaal Erfgoed](https://netwerkdigitaalerfgoed.nl), [meemoo - Flemish Institute for Archiving](https://meemoo.be) and [Ghent University - IDLab](http://idlab.ugent.be):
+
+1. [Architecture Decentralized Digital Heritage Network](/architecture/) (this document)
+2. [Use cases & Business processes digital heritage network](/usecases/)
+3. [Common infrastructure setups of a Cultural Heritage Institutions](/common-setups/)
+4. [Orchestrator](/orchestrator/)
+
 Introduction {#intro}
 =====================
 
-In a <a href="https://solidproject.org/">Solid decentralized network</a>, data, and services the services that use them, do not resort in one place, but are intentionally distributed.
+In a [Solid decentralized network](https://solidproject.org/), data, and services the services that use them, do not resort in one place, but are intentionally distributed.
 As a result, actors in the network, such as institutions or service providers, need to potentionally involve and communicate with multiple services in order to execute a business process or workflow, 
 where each services executes a dedicated task (eg. registering or archiving a dataset).
 Hence, to avoid excessive manual work, this document specifies the Orchestrator component, which is able to automate such task orchestration.
@@ -48,9 +57,9 @@ Issue(ErfgoedPod/orchestrator#6): replace the term Policy by Rulebook to avoid c
 :: Usually a person employed by an organisation (e.g., a Cultural Heritage Institution) to maintain data and datasets owned by that organisation. 
 : <dfn export>Data Pod</dfn>
 :: As defined by [[solid-protocol]], a <a href="https://solidproject.org/TR/protocol#data-pod">Data Pod</a> is a place for storing documents, with mechanisms for controlling who can access what.
-: <dfn>Inbox</dfn>
+: <dfn export>Inbox</dfn>
 :: An [[!LDP]] resource where others can POST Linked Data Notifications [[!LDN]] in order to notify the actor of a change an artefact's lifecycle.
-: <dfn>Artefact Lifecycle Event Log</dfn>
+: <dfn export>Artefact Lifecycle Event Log</dfn>
 :: An HTTP resource served by an actor (e.g., as a resource in the [=Data Pod=]) that represents a log of occurred lifecycle events related to artefacts known by the actor.
 :: Artefacts are considered known when they reside in the actor's [=Data Pod=] or if the actor has been made aware via [[!LDN]].
 : <dfn export>Service Hub</dfn>
@@ -159,7 +168,7 @@ If deployed as a [=local background process=], an (custom) API MUST be present t
 
 ## Solid app compliance
 
-An orchestrator is a <a href="https://solidproject.org/TR/protocol#solid-app">Solid client</a> and MUST be fully compliant with the [[solid protocol]] Client-Side Implementation requirements.
+An orchestrator is a <a href="https://solidproject.org/TR/protocol#solid-app">Solid client</a> and MUST be fully compliant with the [[solid-protocol]] Client-Side Implementation requirements.
 Orchestrators SHOULD also implement [[SOLID-OIDC]] to authenticate to most Solid [=data pods=] and implement the client requirements for [[solidwebac]] to receive authorization, such as checking the `WAC-Allow` header value.
 
 ## Additional interface 
