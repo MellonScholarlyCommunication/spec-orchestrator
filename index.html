@@ -1223,7 +1223,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 5f7b0e20, updated Tue Aug 18 15:46:28 2020 -0700" name="generator">
   <link href="https://erfgoedpod.github.io/orchestrator" rel="canonical">
-  <meta content="e62bfb8bf9c428e6684d053e126fc1e02f4068b8" name="document-revision">
+  <meta content="da7fdebadb0ff663cb2840da1efee75b2800e9e0" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -1470,7 +1470,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Orchestrator for a decentralized Digital Heritage Network</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Standard, <time class="dt-updated" datetime="2021-04-29">29 April 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Standard, <time class="dt-updated" datetime="2021-04-30">30 April 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1485,7 +1485,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 29 April 2021,
+In addition, as of 30 April 2021,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -1499,39 +1499,40 @@ Parts of this work may be from another specification document.  If so, those par
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
-    <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
-    <li><a href="#definitions"><span class="secno">2</span> <span class="content">Definitions</span></a>
+    <li><a href="#set-of-documents"><span class="secno">1</span> <span class="content">Set of documents</span></a>
+    <li><a href="#intro"><span class="secno">2</span> <span class="content">Introduction</span></a>
+    <li><a href="#definitions"><span class="secno">3</span> <span class="content">Definitions</span></a>
     <li>
-     <a href="#high-level"><span class="secno">3</span> <span class="content">High-level overview</span></a>
+     <a href="#high-level"><span class="secno">4</span> <span class="content">High-level overview</span></a>
      <ol class="toc">
-      <li><a href="#perspectives"><span class="secno">3.1</span> <span class="content">Perspectives</span></a>
-      <li><a href="#common-interaction-pattern"><span class="secno">3.2</span> <span class="content">Common interaction pattern</span></a>
+      <li><a href="#perspectives"><span class="secno">4.1</span> <span class="content">Perspectives</span></a>
+      <li><a href="#common-interaction-pattern"><span class="secno">4.2</span> <span class="content">Common interaction pattern</span></a>
      </ol>
     <li>
-     <a href="#init"><span class="secno">4</span> <span class="content">Creating an orchestrator</span></a>
+     <a href="#init"><span class="secno">5</span> <span class="content">Creating an orchestrator</span></a>
      <ol class="toc">
-      <li><a href="#deployment"><span class="secno">4.1</span> <span class="content">Deployment</span></a>
-      <li><a href="#solid-app-compliance"><span class="secno">4.2</span> <span class="content">Solid app compliance</span></a>
-      <li><a href="#additional-interface"><span class="secno">4.3</span> <span class="content">Additional interface</span></a>
+      <li><a href="#deployment"><span class="secno">5.1</span> <span class="content">Deployment</span></a>
+      <li><a href="#solid-app-compliance"><span class="secno">5.2</span> <span class="content">Solid app compliance</span></a>
+      <li><a href="#additional-interface"><span class="secno">5.3</span> <span class="content">Additional interface</span></a>
      </ol>
     <li>
-     <a href="#triggers"><span class="secno">5</span> <span class="content">Triggers</span></a>
+     <a href="#triggers"><span class="secno">6</span> <span class="content">Triggers</span></a>
      <ol class="toc">
-      <li><a href="#receving-incoming-linked-data-notification"><span class="secno">5.1</span> <span class="content">Receving incoming Linked Data Notification</span></a>
-      <li><a href="#observing-a-resource-state-change"><span class="secno">5.2</span> <span class="content">Observing a resource state change</span></a>
-      <li><a href="#scheduled-trigger"><span class="secno">5.3</span> <span class="content">Scheduled trigger</span></a>
+      <li><a href="#receving-incoming-linked-data-notification"><span class="secno">6.1</span> <span class="content">Receving incoming Linked Data Notification</span></a>
+      <li><a href="#observing-a-resource-state-change"><span class="secno">6.2</span> <span class="content">Observing a resource state change</span></a>
+      <li><a href="#scheduled-trigger"><span class="secno">6.3</span> <span class="content">Scheduled trigger</span></a>
      </ol>
     <li>
-     <a href="#actions"><span class="secno">6</span> <span class="content">Actions</span></a>
+     <a href="#actions"><span class="secno">7</span> <span class="content">Actions</span></a>
      <ol class="toc">
-      <li><a href="#sending-linked-data-notifications"><span class="secno">6.1</span> <span class="content">Sending Linked Data notifications</span></a>
-      <li><a href="#manipulating-ldp-resources"><span class="secno">6.2</span> <span class="content">Manipulating LDP resources</span></a>
-      <li><a href="#reading-http-resources"><span class="secno">6.3</span> <span class="content">Reading HTTP resources</span></a>
+      <li><a href="#sending-linked-data-notifications"><span class="secno">7.1</span> <span class="content">Sending Linked Data notifications</span></a>
+      <li><a href="#manipulating-ldp-resources"><span class="secno">7.2</span> <span class="content">Manipulating LDP resources</span></a>
+      <li><a href="#reading-http-resources"><span class="secno">7.3</span> <span class="content">Reading HTTP resources</span></a>
      </ol>
     <li>
-     <a href="#policy-sec"><span class="secno">7</span> <span class="content">Policy</span></a>
+     <a href="#policy-sec"><span class="secno">8</span> <span class="content">Policy</span></a>
      <ol class="toc">
-      <li><a href="#policy-language-sec"><span class="secno">7.1</span> <span class="content">Policy language {#policy-language-sec}</span></a>
+      <li><a href="#policy-language-sec"><span class="secno">8.1</span> <span class="content">Policy language {#policy-language-sec}</span></a>
      </ol>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
@@ -1549,7 +1550,19 @@ Parts of this work may be from another specification document.  If so, those par
    </ol>
   </nav>
   <main>
-   <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
+   <h2 class="heading settled" data-level="1" id="set-of-documents"><span class="secno">1. </span><span class="content">Set of documents</span><a class="self-link" href="#set-of-documents"></a></h2>
+   <p>This document is one of the <em>Decentralized Digital Heritage Network</em> specifications produced by the ErfgoedPod project by <a href="https://netwerkdigitaalerfgoed.nl">Netwerk Digitaal Erfgoed</a>, <a href="https://meemoo.be">meemoo - Flemish Institute for Archiving</a> and <a href="http://idlab.ugent.be">Ghent University - IDLab</a>:</p>
+   <ol>
+    <li data-md>
+     <p><a href="/architecture/">Architecture Decentralized Digital Heritage Network</a> (this document)</p>
+    <li data-md>
+     <p><a href="/usecases/">Use cases &amp; Business processes digital heritage network</a></p>
+    <li data-md>
+     <p><a href="/common-setups/">Common infrastructure setups of a Cultural Heritage Institutions</a></p>
+    <li data-md>
+     <p><a href="/orchestrator/">Orchestrator</a></p>
+   </ol>
+   <h2 class="heading settled" data-level="2" id="intro"><span class="secno">2. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
    <p>In a <a href="https://solidproject.org/">Solid decentralized network</a>, data, and services the services that use them, do not resort in one place, but are intentionally distributed.
 As a result, actors in the network, such as institutions or service providers, need to potentionally involve and communicate with multiple services in order to execute a business process or workflow, 
 where each services executes a dedicated task (eg. registering or archiving a dataset).
@@ -1563,7 +1576,7 @@ Possible actions are sending notifications to other actors, requesting access to
 In practice, an Orchestrator is dedicated to a single <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod④">Data Pod</a> for which is has access rights to all relevant resources, including the Linked Data Notification <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> <a data-link-type="dfn" href="#inbox" id="ref-for-inbox">inbox</a>. 
 Its autonomy is supplied by the <a data-link-type="dfn" href="#policy" id="ref-for-policy①">Policy</a>, which dictates business rules in a declarative manner using a <a data-link-type="dfn" href="#policy-language" id="ref-for-policy-language">policy language</a>.</p>
    <p>The remainder of this document specifies the requirements for implementing an <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator">Orchestrator</a> component.</p>
-   <h2 class="heading settled" data-level="2" id="definitions"><span class="secno">2. </span><span class="content">Definitions</span><a class="self-link" href="#definitions"></a></h2>
+   <h2 class="heading settled" data-level="3" id="definitions"><span class="secno">3. </span><span class="content">Definitions</span><a class="self-link" href="#definitions"></a></h2>
    <p>This document uses the following defined terms:</p>
    <p class="issue" id="issue-f4d7681a"><a class="self-link" href="#issue-f4d7681a"></a> replace the term Policy by Rulebook to avoid confusion? <a href="https://github.com/ErfgoedPod/orchestrator/issues/6">&lt;https://github.com/ErfgoedPod/orchestrator/issues/6></a></p>
    <dl>
@@ -1581,16 +1594,16 @@ Its autonomy is supplied by the <a data-link-type="dfn" href="#policy" id="ref-f
      <p>An intelligent software instance that operates on an <a data-link-type="dfn" href="#actor" id="ref-for-actor①">Actor</a>'s behalf but without any interference of that <a data-link-type="dfn" href="#actor" id="ref-for-actor②">Actor</a>.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="maintainer">Maintainer</dfn>
     <dd data-md>
-     <p>A <a data-link-type="dfn" href="#human-agent" id="ref-for-human-agent">Human Agent</a> that can manually perform actions (see <a href="#actions">§ 6 Actions</a>) on the network using a <a data-link-type="dfn" href="#dashboard" id="ref-for-dashboard">Dashboard</a> application.</p>
+     <p>A <a data-link-type="dfn" href="#human-agent" id="ref-for-human-agent">Human Agent</a> that can manually perform actions (see <a href="#actions">§ 7 Actions</a>) on the network using a <a data-link-type="dfn" href="#dashboard" id="ref-for-dashboard">Dashboard</a> application.</p>
     <dd data-md>
      <p>Usually a person employed by an organisation (e.g., a Cultural Heritage Institution) to maintain data and datasets owned by that organisation.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="data-pod">Data Pod</dfn>
     <dd data-md>
      <p>As defined by <a data-link-type="biblio" href="#biblio-solid-protocol">[solid-protocol]</a>, a <a href="https://solidproject.org/TR/protocol#data-pod">Data Pod</a> is a place for storing documents, with mechanisms for controlling who can access what.</p>
-    <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="inbox">Inbox</dfn>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="inbox">Inbox</dfn>
     <dd data-md>
      <p>An <a data-link-type="biblio" href="#biblio-ldp">[LDP]</a> resource where others can POST Linked Data Notifications <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> in order to notify the actor of a change an artefact’s lifecycle.</p>
-    <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="artefact-lifecycle-event-log">Artefact Lifecycle Event Log</dfn>
+    <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="artefact-lifecycle-event-log">Artefact Lifecycle Event Log</dfn>
     <dd data-md>
      <p>An HTTP resource served by an actor (e.g., as a resource in the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑤">Data Pod</a>) that represents a log of occurred lifecycle events related to artefacts known by the actor.</p>
     <dd data-md>
@@ -1605,11 +1618,11 @@ Its autonomy is supplied by the <a data-link-type="dfn" href="#policy" id="ref-f
     <dd data-md>
      <p>A user application and <a href="https://solidproject.org/TR/protocol#solid-app">Solid app</a> that enables users to interact with the contents of the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑦">Data Pod</a>, the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator②">Orchestrator</a>, or other <a data-link-type="dfn" href="#actor" id="ref-for-actor⑤">Actors</a> in the Digital Heritage Network.</p>
    </dl>
-   <h2 class="heading settled" data-level="3" id="high-level"><span class="secno">3. </span><span class="content">High-level overview</span><a class="self-link" href="#high-level"></a></h2>
+   <h2 class="heading settled" data-level="4" id="high-level"><span class="secno">4. </span><span class="content">High-level overview</span><a class="self-link" href="#high-level"></a></h2>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="orchestrator">Orchestrator</dfn> is an <a data-link-type="dfn" href="#autonomous-agent" id="ref-for-autonomous-agent">Autonomous Agent</a> dedicated to a single <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑧">Data Pod</a>, <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub">Service Hub</a>, or any other actor hosting the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log">Artefact Lifecycle Event Log</a> and a <a data-link-type="dfn" href="#inbox" id="ref-for-inbox②">Inbox</a> resources.
 It interprets and executes business rules described in a <a data-link-type="dfn" href="#policy" id="ref-for-policy②">policy</a>. 
 The Orchestrator watches the <a data-link-type="dfn" href="#inbox" id="ref-for-inbox③">Inbox</a> for possible triggers, while it records the actions it takes to the to the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log①">Artefact Lifecycle Event Log</a>.</p>
-   <h3 class="heading settled" data-level="3.1" id="perspectives"><span class="secno">3.1. </span><span class="content">Perspectives</span><a class="self-link" href="#perspectives"></a></h3>
+   <h3 class="heading settled" data-level="4.1" id="perspectives"><span class="secno">4.1. </span><span class="content">Perspectives</span><a class="self-link" href="#perspectives"></a></h3>
    <p>From a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑨">Data Pod</a> perspective,
 the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator③">Orchestrator</a> participates in the network on behalf of the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod①⓪">Data Pod</a>'s owner or <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer">Maintainer</a>.
 At instantiation time, 
@@ -2275,7 +2288,7 @@ It is the <a data-link-type="dfn" href="#policy" id="ref-for-policy④">policy</
      </a>
     </switch>
    </svg>
-   <h3 class="heading settled" data-level="3.2" id="common-interaction-pattern"><span class="secno">3.2. </span><span class="content">Common interaction pattern</span><a class="self-link" href="#common-interaction-pattern"></a></h3>
+   <h3 class="heading settled" data-level="4.2" id="common-interaction-pattern"><span class="secno">4.2. </span><span class="content">Common interaction pattern</span><a class="self-link" href="#common-interaction-pattern"></a></h3>
    <p>A common activity is the <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer⑥">Maintainer</a> of a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod①⑦">Data Pod</a> invoking a service provided by a <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub④">Service Hub</a>.
 Both <a data-link-type="dfn" href="#actor" id="ref-for-actor⑧">actors</a> can be considered operating an <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator①③">orchestrator</a> to automate their participation in the network.
 Hence, a common interaction pattern is as follows:</p>
@@ -2735,10 +2748,10 @@ Hence, a common interaction pattern is as follows:</p>
      </a>
     </switch>
    </svg>
-   <h2 class="heading settled" data-level="4" id="init"><span class="secno">4. </span><span class="content">Creating an orchestrator</span><a class="self-link" href="#init"></a></h2>
-   <h3 class="heading settled" data-level="4.1" id="deployment"><span class="secno">4.1. </span><span class="content">Deployment</span><a class="self-link" href="#deployment"></a></h3>
+   <h2 class="heading settled" data-level="5" id="init"><span class="secno">5. </span><span class="content">Creating an orchestrator</span><a class="self-link" href="#init"></a></h2>
+   <h3 class="heading settled" data-level="5.1" id="deployment"><span class="secno">5.1. </span><span class="content">Deployment</span><a class="self-link" href="#deployment"></a></h3>
    <p>An Orchestrator MUST be deployable as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="local-background-process">local background process</dfn> or as a <dfn data-dfn-type="dfn" data-noexport id="remote-web-service">remote web service<a class="self-link" href="#remote-web-service"></a></dfn>.
-In case of the latter, an actor SHOULD be able to spawn, initialize and trigger the instance over <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a>, as defined in <a href="#init">§ 4 Creating an orchestrator</a> and <a href="#triggers">§ 5 Triggers</a>.
+In case of the latter, an actor SHOULD be able to spawn, initialize and trigger the instance over <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a>, as defined in <a href="#init">§ 5 Creating an orchestrator</a> and <a href="#triggers">§ 6 Triggers</a>.
 The Orchestrator MAY also serve an <a data-link-type="dfn" href="#inbox" id="ref-for-inbox⑦">inbox</a> for communicating with third-parties using Linked Data Notifications <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> .</p>
    <p>Example of spawning an orchestrator using Linked Data Notifications:</p>
 <pre>
@@ -2756,10 +2769,10 @@ Content-Language: en
 }
 </pre>
    <p>If deployed as a <a data-link-type="dfn" href="#local-background-process" id="ref-for-local-background-process">local background process</a>, an (custom) API MUST be present that is able perform these actions.</p>
-   <h3 class="heading settled" data-level="4.2" id="solid-app-compliance"><span class="secno">4.2. </span><span class="content">Solid app compliance</span><a class="self-link" href="#solid-app-compliance"></a></h3>
-   <p>An orchestrator is a <a href="https://solidproject.org/TR/protocol#solid-app">Solid client</a> and MUST be fully compliant with the [[solid protocol]] Client-Side Implementation requirements.
+   <h3 class="heading settled" data-level="5.2" id="solid-app-compliance"><span class="secno">5.2. </span><span class="content">Solid app compliance</span><a class="self-link" href="#solid-app-compliance"></a></h3>
+   <p>An orchestrator is a <a href="https://solidproject.org/TR/protocol#solid-app">Solid client</a> and MUST be fully compliant with the <a data-link-type="biblio" href="#biblio-solid-protocol">[solid-protocol]</a> Client-Side Implementation requirements.
 Orchestrators SHOULD also implement <a data-link-type="biblio" href="#biblio-solid-oidc">[SOLID-OIDC]</a> to authenticate to most Solid <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod①⑨">data pods</a> and implement the client requirements for <a data-link-type="biblio" href="#biblio-solidwebac">[solidwebac]</a> to receive authorization, such as checking the <code>WAC-Allow</code> header value.</p>
-   <h3 class="heading settled" data-level="4.3" id="additional-interface"><span class="secno">4.3. </span><span class="content">Additional interface</span><a class="self-link" href="#additional-interface"></a></h3>
+   <h3 class="heading settled" data-level="5.3" id="additional-interface"><span class="secno">5.3. </span><span class="content">Additional interface</span><a class="self-link" href="#additional-interface"></a></h3>
    <p>When a new instance is created,
 an Orchestrator MUST allow actors to supply an <a data-link-type="biblio" href="#biblio-uri">[URI]</a> pointing to an <a data-link-type="dfn" href="#inbox" id="ref-for-inbox⑧">inbox</a> to watch and read.
 It MAY also allow a list of <a data-link-type="biblio" href="#biblio-ldp">[LDP]</a> <a href="https://www.w3.org/TR/ldp/#ldpr-resource">resources</a> to watch.</p>
@@ -2781,7 +2794,7 @@ If access is not granted, an Orchestrator MUST request access to the following r
      <p><code>acl:Read</code> to any watched <a data-link-type="biblio" href="#biblio-ldp">[LDP]</a> resource.</p>
    </ul>
    <p class="issue" id="issue-30e768f4"><a class="self-link" href="#issue-30e768f4"></a> are there more necessary authorizations?</p>
-   <h2 class="heading settled" data-level="5" id="triggers"><span class="secno">5. </span><span class="content">Triggers</span><a class="self-link" href="#triggers"></a></h2>
+   <h2 class="heading settled" data-level="6" id="triggers"><span class="secno">6. </span><span class="content">Triggers</span><a class="self-link" href="#triggers"></a></h2>
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="trigger">trigger</dfn> is an event to which an orchestrator can respond by taking <a data-link-type="dfn" href="#action" id="ref-for-action⑦">actions</a>.
 An orchestrator MUST respond to the following three types of triggers:</p>
    <ul>
@@ -2792,7 +2805,7 @@ An orchestrator MUST respond to the following three types of triggers:</p>
     <li data-md>
      <p>a scheduled trigger from the internal time-based event scheduler</p>
    </ul>
-   <h3 class="heading settled" data-level="5.1" id="receving-incoming-linked-data-notification"><span class="secno">5.1. </span><span class="content">Receving incoming Linked Data Notification</span><a class="self-link" href="#receving-incoming-linked-data-notification"></a></h3>
+   <h3 class="heading settled" data-level="6.1" id="receving-incoming-linked-data-notification"><span class="secno">6.1. </span><span class="content">Receving incoming Linked Data Notification</span><a class="self-link" href="#receving-incoming-linked-data-notification"></a></h3>
    <p>An orchestrator MUST be a compliant <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> <a href="https://www.w3.org/TR/ldn/#consumer">Consumer</a>.
 The following incoming <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> using the <a data-link-type="biblio" href="#biblio-activitystreams-vocabulary">[ACTIVITYSTREAMS-VOCABULARY]</a> MUST be supported:</p>
    <ul>
@@ -2805,16 +2818,16 @@ The following incoming <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> u
     <li data-md>
      <p><a href="https://www.w3.org/ns/activitystreams#Delete">as:Delete</a></p>
    </ul>
-   <h3 class="heading settled" data-level="5.2" id="observing-a-resource-state-change"><span class="secno">5.2. </span><span class="content">Observing a resource state change</span><a class="self-link" href="#observing-a-resource-state-change"></a></h3>
+   <h3 class="heading settled" data-level="6.2" id="observing-a-resource-state-change"><span class="secno">6.2. </span><span class="content">Observing a resource state change</span><a class="self-link" href="#observing-a-resource-state-change"></a></h3>
    <p>An orchestrator MAY implement a mechanism to watch <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a> resources and detect changes,
 for instance through polling or HTTP Push <a data-link-type="biblio" href="#biblio-rfc8030">[RFC8030]</a>].
 Observed changes MUST result in behavior equivalent to the <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> with <a href="https://www.w3.org/ns/activitystreams#Update">as:Update</a>,
 with the watched resource as [as:object]().</p>
-   <h3 class="heading settled" data-level="5.3" id="scheduled-trigger"><span class="secno">5.3. </span><span class="content">Scheduled trigger</span><a class="self-link" href="#scheduled-trigger"></a></h3>
+   <h3 class="heading settled" data-level="6.3" id="scheduled-trigger"><span class="secno">6.3. </span><span class="content">Scheduled trigger</span><a class="self-link" href="#scheduled-trigger"></a></h3>
    <p>An orchestrator MUST implement a timer for scheduled events, such as cron.
 A scheduled event MUST produce the ...</p>
    <p class="issue" id="issue-b7b1e314"><a class="self-link" href="#issue-b7b1e314"></a> TODO</p>
-   <h2 class="heading settled" data-level="6" id="actions"><span class="secno">6. </span><span class="content">Actions</span><a class="self-link" href="#actions"></a></h2>
+   <h2 class="heading settled" data-level="7" id="actions"><span class="secno">7. </span><span class="content">Actions</span><a class="self-link" href="#actions"></a></h2>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="action">action</dfn> is a form of interation with other actors or resources in the network.
 Orchestrator performs such actions on behalf of a network <a data-link-type="dfn" href="#actor" id="ref-for-actor⑨">actor</a>. 
 There are three types of actions that an orchestrator can take:</p>
@@ -2826,7 +2839,7 @@ There are three types of actions that an orchestrator can take:</p>
     <li data-md>
      <p>reading any <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a> resource</p>
    </ul>
-   <h3 class="heading settled" data-level="6.1" id="sending-linked-data-notifications"><span class="secno">6.1. </span><span class="content">Sending Linked Data notifications</span><a class="self-link" href="#sending-linked-data-notifications"></a></h3>
+   <h3 class="heading settled" data-level="7.1" id="sending-linked-data-notifications"><span class="secno">7.1. </span><span class="content">Sending Linked Data notifications</span><a class="self-link" href="#sending-linked-data-notifications"></a></h3>
    <p>An orchestrator MUST be a compliant <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> <a href="https://www.w3.org/TR/ldn/#sender">Sender</a>.
 It MUST be able to send the following notifications from the <a data-link-type="biblio" href="#biblio-activitystreams-vocabulary">[ACTIVITYSTREAMS-VOCABULARY]</a>:</p>
    <ul>
@@ -2876,7 +2889,7 @@ It SHOULD have one of the following types:</p>
   <c- f>"updated"</c-><c- p>:</c-> <c- u>"2021-01-28T19:56:20.114Z"</c->
 <c- p>}</c->
 </pre>
-   <h3 class="heading settled" data-level="6.2" id="manipulating-ldp-resources"><span class="secno">6.2. </span><span class="content">Manipulating LDP resources</span><a class="self-link" href="#manipulating-ldp-resources"></a></h3>
+   <h3 class="heading settled" data-level="7.2" id="manipulating-ldp-resources"><span class="secno">7.2. </span><span class="content">Manipulating LDP resources</span><a class="self-link" href="#manipulating-ldp-resources"></a></h3>
    <p>An Orchestrator MUST implement the following <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a> :</p>
    <p class="issue" id="issue-b7b1e314①"><a class="self-link" href="#issue-b7b1e314①"></a> TODO</p>
    <ul>
@@ -2889,16 +2902,16 @@ It SHOULD have one of the following types:</p>
     <li data-md>
      <p>Delete: <code>DELETE</code></p>
    </ul>
-   <h3 class="heading settled" data-level="6.3" id="reading-http-resources"><span class="secno">6.3. </span><span class="content">Reading HTTP resources</span><a class="self-link" href="#reading-http-resources"></a></h3>
+   <h3 class="heading settled" data-level="7.3" id="reading-http-resources"><span class="secno">7.3. </span><span class="content">Reading HTTP resources</span><a class="self-link" href="#reading-http-resources"></a></h3>
    <p>An Orchestrator MUST implement the following :</p>
    <p class="issue" id="issue-b7b1e314②"><a class="self-link" href="#issue-b7b1e314②"></a> TODO</p>
    <ul>
     <li data-md>
      <p>Read: <code>GET</code></p>
    </ul>
-   <h2 class="heading settled" data-level="7" id="policy-sec"><span class="secno">7. </span><span class="content">Policy</span><a class="self-link" href="#policy-sec"></a></h2>
+   <h2 class="heading settled" data-level="8" id="policy-sec"><span class="secno">8. </span><span class="content">Policy</span><a class="self-link" href="#policy-sec"></a></h2>
    <p>Set of rules that dictates what actions need to be taken when a lifecycle event occurs. These originate from the digital heritage network participation agreement, possibly amended with procedures imposed by the institution, the discipline, or personal preference.</p>
-   <h3 class="heading settled" data-level="7.1" id="policy-language-sec"><span class="secno">7.1. </span><span class="content">Policy language {#policy-language-sec}</span><a class="self-link" href="#policy-language-sec"></a></h3>
+   <h3 class="heading settled" data-level="8.1" id="policy-language-sec"><span class="secno">8.1. </span><span class="content">Policy language {#policy-language-sec}</span><a class="self-link" href="#policy-language-sec"></a></h3>
    <p>Alert-Act-Notify is a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="policy-language">policy language</dfn>.</p>
   </main>
   <div data-fill-with="conformance">
@@ -3050,23 +3063,23 @@ It SHOULD have one of the following types:</p>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#action">action</a><span>, in §6</span>
-   <li><a href="#actor">Actor</a><span>, in §2</span>
-   <li><a href="#artefact">Artefact</a><span>, in §2</span>
-   <li><a href="#artefact-lifecycle-event-log">Artefact Lifecycle Event Log</a><span>, in §2</span>
-   <li><a href="#autonomous-agent">Autonomous Agent</a><span>, in §2</span>
-   <li><a href="#dashboard">Dashboard</a><span>, in §2</span>
-   <li><a href="#data-pod">Data Pod</a><span>, in §2</span>
-   <li><a href="#human-agent">Human Agent</a><span>, in §2</span>
-   <li><a href="#inbox">Inbox</a><span>, in §2</span>
-   <li><a href="#local-background-process">local background process</a><span>, in §4.1</span>
-   <li><a href="#maintainer">Maintainer</a><span>, in §2</span>
-   <li><a href="#orchestrator">Orchestrator</a><span>, in §3</span>
-   <li><a href="#policy">Policy</a><span>, in §2</span>
-   <li><a href="#policy-language">policy language</a><span>, in §7.1</span>
-   <li><a href="#remote-web-service">remote web service</a><span>, in §4.1</span>
-   <li><a href="#service-hub">Service Hub</a><span>, in §2</span>
-   <li><a href="#trigger">trigger</a><span>, in §5</span>
+   <li><a href="#action">action</a><span>, in §7</span>
+   <li><a href="#actor">Actor</a><span>, in §3</span>
+   <li><a href="#artefact">Artefact</a><span>, in §3</span>
+   <li><a href="#artefact-lifecycle-event-log">Artefact Lifecycle Event Log</a><span>, in §3</span>
+   <li><a href="#autonomous-agent">Autonomous Agent</a><span>, in §3</span>
+   <li><a href="#dashboard">Dashboard</a><span>, in §3</span>
+   <li><a href="#data-pod">Data Pod</a><span>, in §3</span>
+   <li><a href="#human-agent">Human Agent</a><span>, in §3</span>
+   <li><a href="#inbox">Inbox</a><span>, in §3</span>
+   <li><a href="#local-background-process">local background process</a><span>, in §5.1</span>
+   <li><a href="#maintainer">Maintainer</a><span>, in §3</span>
+   <li><a href="#orchestrator">Orchestrator</a><span>, in §4</span>
+   <li><a href="#policy">Policy</a><span>, in §3</span>
+   <li><a href="#policy-language">policy language</a><span>, in §8.1</span>
+   <li><a href="#remote-web-service">remote web service</a><span>, in §5.1</span>
+   <li><a href="#service-hub">Service Hub</a><span>, in §3</span>
+   <li><a href="#trigger">trigger</a><span>, in §6</span>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
@@ -3107,131 +3120,131 @@ It SHOULD have one of the following types:</p>
   <aside class="dfn-panel" data-for="actor">
    <b><a href="#actor">#actor</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-actor">2. Definitions</a> <a href="#ref-for-actor①">(2)</a> <a href="#ref-for-actor②">(3)</a> <a href="#ref-for-actor③">(4)</a> <a href="#ref-for-actor④">(5)</a> <a href="#ref-for-actor⑤">(6)</a>
-    <li><a href="#ref-for-actor⑥">3.1. Perspectives</a> <a href="#ref-for-actor⑦">(2)</a>
-    <li><a href="#ref-for-actor⑧">3.2. Common interaction pattern</a>
-    <li><a href="#ref-for-actor⑨">6. Actions</a>
+    <li><a href="#ref-for-actor">3. Definitions</a> <a href="#ref-for-actor①">(2)</a> <a href="#ref-for-actor②">(3)</a> <a href="#ref-for-actor③">(4)</a> <a href="#ref-for-actor④">(5)</a> <a href="#ref-for-actor⑤">(6)</a>
+    <li><a href="#ref-for-actor⑥">4.1. Perspectives</a> <a href="#ref-for-actor⑦">(2)</a>
+    <li><a href="#ref-for-actor⑧">4.2. Common interaction pattern</a>
+    <li><a href="#ref-for-actor⑨">7. Actions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="human-agent">
    <b><a href="#human-agent">#human-agent</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-human-agent">2. Definitions</a>
+    <li><a href="#ref-for-human-agent">3. Definitions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="autonomous-agent">
    <b><a href="#autonomous-agent">#autonomous-agent</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-autonomous-agent">3. High-level overview</a>
+    <li><a href="#ref-for-autonomous-agent">4. High-level overview</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="maintainer">
    <b><a href="#maintainer">#maintainer</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-maintainer">3.1. Perspectives</a> <a href="#ref-for-maintainer①">(2)</a> <a href="#ref-for-maintainer②">(3)</a> <a href="#ref-for-maintainer③">(4)</a> <a href="#ref-for-maintainer④">(5)</a> <a href="#ref-for-maintainer⑤">(6)</a>
-    <li><a href="#ref-for-maintainer⑥">3.2. Common interaction pattern</a> <a href="#ref-for-maintainer⑦">(2)</a> <a href="#ref-for-maintainer⑧">(3)</a> <a href="#ref-for-maintainer⑨">(4)</a> <a href="#ref-for-maintainer①⓪">(5)</a> <a href="#ref-for-maintainer①①">(6)</a>
-    <li><a href="#ref-for-maintainer①②">6.1. Sending Linked Data notifications</a>
+    <li><a href="#ref-for-maintainer">4.1. Perspectives</a> <a href="#ref-for-maintainer①">(2)</a> <a href="#ref-for-maintainer②">(3)</a> <a href="#ref-for-maintainer③">(4)</a> <a href="#ref-for-maintainer④">(5)</a> <a href="#ref-for-maintainer⑤">(6)</a>
+    <li><a href="#ref-for-maintainer⑥">4.2. Common interaction pattern</a> <a href="#ref-for-maintainer⑦">(2)</a> <a href="#ref-for-maintainer⑧">(3)</a> <a href="#ref-for-maintainer⑨">(4)</a> <a href="#ref-for-maintainer①⓪">(5)</a> <a href="#ref-for-maintainer①①">(6)</a>
+    <li><a href="#ref-for-maintainer①②">7.1. Sending Linked Data notifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="data-pod">
    <b><a href="#data-pod">#data-pod</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-data-pod">1. Introduction</a> <a href="#ref-for-data-pod①">(2)</a> <a href="#ref-for-data-pod②">(3)</a> <a href="#ref-for-data-pod③">(4)</a> <a href="#ref-for-data-pod④">(5)</a>
-    <li><a href="#ref-for-data-pod⑤">2. Definitions</a> <a href="#ref-for-data-pod⑥">(2)</a> <a href="#ref-for-data-pod⑦">(3)</a>
-    <li><a href="#ref-for-data-pod⑧">3. High-level overview</a>
-    <li><a href="#ref-for-data-pod⑨">3.1. Perspectives</a> <a href="#ref-for-data-pod①⓪">(2)</a> <a href="#ref-for-data-pod①①">(3)</a> <a href="#ref-for-data-pod①②">(4)</a> <a href="#ref-for-data-pod①③">(5)</a> <a href="#ref-for-data-pod①④">(6)</a> <a href="#ref-for-data-pod①⑤">(7)</a> <a href="#ref-for-data-pod①⑥">(8)</a>
-    <li><a href="#ref-for-data-pod①⑦">3.2. Common interaction pattern</a> <a href="#ref-for-data-pod①⑧">(2)</a>
-    <li><a href="#ref-for-data-pod①⑨">4.2. Solid app compliance</a>
-    <li><a href="#ref-for-data-pod②⓪">4.3. Additional interface</a>
-    <li><a href="#ref-for-data-pod②①">5. Triggers</a>
-    <li><a href="#ref-for-data-pod②②">6. Actions</a> <a href="#ref-for-data-pod②③">(2)</a>
+    <li><a href="#ref-for-data-pod">2. Introduction</a> <a href="#ref-for-data-pod①">(2)</a> <a href="#ref-for-data-pod②">(3)</a> <a href="#ref-for-data-pod③">(4)</a> <a href="#ref-for-data-pod④">(5)</a>
+    <li><a href="#ref-for-data-pod⑤">3. Definitions</a> <a href="#ref-for-data-pod⑥">(2)</a> <a href="#ref-for-data-pod⑦">(3)</a>
+    <li><a href="#ref-for-data-pod⑧">4. High-level overview</a>
+    <li><a href="#ref-for-data-pod⑨">4.1. Perspectives</a> <a href="#ref-for-data-pod①⓪">(2)</a> <a href="#ref-for-data-pod①①">(3)</a> <a href="#ref-for-data-pod①②">(4)</a> <a href="#ref-for-data-pod①③">(5)</a> <a href="#ref-for-data-pod①④">(6)</a> <a href="#ref-for-data-pod①⑤">(7)</a> <a href="#ref-for-data-pod①⑥">(8)</a>
+    <li><a href="#ref-for-data-pod①⑦">4.2. Common interaction pattern</a> <a href="#ref-for-data-pod①⑧">(2)</a>
+    <li><a href="#ref-for-data-pod①⑨">5.2. Solid app compliance</a>
+    <li><a href="#ref-for-data-pod②⓪">5.3. Additional interface</a>
+    <li><a href="#ref-for-data-pod②①">6. Triggers</a>
+    <li><a href="#ref-for-data-pod②②">7. Actions</a> <a href="#ref-for-data-pod②③">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="inbox">
    <b><a href="#inbox">#inbox</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-inbox">1. Introduction</a>
-    <li><a href="#ref-for-inbox①">2. Definitions</a>
-    <li><a href="#ref-for-inbox②">3. High-level overview</a> <a href="#ref-for-inbox③">(2)</a>
-    <li><a href="#ref-for-inbox④">3.1. Perspectives</a> <a href="#ref-for-inbox⑤">(2)</a> <a href="#ref-for-inbox⑥">(3)</a>
-    <li><a href="#ref-for-inbox⑦">4.1. Deployment</a>
-    <li><a href="#ref-for-inbox⑧">4.3. Additional interface</a> <a href="#ref-for-inbox⑨">(2)</a>
-    <li><a href="#ref-for-inbox①⓪">5. Triggers</a>
+    <li><a href="#ref-for-inbox">2. Introduction</a>
+    <li><a href="#ref-for-inbox①">3. Definitions</a>
+    <li><a href="#ref-for-inbox②">4. High-level overview</a> <a href="#ref-for-inbox③">(2)</a>
+    <li><a href="#ref-for-inbox④">4.1. Perspectives</a> <a href="#ref-for-inbox⑤">(2)</a> <a href="#ref-for-inbox⑥">(3)</a>
+    <li><a href="#ref-for-inbox⑦">5.1. Deployment</a>
+    <li><a href="#ref-for-inbox⑧">5.3. Additional interface</a> <a href="#ref-for-inbox⑨">(2)</a>
+    <li><a href="#ref-for-inbox①⓪">6. Triggers</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="artefact-lifecycle-event-log">
    <b><a href="#artefact-lifecycle-event-log">#artefact-lifecycle-event-log</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-artefact-lifecycle-event-log">3. High-level overview</a> <a href="#ref-for-artefact-lifecycle-event-log①">(2)</a>
-    <li><a href="#ref-for-artefact-lifecycle-event-log②">3.1. Perspectives</a> <a href="#ref-for-artefact-lifecycle-event-log③">(2)</a> <a href="#ref-for-artefact-lifecycle-event-log④">(3)</a> <a href="#ref-for-artefact-lifecycle-event-log⑤">(4)</a>
-    <li><a href="#ref-for-artefact-lifecycle-event-log⑥">3.2. Common interaction pattern</a>
-    <li><a href="#ref-for-artefact-lifecycle-event-log⑦">4.3. Additional interface</a>
+    <li><a href="#ref-for-artefact-lifecycle-event-log">4. High-level overview</a> <a href="#ref-for-artefact-lifecycle-event-log①">(2)</a>
+    <li><a href="#ref-for-artefact-lifecycle-event-log②">4.1. Perspectives</a> <a href="#ref-for-artefact-lifecycle-event-log③">(2)</a> <a href="#ref-for-artefact-lifecycle-event-log④">(3)</a> <a href="#ref-for-artefact-lifecycle-event-log⑤">(4)</a>
+    <li><a href="#ref-for-artefact-lifecycle-event-log⑥">4.2. Common interaction pattern</a>
+    <li><a href="#ref-for-artefact-lifecycle-event-log⑦">5.3. Additional interface</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="service-hub">
    <b><a href="#service-hub">#service-hub</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-service-hub">3. High-level overview</a>
-    <li><a href="#ref-for-service-hub①">3.1. Perspectives</a> <a href="#ref-for-service-hub②">(2)</a> <a href="#ref-for-service-hub③">(3)</a>
-    <li><a href="#ref-for-service-hub④">3.2. Common interaction pattern</a> <a href="#ref-for-service-hub⑤">(2)</a> <a href="#ref-for-service-hub⑥">(3)</a> <a href="#ref-for-service-hub⑦">(4)</a>
-    <li><a href="#ref-for-service-hub⑧">6. Actions</a>
-    <li><a href="#ref-for-service-hub⑨">6.1. Sending Linked Data notifications</a>
+    <li><a href="#ref-for-service-hub">4. High-level overview</a>
+    <li><a href="#ref-for-service-hub①">4.1. Perspectives</a> <a href="#ref-for-service-hub②">(2)</a> <a href="#ref-for-service-hub③">(3)</a>
+    <li><a href="#ref-for-service-hub④">4.2. Common interaction pattern</a> <a href="#ref-for-service-hub⑤">(2)</a> <a href="#ref-for-service-hub⑥">(3)</a> <a href="#ref-for-service-hub⑦">(4)</a>
+    <li><a href="#ref-for-service-hub⑧">7. Actions</a>
+    <li><a href="#ref-for-service-hub⑨">7.1. Sending Linked Data notifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="policy">
    <b><a href="#policy">#policy</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-policy">1. Introduction</a> <a href="#ref-for-policy①">(2)</a>
-    <li><a href="#ref-for-policy②">3. High-level overview</a>
-    <li><a href="#ref-for-policy③">3.1. Perspectives</a> <a href="#ref-for-policy④">(2)</a>
-    <li><a href="#ref-for-policy⑤">4.3. Additional interface</a> <a href="#ref-for-policy⑥">(2)</a> <a href="#ref-for-policy⑦">(3)</a>
+    <li><a href="#ref-for-policy">2. Introduction</a> <a href="#ref-for-policy①">(2)</a>
+    <li><a href="#ref-for-policy②">4. High-level overview</a>
+    <li><a href="#ref-for-policy③">4.1. Perspectives</a> <a href="#ref-for-policy④">(2)</a>
+    <li><a href="#ref-for-policy⑤">5.3. Additional interface</a> <a href="#ref-for-policy⑥">(2)</a> <a href="#ref-for-policy⑦">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dashboard">
    <b><a href="#dashboard">#dashboard</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-dashboard">2. Definitions</a>
-    <li><a href="#ref-for-dashboard①">3.1. Perspectives</a> <a href="#ref-for-dashboard②">(2)</a> <a href="#ref-for-dashboard③">(3)</a> <a href="#ref-for-dashboard④">(4)</a>
-    <li><a href="#ref-for-dashboard⑤">3.2. Common interaction pattern</a> <a href="#ref-for-dashboard⑥">(2)</a>
+    <li><a href="#ref-for-dashboard">3. Definitions</a>
+    <li><a href="#ref-for-dashboard①">4.1. Perspectives</a> <a href="#ref-for-dashboard②">(2)</a> <a href="#ref-for-dashboard③">(3)</a> <a href="#ref-for-dashboard④">(4)</a>
+    <li><a href="#ref-for-dashboard⑤">4.2. Common interaction pattern</a> <a href="#ref-for-dashboard⑥">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="orchestrator">
    <b><a href="#orchestrator">#orchestrator</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-orchestrator">1. Introduction</a>
-    <li><a href="#ref-for-orchestrator①">2. Definitions</a> <a href="#ref-for-orchestrator②">(2)</a>
-    <li><a href="#ref-for-orchestrator③">3.1. Perspectives</a> <a href="#ref-for-orchestrator④">(2)</a> <a href="#ref-for-orchestrator⑤">(3)</a> <a href="#ref-for-orchestrator⑥">(4)</a> <a href="#ref-for-orchestrator⑦">(5)</a> <a href="#ref-for-orchestrator⑧">(6)</a> <a href="#ref-for-orchestrator⑨">(7)</a> <a href="#ref-for-orchestrator①⓪">(8)</a> <a href="#ref-for-orchestrator①①">(9)</a> <a href="#ref-for-orchestrator①②">(10)</a>
-    <li><a href="#ref-for-orchestrator①③">3.2. Common interaction pattern</a>
+    <li><a href="#ref-for-orchestrator">2. Introduction</a>
+    <li><a href="#ref-for-orchestrator①">3. Definitions</a> <a href="#ref-for-orchestrator②">(2)</a>
+    <li><a href="#ref-for-orchestrator③">4.1. Perspectives</a> <a href="#ref-for-orchestrator④">(2)</a> <a href="#ref-for-orchestrator⑤">(3)</a> <a href="#ref-for-orchestrator⑥">(4)</a> <a href="#ref-for-orchestrator⑦">(5)</a> <a href="#ref-for-orchestrator⑧">(6)</a> <a href="#ref-for-orchestrator⑨">(7)</a> <a href="#ref-for-orchestrator①⓪">(8)</a> <a href="#ref-for-orchestrator①①">(9)</a> <a href="#ref-for-orchestrator①②">(10)</a>
+    <li><a href="#ref-for-orchestrator①③">4.2. Common interaction pattern</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="local-background-process">
    <b><a href="#local-background-process">#local-background-process</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-local-background-process">4.1. Deployment</a>
+    <li><a href="#ref-for-local-background-process">5.1. Deployment</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="trigger">
    <b><a href="#trigger">#trigger</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-trigger">1. Introduction</a>
-    <li><a href="#ref-for-trigger①">3.1. Perspectives</a> <a href="#ref-for-trigger②">(2)</a>
-    <li><a href="#ref-for-trigger③">3.2. Common interaction pattern</a> <a href="#ref-for-trigger④">(2)</a>
+    <li><a href="#ref-for-trigger">2. Introduction</a>
+    <li><a href="#ref-for-trigger①">4.1. Perspectives</a> <a href="#ref-for-trigger②">(2)</a>
+    <li><a href="#ref-for-trigger③">4.2. Common interaction pattern</a> <a href="#ref-for-trigger④">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="action">
    <b><a href="#action">#action</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-action">1. Introduction</a>
-    <li><a href="#ref-for-action①">3.1. Perspectives</a> <a href="#ref-for-action②">(2)</a> <a href="#ref-for-action③">(3)</a> <a href="#ref-for-action④">(4)</a>
-    <li><a href="#ref-for-action⑤">3.2. Common interaction pattern</a> <a href="#ref-for-action⑥">(2)</a>
-    <li><a href="#ref-for-action⑦">5. Triggers</a>
+    <li><a href="#ref-for-action">2. Introduction</a>
+    <li><a href="#ref-for-action①">4.1. Perspectives</a> <a href="#ref-for-action②">(2)</a> <a href="#ref-for-action③">(3)</a> <a href="#ref-for-action④">(4)</a>
+    <li><a href="#ref-for-action⑤">4.2. Common interaction pattern</a> <a href="#ref-for-action⑥">(2)</a>
+    <li><a href="#ref-for-action⑦">6. Triggers</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="policy-language">
    <b><a href="#policy-language">#policy-language</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-policy-language">1. Introduction</a>
-    <li><a href="#ref-for-policy-language①">4.3. Additional interface</a>
+    <li><a href="#ref-for-policy-language">2. Introduction</a>
+    <li><a href="#ref-for-policy-language①">5.3. Additional interface</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
