@@ -1223,7 +1223,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 5f7b0e20, updated Tue Aug 18 15:46:28 2020 -0700" name="generator">
   <link href="https://mellonscholarlycommunication.github.io/spec-orchestrator" rel="canonical">
-  <meta content="66e7623259b80c953827093990e6c4faa7ed002e" name="document-revision">
+  <meta content="bfba957fffb29b7f6885d5d7b862dde6ea4e617a" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -1476,7 +1476,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      <dt>This version:
      <dd><a class="u-url" href="https://mellonscholarlycommunication.github.io/spec-orchestrator">https://mellonscholarlycommunication.github.io/spec-orchestrator</a>
      <dt>Issue Tracking:
-     <dd><a href="https://github.com/ErfgoedPod/orchestrator/issues/">GitHub</a>
+     <dd><a href="https://github.com/ErfgoedPod/spec-orchestrator/issues/">GitHub</a>
      <dd><a href="#issues-index">Inline In Spec</a>
      <dt class="editor">Editors:
      <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:miel.vandersande@meemoo.be">Miel Vander Sande</a> (<span class="p-org org">meemoo - <a href="https://meemoo.be">Flemish Institute for Archiving</a></span>)
@@ -1521,9 +1521,14 @@ Parts of this work may be from another specification document.  If so, those par
     <li>
      <a href="#triggers"><span class="secno">6</span> <span class="content">Triggers</span></a>
      <ol class="toc">
-      <li><a href="#receving-incoming-linked-data-notification"><span class="secno">6.1</span> <span class="content">Receving incoming Linked Data Notification</span></a>
-      <li><a href="#observing-a-resource-state-change"><span class="secno">6.2</span> <span class="content">Observing a resource state change</span></a>
-      <li><a href="#scheduled-trigger"><span class="secno">6.3</span> <span class="content">Scheduled trigger</span></a>
+      <li><a href="#trigger-ldn"><span class="secno">6.1</span> <span class="content">Receving Linked Data Notifications</span></a>
+      <li><a href="#trigger-resource"><span class="secno">6.2</span> <span class="content">Observing resource state changes</span></a>
+      <li>
+       <a href="#trigger-schedule"><span class="secno">6.3</span> <span class="content">Scheduled trigger</span></a>
+       <ol class="toc">
+        <li><a href="#datetime-trigger"><span class="secno">6.3.1</span> <span class="content">datetime trigger</span></a>
+        <li><a href="#time-interval-trigger"><span class="secno">6.3.2</span> <span class="content">time interval trigger</span></a>
+       </ol>
      </ol>
     <li>
      <a href="#actions"><span class="secno">7</span> <span class="content">Actions</span></a>
@@ -1535,7 +1540,20 @@ Parts of this work may be from another specification document.  If so, those par
     <li>
      <a href="#policy-sec"><span class="secno">8</span> <span class="content">Policy</span></a>
      <ol class="toc">
-      <li><a href="#policy-language-sec"><span class="secno">8.1</span> <span class="content">Policy language {#policy-language-sec}</span></a>
+      <li><a href="#policy-language-sec"><span class="secno">8.1</span> <span class="content">Policy language</span></a>
+     </ol>
+    <li>
+     <a href="#security-considerations"><span class="secno">9</span> <span class="content">Security considerations</span></a>
+     <ol class="toc">
+      <li><a href="#authenticated-inboxes"><span class="secno">9.1</span> <span class="content">Authenticated Inboxes</span></a>
+      <li><a href="#signed-notifications"><span class="secno">9.2</span> <span class="content">Signed notifications</span></a>
+     </ol>
+    <li>
+     <a href="#implementation-details"><span class="secno"></span> <span class="content">Appendix A: Implementation details</span></a>
+     <ol class="toc">
+      <li><a href="#retrieving-inbox-notifications"><span class="secno"></span> <span class="content">Retrieving inbox notifications</span></a>
+      <li><a href="#observing-ldp-resource-state-updates"><span class="secno"></span> <span class="content">Observing LDP resource state updates</span></a>
+      <li><a href="#time-based-trigger-implementations"><span class="secno"></span> <span class="content">Time based trigger implementations</span></a>
      </ol>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
@@ -2806,9 +2824,24 @@ An orchestrator MUST respond to the following three types of triggers:</p>
     <li data-md>
      <p>a scheduled trigger from the internal time-based event scheduler</p>
    </ul>
-   <h3 class="heading settled" data-level="6.1" id="receving-incoming-linked-data-notification"><span class="secno">6.1. </span><span class="content">Receving incoming Linked Data Notification</span><a class="self-link" href="#receving-incoming-linked-data-notification"></a></h3>
+   <h3 class="heading settled" data-level="6.1" id="trigger-ldn"><span class="secno">6.1. </span><span class="content">Receving Linked Data Notifications</span><a class="self-link" href="#trigger-ldn"></a></h3>
    <p>An orchestrator MUST be a compliant <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> <a href="https://www.w3.org/TR/ldn/#consumer">Consumer</a>.
-The following incoming <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> using the <a data-link-type="biblio" href="#biblio-activitystreams-vocabulary">[ACTIVITYSTREAMS-VOCABULARY]</a> MUST be supported:</p>
+The Orchestrator MAY advertise multiple inboxes. 
+In this case, the Orchestrator MUST retrieve incoming Linked Data Notifications from all advertised inboxes.
+Inbox security is discussed in the <a href="#security-considerations">security considerations</a> sections.</p>
+   <p>Linked Data Notification triggers are defined as RDF data shapes.
+The used data shape MUST conform to either a <a href="https://www.w3.org/TR/shacl/">shacl</a> shape or a <a href="https://shex.io/">shex</a> shape.
+On receiving a notification, the Orchestrator MUST try to validate the received notification to all notification based triggers in the policies in its policy set.
+For this, the Orchestrator MUST provide validation for both<a href="https://www.w3.org/TR/shacl/">shex</a> shapes and <a href="https://shex.io/">shex</a> shapes.</p>
+   <p>Example of a trigger using Linked Data Notifications:</p>
+<pre>{
+  "@context": "https://www.example.org/ns/policy",
+  "summary": "Linked Data Notification Trigger",
+  "type": "NotificationTrigger",
+  "shape": "https://mypod.org/shapes/triggershape",
+}
+</pre>
+   <p>The following incoming <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> using the <a data-link-type="biblio" href="#biblio-activitystreams-vocabulary">[ACTIVITYSTREAMS-VOCABULARY]</a> MUST be supported:</p>
    <ul>
     <li data-md>
      <p><a href="https://www.w3.org/ns/activitystreams#Create">as:Create</a></p>
@@ -2819,15 +2852,62 @@ The following incoming <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> u
     <li data-md>
      <p><a href="https://www.w3.org/ns/activitystreams#Delete">as:Delete</a></p>
    </ul>
-   <h3 class="heading settled" data-level="6.2" id="observing-a-resource-state-change"><span class="secno">6.2. </span><span class="content">Observing a resource state change</span><a class="self-link" href="#observing-a-resource-state-change"></a></h3>
-   <p>An orchestrator MAY implement a mechanism to watch <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a> resources and detect changes,
-for instance through polling or HTTP Push <a data-link-type="biblio" href="#biblio-rfc8030">[RFC8030]</a>].
-Observed changes MUST result in behavior equivalent to the <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> with <a href="https://www.w3.org/ns/activitystreams#Update">as:Update</a>,
-with the watched resource as [as:object]().</p>
-   <h3 class="heading settled" data-level="6.3" id="scheduled-trigger"><span class="secno">6.3. </span><span class="content">Scheduled trigger</span><a class="self-link" href="#scheduled-trigger"></a></h3>
-   <p>An orchestrator MUST implement a timer for scheduled events, such as cron.
-A scheduled event MUST produce the ...</p>
-   <p class="issue" id="issue-b7b1e314"><a class="self-link" href="#issue-b7b1e314"></a> TODO</p>
+   <h3 class="heading settled" data-level="6.2" id="trigger-resource"><span class="secno">6.2. </span><span class="content">Observing resource state changes</span><a class="self-link" href="#trigger-resource"></a></h3>
+    An Orchestrator MAY accept resource stage changes of <a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform Resources</a> as triggers for policy actions.
+In this case, the Orchestrator MUST be granted READ-acess all observed <a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform Resources</a>.
+In the case that an observed <a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform Resources</a> is also a <a href="https://www.w3.org/TR/ldp/#ldpc">Linked Data Platform Container</a>, the orchestrator MUST observe state changes for all <a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform Resources</a> that are contained by the observed <a href="https://www.w3.org/TR/ldp/#ldpc">Linked Data Platform Container</a>. 
+   <p>The following state changes can be used as triggers:</p>
+   <ul>
+    <li data-md>
+     <p>Creation of a resource - can only be observed for an <a href="https://www.w3.org/TR/ldp/#ldpc">LDP Container</a></p>
+    <li data-md>
+     <p>Update of a resource</p>
+    <li data-md>
+     <p>Deletion of a resource</p>
+   </ul>
+   <p>Example of a trigger using resource state changes:</p>
+<pre>{
+  "@context": "https://www.example.org/ns/policy",
+  "summary": "Linked Data Notification Trigger",
+  "type": "StateTrigger",
+  "resource": "https://mypod.org/resources/,
+  "state": ["Create", "Update"]
+}
+</pre>
+   <h3 class="heading settled" data-level="6.3" id="trigger-schedule"><span class="secno">6.3. </span><span class="content">Scheduled trigger</span><a class="self-link" href="#trigger-schedule"></a></h3>
+    An Orchestrator MAY accept time scheduled triggers for policy actions. 
+   <h4 class="heading settled" data-level="6.3.1" id="datetime-trigger"><span class="secno">6.3.1. </span><span class="content">datetime trigger</span><a class="self-link" href="#datetime-trigger"></a></h4>
+    A datetime trigger is a trigger that MUST be evaluated automatically at set points in time, defined by the trigger.
+A datetime trigger can define multiple points in time to trigger an action.
+All passed <code>datetime</code> values MUST be valid <code>xsd:dateTime</code> literals. 
+   <p>Example of a datetime trigger:</p>
+<pre>{
+  "@context": "https://www.example.org/ns/policy",
+  "summary": "Linked Data Notification Trigger",
+  "type": "DateTimeTrigger",
+  "dateTime":[
+    {
+      "@value": "2021-12-12T20:20:20.201Z",
+      "@type": xsd:dateTime
+    }, 
+    {
+      "@value": "2021-12-12T21:21:21.211Z",
+      "@type": xsd:dateTime
+    }]
+}
+</pre>
+   <h4 class="heading settled" data-level="6.3.2" id="time-interval-trigger"><span class="secno">6.3.2. </span><span class="content">time interval trigger</span><a class="self-link" href="#time-interval-trigger"></a></h4>
+    A time interval trigger is a trigger that is fired at set intervals in time.
+A time interval trigger MUST trigger an action on every matching time interval during the time the trigger is active and the orchestrator is running. 
+   <p>Example of a time interval trigger:</p>
+<pre>{
+  "@context": "https://www.example.org/ns/policy",
+  "summary": "Linked Data Notification Trigger",
+  "type": "StateTrigger",
+  "resource": "https://mypod.org/resources/
+  "state": ["Create", "Update"]
+}
+</pre>
    <h2 class="heading settled" data-level="7" id="actions"><span class="secno">7. </span><span class="content">Actions</span><a class="self-link" href="#actions"></a></h2>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="action">action</dfn> is a form of interation with other actors or resources in the network.
 Orchestrator performs such actions on behalf of a network <a data-link-type="dfn" href="#actor" id="ref-for-actor⑨">actor</a>. 
@@ -2892,7 +2972,7 @@ It SHOULD have one of the following types:</p>
 </pre>
    <h3 class="heading settled" data-level="7.2" id="manipulating-ldp-resources"><span class="secno">7.2. </span><span class="content">Manipulating LDP resources</span><a class="self-link" href="#manipulating-ldp-resources"></a></h3>
    <p>An Orchestrator MUST implement the following <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a> :</p>
-   <p class="issue" id="issue-b7b1e314①"><a class="self-link" href="#issue-b7b1e314①"></a> TODO</p>
+   <p class="issue" id="issue-b7b1e314"><a class="self-link" href="#issue-b7b1e314"></a> TODO</p>
    <ul>
     <li data-md>
      <p>Create: <code>PUT</code></p>
@@ -2905,15 +2985,26 @@ It SHOULD have one of the following types:</p>
    </ul>
    <h3 class="heading settled" data-level="7.3" id="reading-http-resources"><span class="secno">7.3. </span><span class="content">Reading HTTP resources</span><a class="self-link" href="#reading-http-resources"></a></h3>
    <p>An Orchestrator MUST implement the following :</p>
-   <p class="issue" id="issue-b7b1e314②"><a class="self-link" href="#issue-b7b1e314②"></a> TODO</p>
+   <p class="issue" id="issue-b7b1e314①"><a class="self-link" href="#issue-b7b1e314①"></a> TODO</p>
    <ul>
     <li data-md>
      <p>Read: <code>GET</code></p>
    </ul>
    <h2 class="heading settled" data-level="8" id="policy-sec"><span class="secno">8. </span><span class="content">Policy</span><a class="self-link" href="#policy-sec"></a></h2>
    <p>Set of rules that dictates what actions need to be taken when a lifecycle event occurs. These originate from the digital heritage network participation agreement, possibly amended with procedures imposed by the institution, the discipline, or personal preference.</p>
-   <h3 class="heading settled" data-level="8.1" id="policy-language-sec"><span class="secno">8.1. </span><span class="content">Policy language {#policy-language-sec}</span><a class="self-link" href="#policy-language-sec"></a></h3>
+   <h3 class="heading settled" data-level="8.1" id="policy-language-sec"><span class="secno">8.1. </span><span class="content">Policy language</span><a class="self-link" href="#policy-language-sec"></a></h3>
    <p>Alert-Act-Notify is a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="policy-language">policy language</dfn>.</p>
+   <h2 class="heading settled" data-level="9" id="security-considerations"><span class="secno">9. </span><span class="content">Security considerations</span><a class="self-link" href="#security-considerations"></a></h2>
+   <h3 class="heading settled" data-level="9.1" id="authenticated-inboxes"><span class="secno">9.1. </span><span class="content">Authenticated Inboxes</span><a class="self-link" href="#authenticated-inboxes"></a></h3>
+    In case the Orchestrator supports <a href="#trigger-ldn">triggers from incoming Linked Data Notifications</a>, the Orchestrator SHOULD make use of <a href="https://www.w3.org/TR/ldn/#authenticated-inboxes">authenticated inboxes</a> as described by the <a href="https://www.w3.org/TR/ldn/">Linked Data Notifications</a> specification.
+Requiring authentication on the pod inbox can prevent unwanted parties from forging notifications to be processed by the Orchestrator. 
+   <h3 class="heading settled" data-level="9.2" id="signed-notifications"><span class="secno">9.2. </span><span class="content">Signed notifications</span><a class="self-link" href="#signed-notifications"></a></h3>
+    Instead of requiring authentication to post notifications to the pod inbox, the Orchestrator may require notifications to be singed by the sender before accepting notifications.
+There was an upcoming panel on signed notifications - TODO 
+   <h2 class="heading settled" id="implementation-details"><span class="content">Appendix A: Implementation details</span><a class="self-link" href="#implementation-details"></a></h2>
+   <h3 class="heading settled" id="retrieving-inbox-notifications"><span class="content">Retrieving inbox notifications</span><a class="self-link" href="#retrieving-inbox-notifications"></a></h3>
+   <h3 class="heading settled" id="observing-ldp-resource-state-updates"><span class="content">Observing LDP resource state updates</span><a class="self-link" href="#observing-ldp-resource-state-updates"></a></h3>
+   <h3 class="heading settled" id="time-based-trigger-implementations"><span class="content">Time based trigger implementations</span><a class="self-link" href="#time-based-trigger-implementations"></a></h3>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
@@ -3095,8 +3186,6 @@ It SHOULD have one of the following types:</p>
    <dd>Steve Speicher; John Arwe; Ashok Malhotra. <a href="https://www.w3.org/TR/ldp/">Linked Data Platform 1.0</a>. 26 February 2015. REC. URL: <a href="https://www.w3.org/TR/ldp/">https://www.w3.org/TR/ldp/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
-   <dt id="biblio-rfc8030">[RFC8030]
-   <dd>M. Thomson; E. Damaggio; B. Raymor, Ed.. <a href="https://tools.ietf.org/html/rfc8030">Generic Event Delivery Using HTTP Push</a>. December 2016. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc8030">https://tools.ietf.org/html/rfc8030</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
@@ -3116,7 +3205,6 @@ It SHOULD have one of the following types:</p>
    <div class="issue"> are there more necessary authorizations?<a href="#issue-30e768f4"> ↵ </a></div>
    <div class="issue"> TODO<a href="#issue-b7b1e314"> ↵ </a></div>
    <div class="issue"> TODO<a href="#issue-b7b1e314①"> ↵ </a></div>
-   <div class="issue"> TODO<a href="#issue-b7b1e314②"> ↵ </a></div>
   </div>
   <aside class="dfn-panel" data-for="actor">
    <b><a href="#actor">#actor</a></b><b>Referenced in:</b>

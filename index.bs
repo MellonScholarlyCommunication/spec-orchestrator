@@ -207,9 +207,28 @@ An orchestrator MUST respond to the following three types of triggers:
 - an observed state changes to watched [=data pod=] resources
 - a scheduled trigger from the internal time-based event scheduler
 
-## Receving incoming Linked Data Notification 
+## Receving Linked Data Notifications ## {#trigger-ldn}
 
 An orchestrator MUST be a compliant [[!LDN]] [Consumer](https://www.w3.org/TR/ldn/#consumer). 
+The Orchestrator MAY advertise multiple inboxes. 
+In this case, the Orchestrator MUST retrieve incoming Linked Data Notifications from all advertised inboxes.
+Inbox security is discussed in the [security considerations](#security-considerations) sections.
+
+Linked Data Notification triggers are defined as RDF data shapes.
+The used data shape MUST conform to either a [shacl](https://www.w3.org/TR/shacl/) shape or a [shex](https://shex.io/) shape.
+On receiving a notification, the Orchestrator MUST try to validate the received notification to all notification based triggers in the policies in its policy set.
+For this, the Orchestrator MUST provide validation for both[shex](https://www.w3.org/TR/shacl/) shapes and [shex](https://shex.io/) shapes.
+
+Example of a trigger using Linked Data Notifications:
+```
+{
+  "@context": "https://www.example.org/ns/policy",
+  "summary": "Linked Data Notification Trigger",
+  "type": "NotificationTrigger",
+  "shape": "https://mypod.org/shapes/triggershape",
+}
+```
+
 The following incoming [[!LDN]] using the [[!ACTIVITYSTREAMS-VOCABULARY]] MUST be supported:
 
 - [as:Create](https://www.w3.org/ns/activitystreams#Create)
@@ -217,19 +236,71 @@ The following incoming [[!LDN]] using the [[!ACTIVITYSTREAMS-VOCABULARY]] MUST b
 - [as:Update](https://www.w3.org/ns/activitystreams#Update)
 - [as:Delete](https://www.w3.org/ns/activitystreams#Delete)
 
-## Observing a resource state change
 
-An orchestrator MAY implement a mechanism to watch [[HTTP11]] resources and detect changes, 
-for instance through polling or HTTP Push [[!RFC8030]]].
-Observed changes MUST result in behavior equivalent to the [[!LDN]] with [as:Update](https://www.w3.org/ns/activitystreams#Update),
-with the watched resource as [as:object]().
+## Observing resource state changes  ## {#trigger-resource}
+An Orchestrator MAY accept resource stage changes of [Linked Data Platform Resources](https://www.w3.org/TR/ldp/#ldpr) as triggers for policy actions.
+In this case, the Orchestrator MUST be granted READ-acess all observed [Linked Data Platform Resources](https://www.w3.org/TR/ldp/#ldpr).
+In the case that an observed [Linked Data Platform Resources](https://www.w3.org/TR/ldp/#ldpr) is also a [Linked Data Platform Container](https://www.w3.org/TR/ldp/#ldpc), the orchestrator MUST observe state changes for all [Linked Data Platform Resources](https://www.w3.org/TR/ldp/#ldpr) that are contained by the observed [Linked Data Platform Container](https://www.w3.org/TR/ldp/#ldpc).
 
-## Scheduled trigger
+The following state changes can be used as triggers:
+	- Creation of a resource - can only be observed for an [LDP Container](https://www.w3.org/TR/ldp/#ldpc)
+	- Update of a resource 
+	- Deletion of a resource
 
-An orchestrator MUST implement a timer for scheduled events, such as cron.
-A scheduled event MUST produce the ...
+Example of a trigger using resource state changes:
+```
+{
+  "@context": "https://www.example.org/ns/policy",
+  "summary": "Linked Data Notification Trigger",
+  "type": "StateTrigger",
+  "resource": "https://mypod.org/resources/,
+  "state": ["Create", "Update"]
+}
+```
 
-Issue: TODO
+
+
+## Scheduled trigger ## {#trigger-schedule}
+An Orchestrator MAY accept time scheduled triggers for policy actions.
+
+### datetime trigger
+A datetime trigger is a trigger that MUST be evaluated automatically at set points in time, defined by the trigger.
+A datetime trigger can define multiple points in time to trigger an action.
+All passed ```datetime``` values MUST be valid ```xsd:dateTime``` literals.
+
+Example of a datetime trigger:
+``` 
+{
+  "@context": "https://www.example.org/ns/policy",
+  "summary": "Linked Data Notification Trigger",
+  "type": "DateTimeTrigger",
+  "dateTime":[
+    {
+      "@value": "2021-12-12T20:20:20.201Z",
+      "@type": xsd:dateTime
+    }, 
+    {
+      "@value": "2021-12-12T21:21:21.211Z",
+      "@type": xsd:dateTime
+    }]
+}
+```
+
+### time interval trigger
+A time interval trigger is a trigger that is fired at set intervals in time.
+A time interval trigger MUST trigger an action on every matching time interval during the time the trigger is active and the orchestrator is running.
+
+
+Example of a time interval trigger:
+```
+{
+  "@context": "https://www.example.org/ns/policy",
+  "summary": "Linked Data Notification Trigger",
+  "type": "StateTrigger",
+  "resource": "https://mypod.org/resources/
+  "state": ["Create", "Update"]
+}
+```
 
 Actions {#actions}
 =====================
@@ -319,9 +390,33 @@ Policy {#policy-sec}
 
 Set of rules that dictates what actions need to be taken when a lifecycle event occurs. These originate from the digital heritage network participation agreement, possibly amended with procedures imposed by the institution, the discipline, or personal preference.
 
-## Policy language {#policy-language-sec}
+## Policy language ## {#policy-language-sec}
 
 Alert-Act-Notify is a <dfn>policy language</dfn>.
+
+
+Security considerations {#security-considerations}
+==================================================
+
+## Authenticated Inboxes
+In case the Orchestrator supports [triggers from incoming Linked Data Notifications](#trigger-ldn), the Orchestrator SHOULD make use of [authenticated inboxes](https://www.w3.org/TR/ldn/#authenticated-inboxes) as described by the [Linked Data Notifications](https://www.w3.org/TR/ldn/) specification.
+Requiring authentication on the pod inbox can prevent unwanted parties from forging notifications to be processed by the Orchestrator.
+
+## Signed notifications
+Instead of requiring authentication to post notifications to the pod inbox, the Orchestrator may require notifications to be singed by the sender before accepting notifications.
+There was an upcoming panel on signed notifications - TODO
+
+
+
+Appendix A: Implementation details {#implementation-details}
+============================================================
+
+## Retrieving inbox notifications
+
+## Observing LDP resource state updates
+
+## Time based trigger implementations
+
 
 <pre class=biblio>
 {
