@@ -12,11 +12,12 @@ Abstract: This specification describes the implementation requirements for the O
 Markup Shorthands: markdown yes
 </pre>
 
-# Set of documents
+Set of documents {#set}
+=======================
 
-This document is one of the specifications produced by the ResearcherPod and ErfgoedPod project:
+This document is one of the specifications produced by the **ResearcherPod** and **ErfgoedPod** project:
 
-1. [Overview](spec-overview/)
+1. [Overview](/spec-overview/) 
 1. [Orchestrator](/spec-orchestrator/) (this document)
 
 Introduction {#intro}
@@ -41,34 +42,17 @@ The remainder of this document specifies the requirements for implementing an [=
 
 # Definitions
 
-This document uses the following defined terms:
+This document uses the following defined terms from [[spec-overview]]:
 
-Issue(ErfgoedPod/orchestrator#6): replace the term Policy by Rulebook to avoid confusion?
-
-: <dfn export>Actor</dfn>
-:: A entity (person, application or service) that participates in the network.
-: <dfn export>Artefact</dfn>
-:: A digital object such as a file or document that serves as the object of exchange between actors and therefore is the smallest divisable unit on the network.
-: <dfn export>Human Agent</dfn>
-:: A person that operates directly as an [=Actor=] on the network.
-: <dfn export>Autonomous Agent</dfn>
-:: An intelligent software instance that operates on an [=Actor=]'s behalf but without any interference of that [=Actor=].
-: <dfn export>Maintainer</dfn>
-:: A [=Human Agent=] that can manually perform actions (see [[#actions]]) on the network using a [=Dashboard=] application.
-:: Usually a person employed by an organisation (e.g., a Cultural Heritage Institution) to maintain data and datasets owned by that organisation. 
-: <dfn export>Data Pod</dfn>
-:: As defined by [[solid-protocol]], a <a href="https://solidproject.org/TR/protocol#data-pod">Data Pod</a> is a place for storing documents, with mechanisms for controlling who can access what.
-: <dfn export>Inbox</dfn>
-:: An [[!LDP]] resource where others can POST Linked Data Notifications [[!LDN]] in order to notify the actor of a change an artefact's lifecycle.
-: <dfn export>Artefact Lifecycle Event Log</dfn>
-:: An HTTP resource served by an actor (e.g., as a resource in the [=Data Pod=]) that represents a log of occurred lifecycle events related to artefacts known by the actor.
-:: Artefacts are considered known when they reside in the actor's [=Data Pod=] or if the actor has been made aware via [[!LDN]].
-: <dfn export>Service Hub</dfn>
-:: An [=Actor=] that provides a service to other actors in the network. It is a <a href="https://solidproject.org/TR/protocol#solid-app">Solid app</a> and serves an [=Inbox=].
-: <dfn export>Policy</dfn>
-:: A set of machine-readable business rules that instruct the [=Orchestrator=] on what actions to take in response to a trigger such as incoming notifications, perceived changes in the data, or manual invocation by an [=Actor=].
-: <dfn export>Dashboard</dfn>
-:: A user application and <a href="https://solidproject.org/TR/protocol#solid-app">Solid app</a> that enables users to interact with the contents of the [=Data Pod=], the [=Orchestrator=], or other [=Actors=] in the Digital Heritage Network. 
+- <dfn export>Actor</dfn>
+- <dfn export>Artefact</dfn>
+- <dfn export>Maintainer</dfn>
+- <dfn export>Data Pod</dfn>
+- <dfn export>Inbox</dfn>
+- <dfn export>Artefact Lifecycle Event Log</dfn>
+- <dfn export>Service Hub</dfn>
+- <dfn export>Policy</dfn>
+- <dfn export>Dashboard</dfn>
 
 High-level overview {#high-level}
 =====================
@@ -144,7 +128,7 @@ Creating an orchestrator {#init}
 
 ## Deployment
 
-An Orchestrator MUST be deployable as a <dfn>local background process</dfn> or as a <dfn>remote web service</dfn>.
+An Orchestrator MUST be deployable as a <dfn export>local background process</dfn> or as a <dfn export>remote web service</dfn>.
 In case of the latter, an actor SHOULD be able to spawn, initialize and trigger the instance over [[!HTTP11]], as defined in [[#init]] and [[#triggers]].
 The Orchestrator MAY also serve an [=inbox=] for communicating with third-parties using Linked Data Notifications [[LDN]] .
 
@@ -450,6 +434,15 @@ Appendix A: Implementation details {#implementation-details}
 		"deliveredBy": [
 			"https://www.w3.org/community/solid/"
 		]
+	},
+  "spec-overview": {
+		"authors": [
+      "Miel Vander Sande"
+    ],
+		"href": "http://mellonscholarlycommunication.github.io/spec-overview/",
+		"title": "Overview of the ResearcherPod specifications",
+		"status": "Editor’s Draft",
+		"publisher": "ResearcherPod project"
 	}
 }
 </pre>
