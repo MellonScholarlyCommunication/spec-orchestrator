@@ -208,8 +208,8 @@ An orchestrator MUST respond to the following three types of triggers:
 - a scheduled trigger from the internal time-based event scheduler
 
 ## Receving Linked Data Notifications ## {#trigger-ldn}
-An Orchestrator MAY accept [Linked Data Notifications (LDN)](https://www.w3.org/TR/ldn/) as triggers for policy actions.
-In this case, the Orchestrator MUST be a compliant [[LDN]] <a href="https://www.w3.org/TR/ldn/#receiver">Receiver</a>. 
+
+An orchestrator MUST be a compliant [[!LDN]] [Consumer](https://www.w3.org/TR/ldn/#consumer). 
 The Orchestrator MAY advertise multiple inboxes. 
 In this case, the Orchestrator MUST retrieve incoming Linked Data Notifications from all advertised inboxes.
 Inbox security is discussed in the [security considerations](#security-considerations) sections.
@@ -229,7 +229,12 @@ Example of a trigger using Linked Data Notifications:
 }
 ```
 
+The following incoming [[!LDN]] using the [[!ACTIVITYSTREAMS-VOCABULARY]] MUST be supported:
 
+- [as:Create](https://www.w3.org/ns/activitystreams#Create)
+- [as:Announce](https://www.w3.org/ns/activitystreams#Announce)
+- [as:Update](https://www.w3.org/ns/activitystreams#Update)
+- [as:Delete](https://www.w3.org/ns/activitystreams#Delete)
 
 
 ## Observing resource state changes  ## {#trigger-resource}
