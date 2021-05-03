@@ -1,22 +1,23 @@
 <pre class='metadata'>
-Title: Orchestrator for a decentralized Digital Heritage Network
+Title: Orchestrator for a decentralized Web network
 Shortname: orchestrator
 Level: 1
 Status: LS
-URL: https://erfgoedpod.github.io/orchestrator
-Editor: Miel Vander Sande, meemoo http://meemoo.be, miel.vandersande@meemoo.be
+URL: https://mellonscholarlycommunication.github.io/spec-orchestrator
+Editor: Miel Vander Sande, meemoo - [Flemish Institute for Archiving](https://meemoo.be), miel.vandersande@meemoo.be
+Editor: Patrick Hochstenbach, Ghent University, patrick.hochstenbach@ugent.be
+Editor: Ruben Dedecker, Ghent University, ruben.dedecker@ugent.be
+Editor: Jeroen Werbrouck, Ghent University, Jeroen.Werbrouck@ugent.be
 Abstract: This specification describes the implementation requirements for the Ochestrator component.
 Markup Shorthands: markdown yes
 </pre>
 
 # Set of documents
 
-This document is one of the *Decentralized Digital Heritage Network* specifications produced by the ErfgoedPod project by [Netwerk Digitaal Erfgoed](https://netwerkdigitaalerfgoed.nl), [meemoo - Flemish Institute for Archiving](https://meemoo.be) and [Ghent University - IDLab](http://idlab.ugent.be):
+This document is one of the specifications produced by the ResearcherPod and ErfgoedPod project:
 
-1. [Architecture Decentralized Digital Heritage Network](/architecture/) (this document)
-2. [Use cases & Business processes digital heritage network](/usecases/)
-3. [Common infrastructure setups of a Cultural Heritage Institutions](/common-setups/)
-4. [Orchestrator](/orchestrator/)
+1. [Overview](spec-overview/)
+1. [Orchestrator](/spec-orchestrator/) (this document)
 
 Introduction {#intro}
 =====================
