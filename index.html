@@ -1223,7 +1223,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 5f7b0e20, updated Tue Aug 18 15:46:28 2020 -0700" name="generator">
   <link href="https://mellonscholarlycommunication.github.io/spec-orchestrator" rel="canonical">
-  <meta content="1f009dd2061043d91e6382c69a0d8cc864050faf" name="document-revision">
+  <meta content="6628dd12b2d5ffdebc63b3f6ea32e0774cfdb9a0" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -1470,7 +1470,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Orchestrator for a decentralized Web network</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Standard, <time class="dt-updated" datetime="2021-05-03">3 May 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Standard, <time class="dt-updated" datetime="2021-05-04">4 May 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1488,7 +1488,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 3 May 2021,
+In addition, as of 4 May 2021,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -1537,11 +1537,7 @@ Parts of this work may be from another specification document.  If so, those par
       <li><a href="#manipulating-ldp-resources"><span class="secno">7.2</span> <span class="content">Manipulating LDP resources</span></a>
       <li><a href="#reading-http-resources"><span class="secno">7.3</span> <span class="content">Reading HTTP resources</span></a>
      </ol>
-    <li>
-     <a href="#policy-sec"><span class="secno">8</span> <span class="content">Policy</span></a>
-     <ol class="toc">
-      <li><a href="#policy-language-sec"><span class="secno">8.1</span> <span class="content">Policy language</span></a>
-     </ol>
+    <li><a href="#policy-sec"><span class="secno">8</span> <span class="content">Policy</span></a>
     <li>
      <a href="#security-considerations"><span class="secno">9</span> <span class="content">Security considerations</span></a>
      <ol class="toc">
@@ -1578,6 +1574,12 @@ Parts of this work may be from another specification document.  If so, those par
      <p><a href="/spec-overview/">Overview</a></p>
     <li data-md>
      <p><a href="/spec-orchestrator/">Orchestrator</a> (this document)</p>
+    <li data-md>
+     <p><a href="/spec-datapod/">Data Pod</a></p>
+    <li data-md>
+     <p><a href="/spec-rulelanguage/">Rule language</a></p>
+    <li data-md>
+     <p><a href="/spec-eventlog/">Artefact Lifecycle Event Log</a></p>
    </ol>
    <h2 class="heading settled" data-level="2" id="intro"><span class="secno">2. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
    <p>In a <a href="https://solidproject.org/">Solid decentralized network</a>, data, and services the services that use them, do not resort in one place, but are intentionally distributed.
@@ -1591,7 +1593,7 @@ Possible triggers are incoming notifications, perceived changes in the data, or 
 Possible actions are sending notifications to other actors, requesting access to resources in a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod①">Data Pod</a>, reading data from a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod②">Data Pod</a>, or writing data to a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③">Data Pod</a>.</p>
    <p>The Orchestrator implements the autonomous agent model: an intelligent software instance that operates on an actor’s behalf but without any interference of that actor.
 In practice, an Orchestrator is dedicated to a single <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod④">Data Pod</a> for which is has access rights to all relevant resources, including the Linked Data Notification <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> <a data-link-type="dfn" href="#inbox" id="ref-for-inbox">inbox</a>. 
-Its autonomy is supplied by the <a data-link-type="dfn" href="#policy" id="ref-for-policy①">Policy</a>, which dictates business rules in a declarative manner using a <a data-link-type="dfn" href="#policy-language" id="ref-for-policy-language">policy language</a>.</p>
+Its autonomy is supplied by the <a data-link-type="dfn" href="#policy" id="ref-for-policy①">Policy</a>, which dictates business rules in a declarative manner using a <a data-link-type="dfn">policy language</a>.</p>
    <p>The remainder of this document specifies the requirements for implementing an <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator">Orchestrator</a> component.</p>
    <h2 class="heading settled" data-level="3" id="definitions"><span class="secno">3. </span><span class="content">Definitions</span><a class="self-link" href="#definitions"></a></h2>
    <p>This document uses the following defined terms from <a data-link-type="biblio" href="#biblio-spec-overview">[spec-overview]</a>:</p>
@@ -2779,7 +2781,7 @@ It MAY also allow a list of <a data-link-type="biblio" href="#biblio-ldp">[LDP]<
    <p class="issue" id="issue-65b319db"><a class="self-link" href="#issue-65b319db"></a> MVS: is this registration of inbox, resources something we want to do at initialization or do we write this in the policy?</p>
    <p>Orchestrators solely execute business logic catured in <a data-link-type="dfn" href="#policy" id="ref-for-policy⑤">policies</a>.
 Thus, they MUST allow actors to supply one or more <a data-link-type="biblio" href="#biblio-uri">[URI]</a>s pointing to a <a data-link-type="dfn" href="#policy" id="ref-for-policy⑥">policy</a>.
-These policies MUST be written in the <a data-link-type="dfn" href="#policy-language" id="ref-for-policy-language①">policy language</a>.
+These policies MUST be written in the <a data-link-type="dfn">policy language</a>.
 An actor SHOULD supply at least one <a data-link-type="dfn" href="#policy" id="ref-for-policy⑦">policy</a> in order to allow the orchestrator to function.</p>
    <p>To operate autonomeously, an Orchestrator has to obtain access to some resources in the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod①⑦">Data Pod</a>,
 which <a href="https://solidproject.org/TR/protocol#web-access-control">conforms</a> to the Web Access Control specification <a data-link-type="biblio" href="#biblio-solidwebac">[solidwebac]</a>.
@@ -2972,8 +2974,6 @@ It SHOULD have one of the following types:</p>
    </ul>
    <h2 class="heading settled" data-level="8" id="policy-sec"><span class="secno">8. </span><span class="content">Policy</span><a class="self-link" href="#policy-sec"></a></h2>
    <p>Set of rules that dictates what actions need to be taken when a lifecycle event occurs. These originate from the digital heritage network participation agreement, possibly amended with procedures imposed by the institution, the discipline, or personal preference.</p>
-   <h3 class="heading settled" data-level="8.1" id="policy-language-sec"><span class="secno">8.1. </span><span class="content">Policy language</span><a class="self-link" href="#policy-language-sec"></a></h3>
-   <p>Alert-Act-Notify is a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="policy-language">policy language</dfn>.</p>
    <h2 class="heading settled" data-level="9" id="security-considerations"><span class="secno">9. </span><span class="content">Security considerations</span><a class="self-link" href="#security-considerations"></a></h2>
    <h3 class="heading settled" data-level="9.1" id="authenticated-inboxes"><span class="secno">9.1. </span><span class="content">Authenticated Inboxes</span><a class="self-link" href="#authenticated-inboxes"></a></h3>
     In case the Orchestrator supports <a href="#trigger-ldn">triggers from incoming Linked Data Notifications</a>, the Orchestrator SHOULD make use of <a href="https://www.w3.org/TR/ldn/#authenticated-inboxes">authenticated inboxes</a> as described by the <a href="https://www.w3.org/TR/ldn/">Linked Data Notifications</a> specification.
@@ -3146,7 +3146,6 @@ There was an upcoming panel on signed notifications - TODO
    <li><a href="#maintainer">Maintainer</a><span>, in §3</span>
    <li><a href="#orchestrator">Orchestrator</a><span>, in §4</span>
    <li><a href="#policy">Policy</a><span>, in §3</span>
-   <li><a href="#policy-language">policy language</a><span>, in §8.1</span>
    <li><a href="#remote-web-service">remote web service</a><span>, in §5.1</span>
    <li><a href="#service-hub">Service Hub</a><span>, in §3</span>
    <li><a href="#trigger">trigger</a><span>, in §6</span>
@@ -3289,13 +3288,6 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-action①">4.1. Perspectives</a> <a href="#ref-for-action②">(2)</a> <a href="#ref-for-action③">(3)</a> <a href="#ref-for-action④">(4)</a>
     <li><a href="#ref-for-action⑤">4.2. Common interaction pattern</a> <a href="#ref-for-action⑥">(2)</a>
     <li><a href="#ref-for-action⑦">6. Triggers</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="policy-language">
-   <b><a href="#policy-language">#policy-language</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-policy-language">2. Introduction</a>
-    <li><a href="#ref-for-policy-language①">5.3. Additional interface</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
