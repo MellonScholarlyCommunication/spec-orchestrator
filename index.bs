@@ -18,7 +18,10 @@ Set of documents {#set}
 This document is one of the specifications produced by the **ResearcherPod** and **ErfgoedPod** project:
 
 1. [Overview](/spec-overview/) 
-1. [Orchestrator](/spec-orchestrator/) (this document)
+2. [Orchestrator](/spec-orchestrator/) (this document)
+3. [Data Pod](/spec-datapod/)
+4. [Rule language](/spec-rulelanguage/)
+5. [Artefact Lifecycle Event Log](/spec-eventlog/)
 
 Introduction {#intro}
 =====================
@@ -373,10 +376,6 @@ Policy {#policy-sec}
 =====================
 
 Set of rules that dictates what actions need to be taken when a lifecycle event occurs. These originate from the digital heritage network participation agreement, possibly amended with procedures imposed by the institution, the discipline, or personal preference.
-
-## Policy language ## {#policy-language-sec}
-
-Alert-Act-Notify is a <dfn>policy language</dfn>.
 
 
 Security considerations {#security-considerations}
