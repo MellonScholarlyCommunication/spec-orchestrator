@@ -1223,7 +1223,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 5f7b0e20, updated Tue Aug 18 15:46:28 2020 -0700" name="generator">
   <link href="https://mellonscholarlycommunication.github.io/spec-orchestrator" rel="canonical">
-  <meta content="6628dd12b2d5ffdebc63b3f6ea32e0774cfdb9a0" name="document-revision">
+  <meta content="7b7fceb73d43c2b6b272526dc919388e976f9b7a" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -1470,7 +1470,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Orchestrator for a decentralized Web network</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Standard, <time class="dt-updated" datetime="2021-05-04">4 May 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Standard, <time class="dt-updated" datetime="2021-05-17">17 May 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1488,7 +1488,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 4 May 2021,
+In addition, as of 17 May 2021,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -1583,7 +1583,7 @@ Parts of this work may be from another specification document.  If so, those par
    </ol>
    <h2 class="heading settled" data-level="2" id="intro"><span class="secno">2. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
    <p>In a <a href="https://solidproject.org/">Solid decentralized network</a>, data, and services the services that use them, do not resort in one place, but are intentionally distributed.
-As a result, actors in the network, such as institutions or service providers, need to potentionally involve and communicate with multiple services in order to execute a business process or workflow, 
+As a result, actors in the network, such as institutions or service providers, need to potentionally involve and communicate with multiple services in order to execute a business process or workflow,
 where each services executes a dedicated task (eg. registering or archiving a dataset).
 Hence, to avoid excessive manual work, this document specifies the Orchestrator component, which is able to automate such task orchestration.</p>
    <p>Network actors maintain their data in a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod">Data Pod</a>,
@@ -1592,7 +1592,7 @@ These capabilities are therefore delegated to the Orchestrator. On behalf of the
 Possible triggers are incoming notifications, perceived changes in the data, or manual invocation by an actor.
 Possible actions are sending notifications to other actors, requesting access to resources in a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod①">Data Pod</a>, reading data from a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod②">Data Pod</a>, or writing data to a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③">Data Pod</a>.</p>
    <p>The Orchestrator implements the autonomous agent model: an intelligent software instance that operates on an actor’s behalf but without any interference of that actor.
-In practice, an Orchestrator is dedicated to a single <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod④">Data Pod</a> for which is has access rights to all relevant resources, including the Linked Data Notification <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> <a data-link-type="dfn" href="#inbox" id="ref-for-inbox">inbox</a>. 
+In practice, an Orchestrator is dedicated to a single <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod④">Data Pod</a> for which is has access rights to all relevant resources, including the Linked Data Notification <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> <a data-link-type="dfn" href="#inbox" id="ref-for-inbox">inbox</a>.
 Its autonomy is supplied by the <a data-link-type="dfn" href="#policy" id="ref-for-policy①">Policy</a>, which dictates business rules in a declarative manner using a <a data-link-type="dfn">policy language</a>.</p>
    <p>The remainder of this document specifies the requirements for implementing an <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator">Orchestrator</a> component.</p>
    <h2 class="heading settled" data-level="3" id="definitions"><span class="secno">3. </span><span class="content">Definitions</span><a class="self-link" href="#definitions"></a></h2>
@@ -1619,23 +1619,23 @@ Its autonomy is supplied by the <a data-link-type="dfn" href="#policy" id="ref-f
    </ul>
    <h2 class="heading settled" data-level="4" id="high-level"><span class="secno">4. </span><span class="content">High-level overview</span><a class="self-link" href="#high-level"></a></h2>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="orchestrator">Orchestrator</dfn> is an <a data-link-type="dfn">Autonomous Agent</a> dedicated to a single <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑤">Data Pod</a>, <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub">Service Hub</a>, or any other actor hosting the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log">Artefact Lifecycle Event Log</a> and a <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①">Inbox</a> resources.
-It interprets and executes business rules described in a <a data-link-type="dfn" href="#policy" id="ref-for-policy②">policy</a>. 
+It interprets and executes business rules described in a <a data-link-type="dfn" href="#policy" id="ref-for-policy②">policy</a>.
 The Orchestrator watches the <a data-link-type="dfn" href="#inbox" id="ref-for-inbox②">Inbox</a> for possible triggers, while it records the actions it takes to the to the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log①">Artefact Lifecycle Event Log</a>.</p>
    <h3 class="heading settled" data-level="4.1" id="perspectives"><span class="secno">4.1. </span><span class="content">Perspectives</span><a class="self-link" href="#perspectives"></a></h3>
    <p>From a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑥">Data Pod</a> perspective,
 the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator①">Orchestrator</a> participates in the network on behalf of the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑦">Data Pod</a>'s owner or <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer">Maintainer</a>.
-At instantiation time, 
-a <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer①">Maintainer</a> connects the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator②">Orchestrator</a> with the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log②">Artefact Lifecycle Event Log</a> and <a data-link-type="dfn" href="#inbox" id="ref-for-inbox③">Inbox</a> resources from its <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑧">Data Pod</a>, 
+At instantiation time,
+a <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer①">Maintainer</a> connects the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator②">Orchestrator</a> with the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log②">Artefact Lifecycle Event Log</a> and <a data-link-type="dfn" href="#inbox" id="ref-for-inbox③">Inbox</a> resources from its <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑧">Data Pod</a>,
 which it watches in order to receive a possible <a data-link-type="dfn" href="#trigger" id="ref-for-trigger①">Trigger</a>.
 This an <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator③">Orchestrator</a> instance dedicated to a single <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑨">Data Pod</a>.
-From that point on, 
+From that point on,
 the <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer②">Maintainer</a> only interacts _indirectly_ with the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④">Orchestrator</a> via the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod①⓪">Data Pod</a>, by using a <a data-link-type="dfn" href="#dashboard" id="ref-for-dashboard">Dashboard</a> to append the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log③">Artefact Lifecycle Event Log</a> and/or <a data-link-type="dfn" href="#inbox" id="ref-for-inbox④">Inbox</a>.</p>
    <p>When a trigger arrives,
 the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑤">Orchestrator</a> consults the <a data-link-type="dfn" href="#policy" id="ref-for-policy③">policy</a> - a set of business rules fixed an maintained by the <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer③">Maintainer</a> using the <a data-link-type="dfn" href="#dashboard" id="ref-for-dashboard①">Dashboard</a>,
 which results in zero or more <a data-link-type="dfn" href="#action" id="ref-for-action①">actions</a> to take.
 An <a data-link-type="dfn" href="#action" id="ref-for-action②">Action</a> involves reading resources from or sending notifications to <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod①①">data pods</a> (including the one it’s connected to) or <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub①">Service Hubs</a>.</p>
    <p>The <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑥">Orchestrator</a> records every taken <a data-link-type="dfn" href="#action" id="ref-for-action③">action</a> in the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod①②">data pod</a>'s <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log④">Artefact Lifecycle Event Log</a>.
-When the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑦">Orchestrator</a> requires input from the <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer④">Maintainer</a>, 
+When the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑦">Orchestrator</a> requires input from the <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer④">Maintainer</a>,
 it can communicate this via the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log⑤">Artefact Lifecycle Event Log</a>,
 which is shared with the <a data-link-type="dfn" href="#dashboard" id="ref-for-dashboard②">Dashboard</a>.
 The <a data-link-type="dfn" href="#dashboard" id="ref-for-dashboard③">Dashboard</a> presents this event to the <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer⑤">Maintainer</a> in an actionable way, resulting in a new <a data-link-type="dfn" href="#trigger" id="ref-for-trigger②">trigger</a>.</p>
@@ -2000,7 +2000,7 @@ The <a data-link-type="dfn" href="#dashboard" id="ref-for-dashboard③">Dashboar
     </switch>
    </svg>
    <p>From a <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub②">Service Hub</a> perspective,
-the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑧">Orchestrator</a> establishes automated response to notifications from other network <a data-link-type="dfn" href="#actor" id="ref-for-actor">actors</a> and <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑨">orchestrators</a> in context of the provided service. 
+the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑧">Orchestrator</a> establishes automated response to notifications from other network <a data-link-type="dfn" href="#actor" id="ref-for-actor">actors</a> and <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑨">orchestrators</a> in context of the provided service.
 As a possible side-effect, it can also actively consults additional <a data-link-type="dfn" href="#actor" id="ref-for-actor①">actors</a> in order to complete the service.
 The <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator①⓪">Orchestrator</a> responds by delivering a new notification in the <a data-link-type="dfn" href="#inbox" id="ref-for-inbox⑤">inbox</a> of the actor that invoked the service.
 It is the <a data-link-type="dfn" href="#policy" id="ref-for-policy④">policy</a> that dictates what response to construct and what consecutive <a data-link-type="dfn" href="#action" id="ref-for-action④">actions</a> (reading resources from or sending notifications to <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod①③">data pods</a> or other <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub③">service hubs</a>) need to be performed.</p>
@@ -2315,7 +2315,7 @@ Hence, a common interaction pattern is as follows:</p>
     <li data-md>
      <p><code>Orchestrator B</code> sends a notification to <code>Inbox A</code> of the <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer①⓪">maintainer</a>.</p>
     <li data-md>
-     <p><code>Orchestrator B</code> adds to <code>Event log A</code> that the original event has been processed by the <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub⑦">service hub</a>.</p>
+     <p><code>Orchestrator A</code> adds to <code>Event log A</code> that the original event has been processed by the <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub⑦">service hub</a>.</p>
     <li data-md>
      <p>The <a data-link-type="dfn" href="#dashboard" id="ref-for-dashboard⑤">Dashboard</a> displays <code>Event log A</code> to the <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer①①">maintainer</a> to show that the necessary actions have been taken.</p>
    </ol>
@@ -2808,7 +2808,7 @@ An orchestrator MUST respond to the following three types of triggers:</p>
    </ul>
    <h3 class="heading settled" data-level="6.1" id="trigger-ldn"><span class="secno">6.1. </span><span class="content">Receving Linked Data Notifications</span><a class="self-link" href="#trigger-ldn"></a></h3>
    <p>An orchestrator MUST be a compliant <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> <a href="https://www.w3.org/TR/ldn/#consumer">Consumer</a>.
-The Orchestrator MAY advertise multiple inboxes. 
+The Orchestrator MAY advertise multiple inboxes.
 In this case, the Orchestrator MUST retrieve incoming Linked Data Notifications from all advertised inboxes.
 Inbox security is discussed in the <a href="#security-considerations">security considerations</a> sections.</p>
    <p>Linked Data Notification triggers are defined as RDF data shapes.
@@ -2871,7 +2871,7 @@ All passed <code>datetime</code> values MUST be valid <code>xsd:dateTime</code> 
     {
       "@value": "2021-12-12T20:20:20.201Z",
       "@type": xsd:dateTime
-    }, 
+    },
     {
       "@value": "2021-12-12T21:21:21.211Z",
       "@type": xsd:dateTime
@@ -2892,7 +2892,7 @@ A time interval trigger MUST trigger an action on every matching time interval d
 </pre>
    <h2 class="heading settled" data-level="7" id="actions"><span class="secno">7. </span><span class="content">Actions</span><a class="self-link" href="#actions"></a></h2>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="action">action</dfn> is a form of interation with other actors or resources in the network.
-Orchestrator performs such actions on behalf of a network <a data-link-type="dfn" href="#actor" id="ref-for-actor③">actor</a>. 
+Orchestrator performs such actions on behalf of a network <a data-link-type="dfn" href="#actor" id="ref-for-actor③">actor</a>.
 There are three types of actions that an orchestrator can take:</p>
    <ul>
     <li data-md>
