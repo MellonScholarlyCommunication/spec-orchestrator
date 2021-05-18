@@ -22,6 +22,7 @@ This document is one of the specifications produced by the **ResearcherPod** and
 3. [Data Pod](/spec-datapod/)
 4. [Rule language](/spec-rulelanguage/)
 5. [Artefact Lifecycle Event Log](/spec-eventlog/)
+6. [Notifications](/spec-notifications/)
 
 Introduction {#intro}
 =====================
