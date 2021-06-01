@@ -296,23 +296,14 @@ A datetime trigger can define multiple points in time to trigger an action.
 All passed `datetime` values MUST be valid `xsd:dateTime` literals.
 
 
-```
+
 
 ### time interval trigger
 A time interval trigger is a trigger that is fired at set intervals in time.
 A time interval trigger MUST trigger an action on every matching time interval during the time the trigger is active and the orchestrator is running.
 
 
-Example of a time interval trigger:
-```
-{
-  "@context": "https://www.example.org/ns/policy",
-  "summary": "Linked Data Notification Trigger",
-  "type": "StateTrigger",
-  "resource": "https://mypod.org/resources/
-  "state": ["Create", "Update"]
-}
-```
+
 
 Actions {#actions}
 =====================
