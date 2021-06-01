@@ -1,0 +1,54 @@
+<mxfile host="65bd71144e" compressed="true">
+    <diagram id="I-sFH-hni88XnOLIhFXf" name="Page-1">
+        <mxGraphModel dx="1218" dy="1135" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="8" value="&lt;div&gt;Data Pod&lt;br&gt;&lt;/div&gt;&lt;div&gt;or Service Hub&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;strokeColor=#666666;fillColor=#f5f5f5;align=right;verticalAlign=middle;spacingRight=10;fontColor=#333333;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="130" width="170" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="L_k9XA5jBWQ_gwWuZxk8-17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" target="L_k9XA5jBWQ_gwWuZxk8-22" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="20" y="83" as="sourcePoint"/>
+                        <mxPoint x="195" y="-46.25" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="L_k9XA5jBWQ_gwWuZxk8-18" value="URI-policy" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="L_k9XA5jBWQ_gwWuZxk8-17" vertex="1" connectable="0">
+                    <mxGeometry x="0.5429" y="-3" relative="1" as="geometry">
+                        <mxPoint x="-29" y="-3" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;dashed=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="L_k9XA5jBWQ_gwWuZxk8-19" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="85" y="80" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="L_k9XA5jBWQ_gwWuZxk8-19" value="&lt;div&gt;Business&lt;/div&gt;&lt;div&gt;Rules&lt;br&gt;&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;strokeWidth=1;size=11;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="10" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="L_k9XA5jBWQ_gwWuZxk8-22" value="Orchestrator&lt;br&gt;(Autonomous Agent)" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=14;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="135" y="70" width="180" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=14;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" target="L_k9XA5jBWQ_gwWuZxk8-22" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="20" y="108" as="sourcePoint"/>
+                        <mxPoint x="145" y="92.5" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="3" value="URI inbox" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="2" vertex="1" connectable="0">
+                    <mxGeometry x="0.5429" y="-3" relative="1" as="geometry">
+                        <mxPoint x="-29" y="-3" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;dashed=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="5" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="85" y="110" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="5" value="&lt;div&gt;Inbox&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;strokeWidth=1;size=11;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="140" width="50" height="50" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
