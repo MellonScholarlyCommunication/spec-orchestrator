@@ -1223,7 +1223,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 5f7b0e20, updated Tue Aug 18 15:46:28 2020 -0700" name="generator">
   <link href="https://mellonscholarlycommunication.github.io/spec-orchestrator" rel="canonical">
-  <meta content="55b62f7253e46da926b6b494c2ce135786643a97" name="document-revision">
+  <meta content="c3921583828c6ebe0830d6e72b0c5dee7868eddd" name="document-revision">
 <style>
 table {
   margin: 25px auto;
@@ -1435,64 +1435,6 @@ dfn > a.self-link:hover {
 a.self-link::before            { content: "¶"; }
 .heading > a.self-link::before { content: "§"; }
 dfn > a.self-link::before      { content: "#"; }</style>
-<style>/* style-syntax-highlighting */
-
-.highlight:not(.idl) { background: hsl(24, 20%, 95%); }
-code.highlight { padding: .1em; border-radius: .3em; }
-pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
-c-[a] { color: #990055 } /* Keyword.Declaration */
-c-[b] { color: #990055 } /* Keyword.Type */
-c-[c] { color: #708090 } /* Comment */
-c-[d] { color: #708090 } /* Comment.Multiline */
-c-[e] { color: #0077aa } /* Name.Attribute */
-c-[f] { color: #669900 } /* Name.Tag */
-c-[g] { color: #222222 } /* Name.Variable */
-c-[k] { color: #990055 } /* Keyword */
-c-[l] { color: #000000 } /* Literal */
-c-[m] { color: #000000 } /* Literal.Number */
-c-[n] { color: #0077aa } /* Name */
-c-[o] { color: #999999 } /* Operator */
-c-[p] { color: #999999 } /* Punctuation */
-c-[s] { color: #a67f59 } /* Literal.String */
-c-[t] { color: #a67f59 } /* Literal.String.Single */
-c-[u] { color: #a67f59 } /* Literal.String.Double */
-c-[cp] { color: #708090 } /* Comment.Preproc */
-c-[c1] { color: #708090 } /* Comment.Single */
-c-[cs] { color: #708090 } /* Comment.Special */
-c-[kc] { color: #990055 } /* Keyword.Constant */
-c-[kn] { color: #990055 } /* Keyword.Namespace */
-c-[kp] { color: #990055 } /* Keyword.Pseudo */
-c-[kr] { color: #990055 } /* Keyword.Reserved */
-c-[ld] { color: #000000 } /* Literal.Date */
-c-[nc] { color: #0077aa } /* Name.Class */
-c-[no] { color: #0077aa } /* Name.Constant */
-c-[nd] { color: #0077aa } /* Name.Decorator */
-c-[ni] { color: #0077aa } /* Name.Entity */
-c-[ne] { color: #0077aa } /* Name.Exception */
-c-[nf] { color: #0077aa } /* Name.Function */
-c-[nl] { color: #0077aa } /* Name.Label */
-c-[nn] { color: #0077aa } /* Name.Namespace */
-c-[py] { color: #0077aa } /* Name.Property */
-c-[ow] { color: #999999 } /* Operator.Word */
-c-[mb] { color: #000000 } /* Literal.Number.Bin */
-c-[mf] { color: #000000 } /* Literal.Number.Float */
-c-[mh] { color: #000000 } /* Literal.Number.Hex */
-c-[mi] { color: #000000 } /* Literal.Number.Integer */
-c-[mo] { color: #000000 } /* Literal.Number.Oct */
-c-[sb] { color: #a67f59 } /* Literal.String.Backtick */
-c-[sc] { color: #a67f59 } /* Literal.String.Char */
-c-[sd] { color: #a67f59 } /* Literal.String.Doc */
-c-[se] { color: #a67f59 } /* Literal.String.Escape */
-c-[sh] { color: #a67f59 } /* Literal.String.Heredoc */
-c-[si] { color: #a67f59 } /* Literal.String.Interpol */
-c-[sx] { color: #a67f59 } /* Literal.String.Other */
-c-[sr] { color: #a67f59 } /* Literal.String.Regex */
-c-[ss] { color: #a67f59 } /* Literal.String.Symbol */
-c-[vc] { color: #0077aa } /* Name.Variable.Class */
-c-[vg] { color: #0077aa } /* Name.Variable.Global */
-c-[vi] { color: #0077aa } /* Name.Variable.Instance */
-c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
-</style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"></p>
@@ -1540,27 +1482,23 @@ Parts of this work may be from another specification document.  If so, those par
       <li><a href="#common-interaction-pattern"><span class="secno">5.2</span> <span class="content">Common interaction pattern</span></a>
      </ol>
     <li><a href="#init"><span class="secno">6</span> <span class="content">Initialization interface</span></a>
+    <li><a href="#policy-sec"><span class="secno">7</span> <span class="content">Policy</span></a>
     <li>
-     <a href="#triggers"><span class="secno">7</span> <span class="content">Triggers</span></a>
+     <a href="#triggers"><span class="secno">8</span> <span class="content">Triggers</span></a>
      <ol class="toc">
-      <li><a href="#trigger-ldn"><span class="secno">7.1</span> <span class="content">Receving Linked Data Notifications</span></a>
-      <li><a href="#trigger-resource"><span class="secno">7.2</span> <span class="content">Observing resource state changes</span></a>
-      <li>
-       <a href="#trigger-schedule"><span class="secno">7.3</span> <span class="content">Scheduled trigger</span></a>
-       <ol class="toc">
-        <li><a href="#datetime-trigger"><span class="secno">7.3.1</span> <span class="content">datetime trigger</span></a>
-        <li><a href="#time-interval-trigger"><span class="secno">7.3.2</span> <span class="content">time interval trigger</span></a>
-       </ol>
+      <li><a href="#trigger-ldn"><span class="secno">8.1</span> <span class="content">Receving Linked Data Notifications</span></a>
+      <li><a href="#trigger-resource"><span class="secno">8.2</span> <span class="content">Observing resource state changes</span></a>
+      <li><a href="#trigger-schedule"><span class="secno">8.3</span> <span class="content">Scheduled trigger</span></a>
      </ol>
     <li>
-     <a href="#actions"><span class="secno">8</span> <span class="content">Actions</span></a>
+     <a href="#actions"><span class="secno">9</span> <span class="content">Actions</span></a>
      <ol class="toc">
-      <li><a href="#sending-linked-data-notifications"><span class="secno">8.1</span> <span class="content">Sending Linked Data notifications</span></a>
-      <li><a href="#manipulating-ldp-resources"><span class="secno">8.2</span> <span class="content">Manipulating LDP resources</span></a>
-      <li><a href="#reading-http-resources"><span class="secno">8.3</span> <span class="content">Reading HTTP resources</span></a>
+      <li><a href="#sending-linked-data-notifications"><span class="secno">9.1</span> <span class="content">Sending Linked Data notifications</span></a>
+      <li><a href="#reading-http-resources"><span class="secno">9.2</span> <span class="content">Reading HTTP resources</span></a>
+      <li><a href="#manipulating-ldp-resources"><span class="secno">9.3</span> <span class="content">Manipulating LDP resources</span></a>
+      <li><a href="#action-descriptions"><span class="secno">9.4</span> <span class="content">Action descriptions</span></a>
      </ol>
-    <li><a href="#deploy"><span class="secno">9</span> <span class="content">Deploying an orchestrator</span></a>
-    <li><a href="#policy-sec"><span class="secno">10</span> <span class="content">Policy</span></a>
+    <li><a href="#deploy"><span class="secno">10</span> <span class="content">Deploying an orchestrator</span></a>
     <li>
      <a href="#security-considerations"><span class="secno">11</span> <span class="content">Security considerations</span></a>
      <ol class="toc">
@@ -1657,11 +1595,17 @@ Its autonomy is supplied by the <a data-link-type="dfn" href="#policy" id="ref-f
      <tr>
       <td>as 
       <td>https://www.w3.org/ns/activitystreams# 
+     <tr>
+      <td>acl 
+      <td>
+     <tr>
+      <td>act 
+      <td>https://www.w3.org/ns/activitystreams# 
    </table>
    <h2 class="heading settled" data-level="5" id="high-level"><span class="secno">5. </span><span class="content">High-level overview</span><a class="self-link" href="#high-level"></a></h2>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="orchestrator">Orchestrator</dfn> is an <a data-link-type="dfn" href="#autonomous-agent" id="ref-for-autonomous-agent">Autonomous Agent</a> that dedicated to a single <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑤">Data Pod</a>, <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub">Service Hub</a>, or any other actor hosting the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log">Artefact Lifecycle Event Log</a> and a <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①">Inbox</a> resources.
-On behalf of that actor, the orchestrator interprets and executes business rules described in a <a data-link-type="dfn" href="#policy" id="ref-for-policy②">policy</a> that lead to taking zero or more actions (<a href="#actions">§ 8 Actions</a>) in the network.
-It therefore watches the <a data-link-type="dfn" href="#inbox" id="ref-for-inbox②">Inbox</a> for possible triggers (<a href="#triggers">§ 7 Triggers</a>), while it records the actions it takes to the to the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log①">Artefact Lifecycle Event Log</a>.</p>
+On behalf of that actor, the orchestrator interprets and executes business rules described in a <a data-link-type="dfn" href="#policy" id="ref-for-policy②">policy</a> that lead to taking zero or more actions (<a href="#actions">§ 9 Actions</a>) in the network.
+It therefore watches the <a data-link-type="dfn" href="#inbox" id="ref-for-inbox②">Inbox</a> for possible triggers (<a href="#triggers">§ 8 Triggers</a>), while it records the actions it takes to the to the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log①">Artefact Lifecycle Event Log</a>.</p>
    <h3 class="heading settled" data-level="5.1" id="perspectives"><span class="secno">5.1. </span><span class="content">Perspectives</span><a class="self-link" href="#perspectives"></a></h3>
    <p>From a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑥">Data Pod</a> perspective,
 the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator①">Orchestrator</a> participates in the network on behalf of the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑦">Data Pod</a>'s owner or <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer">Maintainer</a>.
@@ -2364,7 +2308,7 @@ Hence, a common interaction pattern is as follows:</p>
    <h2 class="heading settled" data-level="6" id="init"><span class="secno">6. </span><span class="content">Initialization interface</span><a class="self-link" href="#init"></a></h2>
    <p>When deployed, an orchestrator instance requires a minimal set of information in order to function.
 Therefore, it MUST expose a initialization interface so a external actor (eg., a maintainer) is able to supply it. 
-This provisioning MUST be possible using a <code>PUT</code> or <code>POST</code> to a dedicated <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a> resource if the orchestrator is deployed as a web service; see <a href="#deploy">§ 9 Deploying an orchestrator</a>.
+This provisioning MUST be possible using a <code>PUT</code> or <code>POST</code> to a dedicated <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a> resource if the orchestrator is deployed as a web service; see <a href="#deploy">§ 10 Deploying an orchestrator</a>.
 This interface MAY also use an <a href="https://www.w3.org/TR/ldp/#ldpr-resource">Linked Data Platform 1.0 §ldpr-resource</a> or even <a href="https://www.w3.org/TR/ldp/#ldpr-container">Linked Data Platform 1.0 §ldpr-container</a> in case the information is supplied using a description in <a data-link-type="biblio" href="#biblio-rdf11-primer">[RDF11-primer]</a>.</p>
    <svg content="<mxfile compressed=&quot;true&quot;><diagram id=&quot;I-sFH-hni88XnOLIhFXf&quot; name=&quot;Page-1&quot;>5Vhrb9owFP01SNsHUB6Ex0ceXVupU7tWU9t9qUxiEhcTI8fhsV+/68R5OATKaFmrFSSUe258Y/uc6xzRsEfz9TlHi+A78zBtWIa3btjjhmV1nR78SmCTAqZpWCnic+IprADuyG+sQEOhMfFwpN0oGKOCLHTQZWGIXaFhiHO20m+bMqo/dYF8vAXcuYhuo/fEE0GK9qxugV9g4gfZk81OP83MUXazWkkUII+tSpB91rBHnDGRXs3XI0zl5mX7ko77tiObT4zjUBwyQDGxRDRWa2tYHQpDhx5ZwqUvL8dIILjphnlZcsKzXIbAI0ojaoowGGLcYb4kLoari3iya2iyL2KTbTZncehhOV8T0quACHy3QK7MrkBegAViTlU6EpzNclKsHBkxChOQ9exO8oHMlFBawqeO/AKOKPFDwHjK4HCJuSBA/kDhc+J5cnLDCKZBQv9WMQ3qhKIsFKWi6SdfVpkYxZWsjtclSBF1jtkcC76BW1TWUZrJusZW8aqQoNlVWFCSX4YhpXo/r1wIAy6UNup1cvU06z8MnOfh/Y8nf3Uf/1rPek2zW6OeCnvYg85RIeMiYD4LET0r0GHBr5HIJLvnirGFYvUZC7FRxwCKBdM5l1uukmYbYthhvnlQ9ZLgUQYty8ni8bqcHW9UtJMjgbiPxZ6dyBYuV7uXSo4pEmSpnyN1xKihN4zAXHIJWLoEerZeIGIxd7EaU+76Shmz72h1mu2O3B2tVrrmrVqJUPIFvUI72yfPz9vL5oJR4m5qVXSFJvAa0ZjPOtUFwjDf16ocR+Q3miT1JNULua5kpc6w4Yxryd+v+Wrb5m8b9RTtQK9rZ6PltK2+zoPi85Uqae4om1Vg02mEX8tq+z1aHa+JSDq75ajosZQp2loGm1JwgzmBtUmNJJiHoiB/pRTnRcspnxjmC8dFElUrH3+GmP1/c4b09N7vVd4OO86QN+v7/iGOYxhHJMRRdLC7uI0pjg53JxXlggtbyMuQCfyyx5ggd+YnUr6OBYV5KtxDfHYtLYFIFNIynC1DklgU9aoy38YVdCquYNsUODWewDmVJ8jehCV+r7kbYNgHJKQHrFL0ZQBdHrI5i4E/Y+DDTnzd4wGNYzxg1SEksapeY5n/mgPT1nuqW+PMeidiYXu/P7IH6/53Hsw0ekeasLYumr7VOpkFs+vMlsyHE7b+GG4r0/Fn91Wdj+Orciv1tr7KeOEION5XOe/ioEzzZBbKOcQsXaZN/OmcTvtkVgfC4i+4lLbij0z77A8=</diagram></mxfile>" height="192px" version="1.1" viewBox="-0.5 -0.5 304 192" width="304px" xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
     <defs></defs>
@@ -2495,8 +2439,26 @@ Orchestrators SHOULD also implement <a data-link-type="biblio" href="#biblio-sol
      <p><code>acl:Read</code> to any watched <a data-link-type="biblio" href="#biblio-ldp">[LDP]</a> resource.</p>
    </ul>
    <p class="issue" id="issue-30e768f4"><a class="self-link" href="#issue-30e768f4"></a> are there more necessary authorizations?</p>
-   <h2 class="heading settled" data-level="7" id="triggers"><span class="secno">7. </span><span class="content">Triggers</span><a class="self-link" href="#triggers"></a></h2>
-   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="trigger">trigger</dfn> is an event to which an orchestrator can respond by taking <a data-link-type="dfn" href="#action" id="ref-for-action⑦">actions</a>.
+   <h2 class="heading settled" data-level="7" id="policy-sec"><span class="secno">7. </span><span class="content">Policy</span><a class="self-link" href="#policy-sec"></a></h2>
+   <p>The policy is a set of rules that determines the orchestrator’s level of autonomy.
+A rule dictates what <a data-link-type="dfn" href="#action" id="ref-for-action⑦">action</a> to take when a <a data-link-type="dfn" href="#trigger" id="ref-for-trigger⑤">trigger</a> occurs (<a href="#triggers">§ 8 Triggers</a>) on behalf of the maintainer.
+In practice, the policy reflects a composition of procedures imposed by:</p>
+   <ul>
+    <li data-md>
+     <p>the institution (ie. the employer of the maintainer and the owner of the artefacts);</p>
+    <li data-md>
+     <p>the domain (ie. the broader collaboration context the institution is situated in);</p>
+    <li data-md>
+     <p>legislation (ie. the legal obligations);</p>
+    <li data-md>
+     <p>or personal preference (ie. the maintainer).</p>
+   </ul>
+   <p>Hence, different policies need to have a common language to achieve interoperability.
+This rule language is described in [spec-rulelanguage].</p>
+   <p>A orchestrator MUST be able to interpret and executed policies that comply with [spec-rulelanguage].
+Requirements regarding <a data-link-type="dfn" href="#action" id="ref-for-action⑧">actions</a> and <a data-link-type="dfn" href="#trigger" id="ref-for-trigger⑥">triggers</a> are discussed in the next sections.</p>
+   <h2 class="heading settled" data-level="8" id="triggers"><span class="secno">8. </span><span class="content">Triggers</span><a class="self-link" href="#triggers"></a></h2>
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="trigger">trigger</dfn> is an event to which an orchestrator can respond by taking <a data-link-type="dfn" href="#action" id="ref-for-action⑨">actions</a>.
 An orchestrator MUST respond to the following three types of triggers:</p>
    <ul>
     <li data-md>
@@ -2507,7 +2469,8 @@ An orchestrator MUST respond to the following three types of triggers:</p>
      <p>a scheduled trigger from the internal time-based event scheduler</p>
    </ul>
    <p>A trigger MUST be identifyable by a <a data-link-type="biblio" href="#biblio-uri">[URI]</a>, such that the rules written in the <a data-link-type="biblio" href="#biblio-spec-rulelanguage">[spec-rulelanguage]</a> can refer to its occurence.</p>
-   <h3 class="heading settled" data-level="7.1" id="trigger-ldn"><span class="secno">7.1. </span><span class="content">Receving Linked Data Notifications</span><a class="self-link" href="#trigger-ldn"></a></h3>
+   <p class="issue" id="issue-28992a97"><a class="self-link" href="#issue-28992a97"></a> define something like a trigger description?</p>
+   <h3 class="heading settled" data-level="8.1" id="trigger-ldn"><span class="secno">8.1. </span><span class="content">Receving Linked Data Notifications</span><a class="self-link" href="#trigger-ldn"></a></h3>
    <p>Sending a Linked Data Notification is the primary way to provoke action from the Orchestrator.
 Common senders of notifications are:</p>
    <ul>
@@ -2521,7 +2484,7 @@ An orchestrator MUST be a compliant <a href="https://www.w3.org/TR/ldn/#consumer
 It MAY watch zero or more advertise inboxes, as mentioned in <a href="#init">§ 6 Initialization interface</a> and MUST retrieve incoming Linked Data Notifications from all advertised inboxes.
 Inboxes MAY be authenticated according to <a href="https://www.w3.org/TR/ldn/#authenticated-inboxes">Linked Data Notifications §authenticated-inboxes</a>, which is discussed further in <a href="#security-considerations">§ 11 Security considerations</a>.</p>
    <p>The definitions of all possible <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> notifications using the <a data-link-type="biblio" href="#biblio-activitystreams-vocabulary">[ACTIVITYSTREAMS-VOCABULARY]</a> are listed in the <a data-link-type="biblio" href="#biblio-spec-notifications">[spec-notifications]</a>.
-An orchestrator MUST at least supporte the following subset:</p>
+An orchestrator MUST at least support the following subset:</p>
    <ul>
     <li data-md>
      <p><a href="https://www.w3.org/ns/activitystreams#Create">as:Create</a></p>
@@ -2563,49 +2526,52 @@ The shape definitions MAY also conform to the <a href="https://shex.io/">SHEX</a
   sh:ignoredProperties ( rdf:type ) .
 </pre>
    </div>
-   <h3 class="heading settled" data-level="7.2" id="trigger-resource"><span class="secno">7.2. </span><span class="content">Observing resource state changes</span><a class="self-link" href="#trigger-resource"></a></h3>
-   <p>An orchestrator can also watch LDP resources ([<a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform 1.0 §ldpr</a>), for instance by means of polling, whose state changes issue a trigger.</p>
-   <p>Hence,  MUST accept resource stage changes of <a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform 1.0 §ldpr</a> as triggers for policy actions.
-In case the observed [<a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform 1.0 §ldpr</a> is also a <a href="https://www.w3.org/TR/ldp/#ldpc">Linked Data Platform 1.0 §ldpc</a>, 
+   <h3 class="heading settled" data-level="8.2" id="trigger-resource"><span class="secno">8.2. </span><span class="content">Observing resource state changes</span><a class="self-link" href="#trigger-resource"></a></h3>
+   <p>An orchestrator can also watch LDP resources ([<a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform 1.0 §ldpr</a>) (e.g, by means of polling) whose state changes issue a trigger.
+Hence, an orchestrator MUST accept resource stage changes of <a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform 1.0 §ldpr</a> as triggers for policy actions.
+In case the observed [<a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform 1.0 §ldpr</a> is also a LDP container (<a href="https://www.w3.org/TR/ldp/#ldpc">Linked Data Platform 1.0 §ldpc</a>), 
 the orchestrator MUST observe state changes for all <a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform 1.0 §ldpr</a> that are contained by the observed <a href="https://www.w3.org/TR/ldp/#ldpc">Linked Data Platform 1.0 §ldpc</a>.
 The Orchestrator MUST request <code>acl:Read</code> access all observed [<a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform 1.0 §ldpr</a> as noted in <a href="#init">§ 6 Initialization interface</a>.</p>
-   <p>At least following state changes MUST be observed as triggers:</p>
+   <p>At least following state changes MUST issue a trigger:</p>
    <ul>
     <li data-md>
      <p>Update of a resource by observing a change in the <code>Last-Modified</code> or <code>ETag</code> headers.</p>
     <li data-md>
-     <p>Deletion of a resource by observing</p>
+     <p>Deletion of a resource by observing a <code>4XX</code> status code</p>
    </ul>
    <p class="issue" id="issue-21d3f57f"><a class="self-link" href="#issue-21d3f57f"></a> Make resource state changes more concrete: how exactly using HTTP, eg. last modified</p>
-   <p>In case of an <a href="https://www.w3.org/TR/ldp/#ldpc">Linked Data Platform 1.0 §ldpc</a>, the orchestrator MUST also observe state changes</p>
-   <ul>
-    <li data-md>
-     <p>Creation of a resource</p>
-   </ul>
-   <h3 class="heading settled" data-level="7.3" id="trigger-schedule"><span class="secno">7.3. </span><span class="content">Scheduled trigger</span><a class="self-link" href="#trigger-schedule"></a></h3>
-    An Orchestrator MAY accept time scheduled triggers for policy actions. 
-   <h4 class="heading settled" data-level="7.3.1" id="datetime-trigger"><span class="secno">7.3.1. </span><span class="content">datetime trigger</span><a class="self-link" href="#datetime-trigger"></a></h4>
-    A datetime trigger is a trigger that MUST be evaluated automatically at set points in time, defined by the trigger.
-A datetime trigger can define multiple points in time to trigger an action.
-All passed <code>datetime</code> values MUST be valid <code>xsd:dateTime</code> literals. 
-   <h4 class="heading settled" data-level="7.3.2" id="time-interval-trigger"><span class="secno">7.3.2. </span><span class="content">time interval trigger</span><a class="self-link" href="#time-interval-trigger"></a></h4>
-    A time interval trigger is a trigger that is fired at set intervals in time.
-A time interval trigger MUST trigger an action on every matching time interval during the time the trigger is active and the orchestrator is running. 
-   <h2 class="heading settled" data-level="8" id="actions"><span class="secno">8. </span><span class="content">Actions</span><a class="self-link" href="#actions"></a></h2>
+   <p>In case of an <a href="https://www.w3.org/TR/ldp/#ldpc">Linked Data Platform 1.0 §ldpc</a>,
+the creation or deletion of a container member MUST also issue a trigger.
+Thus, the orchestrator SHOULD observe a difference in the set of <code>?resource</code> bindings by matching the triple pattern <code>?container ldp:contains ?resource</code> on the container’s response.</p>
+   <h3 class="heading settled" data-level="8.3" id="trigger-schedule"><span class="secno">8.3. </span><span class="content">Scheduled trigger</span><a class="self-link" href="#trigger-schedule"></a></h3>
+   <p>Finally, some triggers might be configured as recurrent and activate the orchestrator on scheduled intervals.
+Therefore, an Orchestrator MUST accept triggers from a time-based job scheduler such as <a data-link-type="biblio" href="#biblio-cron">[cron]</a>.</p>
+   <p>Scheduled trigger can be configured using the crontab; an orchestrator MUST be able to interpret the pattern syntax defined in <a data-link-type="biblio" href="#biblio-cron">[cron]</a>.
+A trigger MUST invoke an action on every matching pattern during the time the trigger is active and the orchestrator is running.</p>
+   <div class="example" id="example-829cff51">
+    <a class="self-link" href="#example-829cff51"></a> 
+<pre># Issue trigger every weekday morning at 3:15 am
+
+ex:trigger ex:pattern "15 3 * * 1-5"^^ex:crontab
+</pre>
+   </div>
+   <h2 class="heading settled" data-level="9" id="actions"><span class="secno">9. </span><span class="content">Actions</span><a class="self-link" href="#actions"></a></h2>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="action">action</dfn> is a form of interation with other actors or resources in the network.
-Orchestrator performs such actions on behalf of a network <a data-link-type="dfn" href="#actor" id="ref-for-actor④">actor</a>.
-There are three types of actions that an orchestrator can take:</p>
+An Orchestrator performs such <a data-link-type="dfn" href="#action" id="ref-for-action①⓪">actions</a> on behalf of a network <a data-link-type="dfn" href="#actor" id="ref-for-actor④">actor</a>.</p>
+   <p>There are three types of actions that an orchestrator MUST support:</p>
    <ul>
     <li data-md>
-     <p>sending Linked Data Notifications <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> to the inbox of a <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub⑨">Service Hub</a> or <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod①⑨">Data Pod</a>.</p>
+     <p>sending Linked Data Notifications <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> to an <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①⓪">inbox</a> resource, likely belonging to a <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub⑨">Service Hub</a> or <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod①⑨">Data Pod</a>.</p>
     <li data-md>
      <p>manipulating <a data-link-type="biblio" href="#biblio-ldp">[LDP]</a> resources of a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod②⓪">Data Pod</a>.</p>
     <li data-md>
-     <p>reading any <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a> resource</p>
+     <p>reading arbitrary <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a> resources</p>
    </ul>
-   <h3 class="heading settled" data-level="8.1" id="sending-linked-data-notifications"><span class="secno">8.1. </span><span class="content">Sending Linked Data notifications</span><a class="self-link" href="#sending-linked-data-notifications"></a></h3>
-   <p>An orchestrator MUST be a compliant <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> <a href="https://www.w3.org/TR/ldn/#sender">Sender</a>.
-It MUST be able to send the following notifications from the <a data-link-type="biblio" href="#biblio-activitystreams-vocabulary">[ACTIVITYSTREAMS-VOCABULARY]</a>:</p>
+   <h3 class="heading settled" data-level="9.1" id="sending-linked-data-notifications"><span class="secno">9.1. </span><span class="content">Sending Linked Data notifications</span><a class="self-link" href="#sending-linked-data-notifications"></a></h3>
+   <p>Sending a Linked Data Notification is the primary way to provoke action from other actors in the network.
+Hence, an orchestrator MUST be a compliant <a href="https://www.w3.org/TR/ldn/#sender">Linked Data Notifications §sender</a>.</p>
+   <p>From the list of possible <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> notifications in <a data-link-type="biblio" href="#biblio-spec-notifications">[spec-notifications]</a>,
+an orchestrator MUST at least be able to send the following subset:</p>
    <ul>
     <li data-md>
      <p><a href="https://www.w3.org/ns/activitystreams#Create">as:Create</a></p>
@@ -2615,68 +2581,73 @@ It MUST be able to send the following notifications from the <a data-link-type="
      <p><a href="https://www.w3.org/ns/activitystreams#Update">as:Update</a></p>
     <li data-md>
      <p><a href="https://www.w3.org/ns/activitystreams#Delete">as:Delete</a></p>
-   </ul>
-   <p>Within a notification, the following <a href="https://www.w3.org/TR/activitystreams-core/#actors">Actor type</a> mapping MUST be used:</p>
-   <ul>
     <li data-md>
-     <p><a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub①⓪">Service Hub</a> --> <a href="https://www.w3.org/ns/activitystreams#Service">as:Service</a></p>
+     <p><a href="https://www.w3.org/ns/activitystreams#Undo">as:Undo</a></p>
     <li data-md>
-     <p><a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer①③">Maintainer</a> --> <a href="https://www.w3.org/ns/activitystreams#Organization">as:Organization</a> or <a href="https://www.w3.org/ns/activitystreams#Person">as:Person</a></p>
-   </ul>
-   <p>The object MUST contain the artefact to which the action has effect.
-It SHOULD have one of the following types:</p>
-   <ul>
+     <p><a href="https://www.w3.org/ns/activitystreams#Accept">as:Accept</a></p>
     <li data-md>
-     <p>https://www.w3.org/ns/activitystreams#Object</p>
+     <p><a href="https://www.w3.org/ns/activitystreams#Reject">as:Reject</a></p>
    </ul>
-   <p>Example:</p>
-<pre class="language-json highlight"><c- p>{</c->
-  <c- f>"@context"</c-><c- p>:</c-> <c- u>"https://www.w3.org/ns/activitystreams"</c-><c- p>,</c->
-  <c- f>"summary"</c-><c- p>:</c-> <c- u>"Koninklijke Bibliotheek announces Alba"</c-><c- p>,</c->
-  <c- f>"type"</c-><c- p>:</c-> <c- u>"Create"</c-><c- p>,</c->
-  <c- f>"actor"</c-><c- p>:</c-> <c- p>{</c->
-    <c- f>"@context"</c-><c- p>:</c-> <c- u>"https://schema.org/"</c-><c- p>,</c->
-    <c- f>"@type"</c-><c- p>:</c-> <c- u>"Organization"</c-><c- p>,</c->
-    <c- f>"name"</c-><c- p>:</c-> <c- u>"Koninklijke Bibliotheek"</c-><c- p>,</c->
-    <c- f>"@id"</c-><c- p>:</c-> <c- u>"https://www.kb.nl/"</c->
-  <c- p>},</c->
-  <c- f>"object"</c-><c- p>:</c-> <c- p>{</c->
-    <c- f>"@context"</c-><c- p>:</c-> <c- u>"https://schema.org/"</c-><c- p>,</c->
-    <c- f>"@type"</c-><c- p>:</c-> <c- u>"Dataset"</c-><c- p>,</c->
-    <c- f>"@id"</c-><c- p>:</c-> <c- u>"https://data.bibliotheken.nl/doc/dataset/rise-alba"</c-><c- p>,</c->
-  <c- p>},</c->
-  <c- f>"origin"</c-><c- p>:</c-> <c- p>{</c->
-    <c- f>"@context"</c-><c- p>:</c-> <c- u>"https://schema.org/"</c-><c- p>,</c->
-    <c- f>"@id"</c-><c- p>:</c-> <c- u>"http://example.org/Adlib"</c-><c- p>,</c->
-    <c- f>"@type"</c-><c- p>:</c-> <c- u>"SoftwareApplication"</c->
-  <c- p>},</c->
-  <c- f>"updated"</c-><c- p>:</c-> <c- u>"2021-01-28T19:56:20.114Z"</c->
-<c- p>}</c->
-</pre>
-   <h3 class="heading settled" data-level="8.2" id="manipulating-ldp-resources"><span class="secno">8.2. </span><span class="content">Manipulating LDP resources</span><a class="self-link" href="#manipulating-ldp-resources"></a></h3>
-   <p>An Orchestrator MUST implement the following <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a> :</p>
+   <h3 class="heading settled" data-level="9.2" id="reading-http-resources"><span class="secno">9.2. </span><span class="content">Reading HTTP resources</span><a class="self-link" href="#reading-http-resources"></a></h3>
+   <p>A second type of action is reading <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a> resources.
+Thus, an orchestrator MUST be able to construct a <code>GET</code> request.</p>
+   <p class="issue" id="issue-23015a27"><a class="self-link" href="#issue-23015a27"></a> does this make sense?</p>
+   <h3 class="heading settled" data-level="9.3" id="manipulating-ldp-resources"><span class="secno">9.3. </span><span class="content">Manipulating LDP resources</span><a class="self-link" href="#manipulating-ldp-resources"></a></h3>
+   <p>A final action is performing create, read, update and delete operations on a <a href="https://www.w3.org/TR/ldp/#ldpr">Linked Data Platform 1.0 §ldpr</a> and <a href="https://www.w3.org/TR/ldp/#ldpc">Linked Data Platform 1.0 §ldpc</a> Therefore, an Orchestrator MUST be a <a href="https://www.w3.org/TR/ldp/#dfn-ldp-client">Linked Data Platform 1.0 §dfn-ldp-client</a> and implement at least the verbs <code>PUT</code>, <code>PATCH</code> and <code>DELETE</code>.</p>
    <p class="issue" id="issue-b7b1e314"><a class="self-link" href="#issue-b7b1e314"></a> TODO</p>
    <ul>
     <li data-md>
-     <p>Create: <code>PUT</code></p>
-    <li data-md>
-     <p>Read: <code>GET</code></p>
-    <li data-md>
-     <p>Update: <code>PATCH</code></p>
-    <li data-md>
-     <p>Delete: <code>DELETE</code></p>
-   </ul>
-   <h3 class="heading settled" data-level="8.3" id="reading-http-resources"><span class="secno">8.3. </span><span class="content">Reading HTTP resources</span><a class="self-link" href="#reading-http-resources"></a></h3>
-   <p>An Orchestrator MUST implement the following :</p>
-   <p class="issue" id="issue-b7b1e314①"><a class="self-link" href="#issue-b7b1e314①"></a> TODO</p>
-   <ul>
-    <li data-md>
      <p>Read: <code>GET</code></p>
    </ul>
-   <h2 class="heading settled" data-level="9" id="deploy"><span class="secno">9. </span><span class="content">Deploying an orchestrator</span><a class="self-link" href="#deploy"></a></h2>
+   <h3 class="heading settled" data-level="9.4" id="action-descriptions"><span class="secno">9.4. </span><span class="content">Action descriptions</span><a class="self-link" href="#action-descriptions"></a></h3>
+   <p>When a policy rule executed in response to a <a data-link-type="dfn" href="#trigger" id="ref-for-trigger⑦">trigger</a>, it produces zero or more actions.
+Each of these actions is captured in a <dfn data-dfn-type="dfn" data-noexport id="action-description">action description<a class="self-link" href="#action-description"></a></dfn>, which uses a simple vocabulary:</p>
+   <dl>
+    <dt data-md>Class
+    <dd data-md>
+     <p><code>act:Action</code></p>
+    <dt data-md>Subclasses
+    <dd data-md>
+     <p><code>act:NotifyAction</code> | <code>act:HTTPAction</code></p>
+    <dt data-md>Properties
+    <dd data-md>
+     <p><code>act:payload</code> | <code>act:target</code> | <code>act:description</code></p>
+   </dl>
+   <p>This vocabulary MUST be interpretable by the orchestrator and MUST result in an executed action.
+The specific requirements are discussed per action type below.</p>
+   <div class="example" id="example-8a14163d">
+    <a class="self-link" href="#example-8a14163d"></a> 
+<pre>{
+  "@context": "https://mellonscholarlycommunication.github.io/vocabulary/act/context",
+  "type": "NotifyAction",
+  "description": "Notify service hub of artefact creation.",
+  "target": "https://servicehub.org/inbox",
+  "payload": {
+	  "@type": "as:Create",
+	  ...
+  }
+}
+</pre>
+   </div>
+   <div class="example" id="example-859edb76">
+    <a class="self-link" href="#example-859edb76"></a> 
+<pre>{
+  "@context": "https://mellonscholarlycommunication.github.io/context",
+  "type": "HttpAction",
+  "description": "Notify service hub of artefact creation.",
+  "target": "https://servicehub.org/resource",
+  "payload": {
+	  "@type": "http:Request", 
+	  "http:methodName": "POST",
+	  ...
+  }
+}
+</pre>
+   </div>
+   <h2 class="heading settled" data-level="10" id="deploy"><span class="secno">10. </span><span class="content">Deploying an orchestrator</span><a class="self-link" href="#deploy"></a></h2>
    <p>An Orchestrator MUST be deployable as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="local-background-process">local background process</dfn> or as a <dfn data-dfn-type="dfn" data-export id="remote-web-service">remote web service<a class="self-link" href="#remote-web-service"></a></dfn>.
-In case of the latter, an actor SHOULD be able to spawn, initialize and trigger the instance over <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a>, as defined in <a href="#deploy">§ 9 Deploying an orchestrator</a> and <a href="#triggers">§ 7 Triggers</a>.
-The Orchestrator MAY also serve an <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①⓪">inbox</a> for communicating with third-parties using Linked Data Notifications <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> .</p>
+In case of the latter, an actor SHOULD be able to spawn, initialize and trigger the instance over <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a>, as defined in <a href="#deploy">§ 10 Deploying an orchestrator</a> and <a href="#triggers">§ 8 Triggers</a>.
+The Orchestrator MAY also serve an <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①①">inbox</a> for communicating with third-parties using Linked Data Notifications <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> .</p>
    <p>Example of spawning an orchestrator using Linked Data Notifications:</p>
 <pre>
 POST /inbox HTTP/1.1
@@ -2693,8 +2664,6 @@ Content-Language: en
 }
 </pre>
    <p>If deployed as a <a data-link-type="dfn" href="#local-background-process" id="ref-for-local-background-process">local background process</a>, an (custom) API MUST be present that is able perform these actions.</p>
-   <h2 class="heading settled" data-level="10" id="policy-sec"><span class="secno">10. </span><span class="content">Policy</span><a class="self-link" href="#policy-sec"></a></h2>
-   <p>Set of rules that dictates what actions need to be taken when a lifecycle event occurs. These originate from the digital heritage network participation agreement, possibly amended with procedures imposed by the institution, the discipline, or personal preference.</p>
    <h2 class="heading settled" data-level="11" id="security-considerations"><span class="secno">11. </span><span class="content">Security considerations</span><a class="self-link" href="#security-considerations"></a></h2>
    <h3 class="heading settled" data-level="11.1" id="authenticated-inboxes"><span class="secno">11.1. </span><span class="content">Authenticated Inboxes</span><a class="self-link" href="#authenticated-inboxes"></a></h3>
     In case the Orchestrator supports <a href="#trigger-ldn">triggers from incoming Linked Data Notifications</a>, the Orchestrator SHOULD make use of <a href="https://www.w3.org/TR/ldn/#authenticated-inboxes">authenticated inboxes</a> as described by the <a href="https://www.w3.org/TR/ldn/">Linked Data Notifications</a> specification.
@@ -2856,7 +2825,8 @@ There was an upcoming panel on signed notifications - TODO
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
-   <li><a href="#action">action</a><span>, in §8</span>
+   <li><a href="#action">action</a><span>, in §9</span>
+   <li><a href="#action-description">action description</a><span>, in §9.4</span>
    <li><a href="#actor">Actor</a><span>, in §3</span>
    <li><a href="#artefact">Artefact</a><span>, in §3</span>
    <li><a href="#artefact-lifecycle-event-log">Artefact Lifecycle Event Log</a><span>, in §3</span>
@@ -2864,20 +2834,22 @@ There was an upcoming panel on signed notifications - TODO
    <li><a href="#dashboard">Dashboard</a><span>, in §3</span>
    <li><a href="#data-pod">Data Pod</a><span>, in §3</span>
    <li><a href="#inbox">Inbox</a><span>, in §3</span>
-   <li><a href="#local-background-process">local background process</a><span>, in §9</span>
+   <li><a href="#local-background-process">local background process</a><span>, in §10</span>
    <li><a href="#maintainer">Maintainer</a><span>, in §3</span>
    <li><a href="#orchestrator">Orchestrator</a><span>, in §5</span>
    <li><a href="#policy">Policy</a><span>, in §3</span>
    <li><a href="#policy-language">Policy Language</a><span>, in §3</span>
-   <li><a href="#remote-web-service">remote web service</a><span>, in §9</span>
+   <li><a href="#remote-web-service">remote web service</a><span>, in §10</span>
    <li><a href="#service-hub">Service Hub</a><span>, in §3</span>
-   <li><a href="#trigger">trigger</a><span>, in §7</span>
+   <li><a href="#trigger">trigger</a><span>, in §8</span>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-activitystreams-vocabulary">[ACTIVITYSTREAMS-VOCABULARY]
    <dd>James Snell; Evan Prodromou. <a href="https://www.w3.org/TR/activitystreams-vocabulary/">Activity Vocabulary</a>. 23 May 2017. REC. URL: <a href="https://www.w3.org/TR/activitystreams-vocabulary/">https://www.w3.org/TR/activitystreams-vocabulary/</a>
+   <dt id="biblio-cron">[CRON]
+   <dd>The Open Group. <a href="https://pubs.opengroup.org/onlinepubs/9699919799/">crontab - schedule periodic background work</a>. Standard. URL: <a href="https://pubs.opengroup.org/onlinepubs/9699919799/">https://pubs.opengroup.org/onlinepubs/9699919799/</a>
    <dt id="biblio-http11">[HTTP11]
    <dd>R. Fielding, Ed.; J. Reschke, Ed.. <a href="https://httpwg.org/specs/rfc7230.html">Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing</a>. June 2014. Proposed Standard. URL: <a href="https://httpwg.org/specs/rfc7230.html">https://httpwg.org/specs/rfc7230.html</a>
    <dt id="biblio-ldn">[LDN]
@@ -2909,10 +2881,11 @@ There was an upcoming panel on signed notifications - TODO
    <div class="issue"> MVS: because I’m not sure it’s realistic to poll any HTTP resource, I limited the scope to LDP resources. But even then, I’m not sure how you would do this in practice without keeping a lot of state.<a href="#issue-f793a3dc"> ↵ </a></div>
    <div class="issue"> MVS: is this registration of inbox, resources something we want to do at initialization or do we write this in the policy? <a href="https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/9">&lt;https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/9></a><a href="#issue-65b319db"> ↵ </a></div>
    <div class="issue"> are there more necessary authorizations?<a href="#issue-30e768f4"> ↵ </a></div>
+   <div class="issue"> define something like a trigger description?<a href="#issue-28992a97"> ↵ </a></div>
    <div class="issue"> What notifications do NOT trigger the orchestrator? <a href="https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/8">&lt;https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/8></a><a href="#issue-7031d811"> ↵ </a></div>
    <div class="issue"> Make resource state changes more concrete: how exactly using HTTP, eg. last modified<a href="#issue-21d3f57f"> ↵ </a></div>
+   <div class="issue"> does this make sense?<a href="#issue-23015a27"> ↵ </a></div>
    <div class="issue"> TODO<a href="#issue-b7b1e314"> ↵ </a></div>
-   <div class="issue"> TODO<a href="#issue-b7b1e314①"> ↵ </a></div>
   </div>
   <aside class="dfn-panel" data-for="autonomous-agent">
    <b><a href="#autonomous-agent">#autonomous-agent</a></b><b>Referenced in:</b>
@@ -2931,8 +2904,8 @@ There was an upcoming panel on signed notifications - TODO
    <ul>
     <li><a href="#ref-for-actor">5.1. Perspectives</a> <a href="#ref-for-actor①">(2)</a>
     <li><a href="#ref-for-actor②">5.2. Common interaction pattern</a>
-    <li><a href="#ref-for-actor③">7.1. Receving Linked Data Notifications</a>
-    <li><a href="#ref-for-actor④">8. Actions</a>
+    <li><a href="#ref-for-actor③">8.1. Receving Linked Data Notifications</a>
+    <li><a href="#ref-for-actor④">9. Actions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="maintainer">
@@ -2940,8 +2913,7 @@ There was an upcoming panel on signed notifications - TODO
    <ul>
     <li><a href="#ref-for-maintainer">5.1. Perspectives</a> <a href="#ref-for-maintainer①">(2)</a> <a href="#ref-for-maintainer②">(3)</a> <a href="#ref-for-maintainer③">(4)</a> <a href="#ref-for-maintainer④">(5)</a> <a href="#ref-for-maintainer⑤">(6)</a>
     <li><a href="#ref-for-maintainer⑥">5.2. Common interaction pattern</a> <a href="#ref-for-maintainer⑦">(2)</a> <a href="#ref-for-maintainer⑧">(3)</a> <a href="#ref-for-maintainer⑨">(4)</a> <a href="#ref-for-maintainer①⓪">(5)</a> <a href="#ref-for-maintainer①①">(6)</a>
-    <li><a href="#ref-for-maintainer①②">7.1. Receving Linked Data Notifications</a>
-    <li><a href="#ref-for-maintainer①③">8.1. Sending Linked Data notifications</a>
+    <li><a href="#ref-for-maintainer①②">8.1. Receving Linked Data Notifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="data-pod">
@@ -2952,8 +2924,8 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-data-pod⑥">5.1. Perspectives</a> <a href="#ref-for-data-pod⑦">(2)</a> <a href="#ref-for-data-pod⑧">(3)</a> <a href="#ref-for-data-pod⑨">(4)</a> <a href="#ref-for-data-pod①⓪">(5)</a> <a href="#ref-for-data-pod①①">(6)</a> <a href="#ref-for-data-pod①②">(7)</a> <a href="#ref-for-data-pod①③">(8)</a>
     <li><a href="#ref-for-data-pod①④">5.2. Common interaction pattern</a> <a href="#ref-for-data-pod①⑤">(2)</a>
     <li><a href="#ref-for-data-pod①⑥">6. Initialization interface</a> <a href="#ref-for-data-pod①⑦">(2)</a>
-    <li><a href="#ref-for-data-pod①⑧">7. Triggers</a>
-    <li><a href="#ref-for-data-pod①⑨">8. Actions</a> <a href="#ref-for-data-pod②⓪">(2)</a>
+    <li><a href="#ref-for-data-pod①⑧">8. Triggers</a>
+    <li><a href="#ref-for-data-pod①⑨">9. Actions</a> <a href="#ref-for-data-pod②⓪">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="inbox">
@@ -2963,9 +2935,10 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-inbox①">5. High-level overview</a> <a href="#ref-for-inbox②">(2)</a>
     <li><a href="#ref-for-inbox③">5.1. Perspectives</a> <a href="#ref-for-inbox④">(2)</a> <a href="#ref-for-inbox⑤">(3)</a>
     <li><a href="#ref-for-inbox⑥">6. Initialization interface</a> <a href="#ref-for-inbox⑦">(2)</a>
-    <li><a href="#ref-for-inbox⑧">7. Triggers</a>
-    <li><a href="#ref-for-inbox⑨">7.1. Receving Linked Data Notifications</a>
-    <li><a href="#ref-for-inbox①⓪">9. Deploying an orchestrator</a>
+    <li><a href="#ref-for-inbox⑧">8. Triggers</a>
+    <li><a href="#ref-for-inbox⑨">8.1. Receving Linked Data Notifications</a>
+    <li><a href="#ref-for-inbox①⓪">9. Actions</a>
+    <li><a href="#ref-for-inbox①①">10. Deploying an orchestrator</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="artefact-lifecycle-event-log">
@@ -2983,9 +2956,8 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-service-hub">5. High-level overview</a>
     <li><a href="#ref-for-service-hub①">5.1. Perspectives</a> <a href="#ref-for-service-hub②">(2)</a> <a href="#ref-for-service-hub③">(3)</a>
     <li><a href="#ref-for-service-hub④">5.2. Common interaction pattern</a> <a href="#ref-for-service-hub⑤">(2)</a> <a href="#ref-for-service-hub⑥">(3)</a> <a href="#ref-for-service-hub⑦">(4)</a>
-    <li><a href="#ref-for-service-hub⑧">7.1. Receving Linked Data Notifications</a>
-    <li><a href="#ref-for-service-hub⑨">8. Actions</a>
-    <li><a href="#ref-for-service-hub①⓪">8.1. Sending Linked Data notifications</a>
+    <li><a href="#ref-for-service-hub⑧">8.1. Receving Linked Data Notifications</a>
+    <li><a href="#ref-for-service-hub⑨">9. Actions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="policy">
@@ -2995,7 +2967,7 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-policy②">5. High-level overview</a>
     <li><a href="#ref-for-policy③">5.1. Perspectives</a> <a href="#ref-for-policy④">(2)</a>
     <li><a href="#ref-for-policy⑤">6. Initialization interface</a> <a href="#ref-for-policy⑥">(2)</a> <a href="#ref-for-policy⑦">(3)</a>
-    <li><a href="#ref-for-policy⑧">7.1. Receving Linked Data Notifications</a>
+    <li><a href="#ref-for-policy⑧">8.1. Receving Linked Data Notifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dashboard">
@@ -3003,7 +2975,7 @@ There was an upcoming panel on signed notifications - TODO
    <ul>
     <li><a href="#ref-for-dashboard">5.1. Perspectives</a> <a href="#ref-for-dashboard①">(2)</a> <a href="#ref-for-dashboard②">(3)</a> <a href="#ref-for-dashboard③">(4)</a>
     <li><a href="#ref-for-dashboard④">5.2. Common interaction pattern</a> <a href="#ref-for-dashboard⑤">(2)</a>
-    <li><a href="#ref-for-dashboard⑥">7.1. Receving Linked Data Notifications</a>
+    <li><a href="#ref-for-dashboard⑥">8.1. Receving Linked Data Notifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="orchestrator">
@@ -3020,6 +2992,8 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-trigger">2. Introduction</a>
     <li><a href="#ref-for-trigger①">5.1. Perspectives</a> <a href="#ref-for-trigger②">(2)</a>
     <li><a href="#ref-for-trigger③">5.2. Common interaction pattern</a> <a href="#ref-for-trigger④">(2)</a>
+    <li><a href="#ref-for-trigger⑤">7. Policy</a> <a href="#ref-for-trigger⑥">(2)</a>
+    <li><a href="#ref-for-trigger⑦">9.4. Action descriptions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="action">
@@ -3028,13 +3002,15 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-action">2. Introduction</a>
     <li><a href="#ref-for-action①">5.1. Perspectives</a> <a href="#ref-for-action②">(2)</a> <a href="#ref-for-action③">(3)</a> <a href="#ref-for-action④">(4)</a>
     <li><a href="#ref-for-action⑤">5.2. Common interaction pattern</a> <a href="#ref-for-action⑥">(2)</a>
-    <li><a href="#ref-for-action⑦">7. Triggers</a>
+    <li><a href="#ref-for-action⑦">7. Policy</a> <a href="#ref-for-action⑧">(2)</a>
+    <li><a href="#ref-for-action⑨">8. Triggers</a>
+    <li><a href="#ref-for-action①⓪">9. Actions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="local-background-process">
    <b><a href="#local-background-process">#local-background-process</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-local-background-process">9. Deploying an orchestrator</a>
+    <li><a href="#ref-for-local-background-process">10. Deploying an orchestrator</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */

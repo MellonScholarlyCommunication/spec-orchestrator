@@ -101,6 +101,12 @@ Within this document, the following namespace prefix bindings are used:
 <tr>
 <td>as
 <td>https://www.w3.org/ns/activitystreams#
+<tr>
+<td>acl
+<td>
+<tr>
+<td>act
+<td>https://www.w3.org/ns/activitystreams#
 </table>
 
 High-level overview {#high-level}
@@ -205,6 +211,23 @@ If access is not granted, an Orchestrator MUST request access to the following r
 
 Issue(#10): are there more necessary authorizations?
 
+Policy {#policy-sec}
+=====================
+
+The policy is a set of rules that determines the orchestrator's level of autonomy. 
+A rule dictates what [=action=] to take when a [=trigger=] occurs ([[#triggers]]) on behalf of the maintainer.
+In practice, the policy reflects a composition of procedures imposed by:
+
+- the institution (ie. the employer of the maintainer and the owner of the artefacts);
+- the domain (ie. the broader collaboration context the institution is situated in);
+- legislation (ie. the legal obligations);
+- or personal preference (ie. the maintainer).
+
+Hence, different policies need to have a common language to achieve interoperability. 
+This rule language is described in [spec-rulelanguage].
+
+A orchestrator MUST be able to interpret and executed policies that comply with [spec-rulelanguage].
+Requirements regarding [=actions=] and [=triggers=] are discussed in the next sections.
 
 Triggers {#triggers}
 =====================
@@ -217,6 +240,8 @@ An orchestrator MUST respond to the following three types of triggers:
 - a scheduled trigger from the internal time-based event scheduler
 
 A trigger MUST be identifyable by a [[!URI]], such that the rules written in the [[spec-rulelanguage]] can refer to its occurence.
+
+Issue: define something like a trigger description?
 
 ## Receving Linked Data Notifications ## {#trigger-ldn}
 
@@ -231,7 +256,7 @@ It MAY watch zero or more advertise inboxes, as mentioned in [[#init]] and MUST 
 Inboxes MAY be authenticated according to [[LDN#authenticated-inboxes]], which is discussed further in [[#security-considerations]].
 
 The definitions of all possible [[!LDN]] notifications using the [[!ACTIVITYSTREAMS-VOCABULARY]] are listed in the [[spec-notifications]]. 
-An orchestrator MUST at least supporte the following subset:
+An orchestrator MUST at least support the following subset:
 
 - [as:Create](https://www.w3.org/ns/activitystreams#Create)
 - [as:Announce](https://www.w3.org/ns/activitystreams#Announce)
@@ -273,118 +298,127 @@ ex:LDNTriggerShape
 
 ## Observing resource state changes  ## {#trigger-resource}
 
-An orchestrator can also watch LDP resources ([[[LDP#ldpr]]), for instance by means of polling, whose state changes issue a trigger.
-
-Hence,  MUST accept resource stage changes of [[LDP#ldpr]] as triggers for policy actions.
-In case the observed [[[LDP#ldpr]] is also a [[LDP#ldpc]], 
+An orchestrator can also watch LDP resources ([[[LDP#ldpr]]) (e.g, by means of polling) whose state changes issue a trigger.
+Hence, an orchestrator MUST accept resource stage changes of [[LDP#ldpr]] as triggers for policy actions.
+In case the observed [[[LDP#ldpr]] is also a LDP container ([[LDP#ldpc]]), 
 the orchestrator MUST observe state changes for all [[LDP#ldpr]] that are contained by the observed [[LDP#ldpc]].
 The Orchestrator MUST request `acl:Read` access all observed [[[LDP#ldpr]] as noted in [[#init]].
 
-At least following state changes MUST be observed as triggers:
+At least following state changes MUST issue a trigger:
 	- Update of a resource by observing a change in the `Last-Modified` or `ETag` headers.
-	- Deletion of a resource by observing
+	- Deletion of a resource by observing a `4XX` status code
 
 Issue: Make resource state changes more concrete: how exactly using HTTP, eg. last modified
 
-In case of an [[LDP#ldpc]], the orchestrator MUST also observe state changes
-	- Creation of a resource
+In case of an [[LDP#ldpc]], 
+the creation or deletion of a container member MUST also issue a trigger.
+Thus, the orchestrator SHOULD observe a difference in the set of `?resource` bindings by matching the triple pattern `?container ldp:contains ?resource` on the container's response.
 
 
 ## Scheduled trigger ## {#trigger-schedule}
-An Orchestrator MAY accept time scheduled triggers for policy actions.
 
-### datetime trigger
-A datetime trigger is a trigger that MUST be evaluated automatically at set points in time, defined by the trigger.
-A datetime trigger can define multiple points in time to trigger an action.
-All passed `datetime` values MUST be valid `xsd:dateTime` literals.
+Finally, some triggers might be configured as recurrent and activate the orchestrator on scheduled intervals.
+Therefore, an Orchestrator MUST accept triggers from a time-based job scheduler such as [[cron]]. 
 
+Scheduled trigger can be configured using the crontab; an orchestrator MUST be able to interpret the pattern syntax defined in [[!cron]].
+A trigger MUST invoke an action on every matching pattern during the time the trigger is active and the orchestrator is running.
 
+<div class=example>
+```
+# Issue trigger every weekday morning at 3:15 am
 
-
-### time interval trigger
-A time interval trigger is a trigger that is fired at set intervals in time.
-A time interval trigger MUST trigger an action on every matching time interval during the time the trigger is active and the orchestrator is running.
-
-
-
+ex:trigger ex:pattern "15 3 * * 1-5"^^ex:crontab
+```
+</div>
 
 Actions {#actions}
 =====================
 
 An <dfn>action</dfn> is a form of interation with other actors or resources in the network.
-Orchestrator performs such actions on behalf of a network [=actor=].
-There are three types of actions that an orchestrator can take:
--  sending Linked Data Notifications [[!LDN]] to the inbox of a [=Service Hub=] or [=Data Pod=].
--  manipulating [[!LDP]] resources of a [=Data Pod=].
--  reading any [[!HTTP11]] resource
+An Orchestrator performs such [=actions=] on behalf of a network [=actor=].
 
+There are three types of actions that an orchestrator MUST support:
+-  sending Linked Data Notifications [[!LDN]] to an [=inbox=] resource, likely belonging to a [=Service Hub=] or [=Data Pod=].
+-  manipulating [[!LDP]] resources of a [=Data Pod=].
+-  reading arbitrary [[!HTTP11]] resources
 
 ## Sending Linked Data notifications
 
-An orchestrator MUST be a compliant [[LDN]] [Sender](https://www.w3.org/TR/ldn/#sender).
-It MUST be able to send the following notifications from the [[ACTIVITYSTREAMS-VOCABULARY]]:
+Sending a Linked Data Notification is the primary way to provoke action from other actors in the network. 
+Hence, an orchestrator MUST be a compliant [[LDN#sender]].
+
+From the list of possible [[!LDN]] notifications in [[spec-notifications]],
+an orchestrator MUST at least be able to send the following subset:
 
 - [as:Create](https://www.w3.org/ns/activitystreams#Create)
 - [as:Announce](https://www.w3.org/ns/activitystreams#Announce)
 - [as:Update](https://www.w3.org/ns/activitystreams#Update)
 - [as:Delete](https://www.w3.org/ns/activitystreams#Delete)
-
-Within a notification, the following [Actor type](https://www.w3.org/TR/activitystreams-core/#actors) mapping MUST be used:
-- [=Service Hub=] --> [as:Service](https://www.w3.org/ns/activitystreams#Service)
-- [=Maintainer=] --> [as:Organization](https://www.w3.org/ns/activitystreams#Organization) or [as:Person](https://www.w3.org/ns/activitystreams#Person)
-
-The object MUST contain the artefact to which the action has effect.
-It SHOULD have one of the following types:
-- https://www.w3.org/ns/activitystreams#Object
-
-
-Example:
-
-``` json
-
-{
-  "@context": "https://www.w3.org/ns/activitystreams",
-  "summary": "Koninklijke Bibliotheek announces Alba",
-  "type": "Create",
-  "actor": {
-    "@context": "https://schema.org/",
-    "@type": "Organization",
-    "name": "Koninklijke Bibliotheek",
-    "@id": "https://www.kb.nl/"
-  },
-  "object": {
-    "@context": "https://schema.org/",
-    "@type": "Dataset",
-    "@id": "https://data.bibliotheken.nl/doc/dataset/rise-alba",
-  },
-  "origin": {
-    "@context": "https://schema.org/",
-    "@id": "http://example.org/Adlib",
-    "@type": "SoftwareApplication"
-  },
-  "updated": "2021-01-28T19:56:20.114Z"
-}
-
-```
-
-## Manipulating LDP resources
-
-An Orchestrator MUST implement the following [[HTTP11]]  :
-
-Issue: TODO
-
-- Create: `PUT`
-- Read: `GET`
-- Update: `PATCH`
-- Delete: `DELETE`
+- [as:Undo](https://www.w3.org/ns/activitystreams#Undo)
+- [as:Accept](https://www.w3.org/ns/activitystreams#Accept)
+- [as:Reject](https://www.w3.org/ns/activitystreams#Reject)
 
 ## Reading HTTP resources
 
-An Orchestrator MUST implement the following :
+A second type of action is reading [[HTTP11]] resources.
+Thus, an orchestrator MUST be able to construct a `GET` request.
+
+Issue: does this make sense?
+
+## Manipulating LDP resources
+
+A final action is performing create, read, update and delete operations on a [[LDP#ldpr]] and [[LDP#ldpc]]
+Therefore, an Orchestrator MUST be a [[LDP#dfn-ldp-client]] and implement at least the verbs `PUT`, `PATCH` and `DELETE`.
 
 Issue: TODO
 
 - Read: `GET`
+
+## Action descriptions
+
+When a policy rule executed in response to a [=trigger=], it produces zero or more actions.
+Each of these actions is captured in a <dfn>action description</dfn>, which uses a simple vocabulary:
+
+: Class
+:: `act:Action`
+: Subclasses 
+:: `act:NotifyAction` | `act:HTTPAction`
+: Properties
+:: `act:payload` | `act:target` | `act:description`
+
+This vocabulary MUST be interpretable by the orchestrator and MUST result in an executed action.
+The specific requirements are discussed per action type below.
+
+<div class='example'>
+```
+{
+  "@context": "https://mellonscholarlycommunication.github.io/vocabulary/act/context",
+  "type": "NotifyAction",
+  "description": "Notify service hub of artefact creation.",
+  "target": "https://servicehub.org/inbox",
+  "payload": {
+	  "@type": "as:Create",
+	  ...
+  }
+}
+```
+</div>
+
+<div class='example'>
+```
+{
+  "@context": "https://mellonscholarlycommunication.github.io/context",
+  "type": "HttpAction",
+  "description": "Notify service hub of artefact creation.",
+  "target": "https://servicehub.org/resource",
+  "payload": {
+	  "@type": "http:Request", 
+	  "http:methodName": "POST",
+	  ...
+  }
+}
+```
+</div>
 
 Deploying an orchestrator {#deploy}
 =====================
@@ -411,14 +445,6 @@ Content-Language: en
 ```
 
 If deployed as a [=local background process=], an (custom) API MUST be present that is able perform these actions.
-
-
-
-
-Policy {#policy-sec}
-=====================
-
-Set of rules that dictates what actions need to be taken when a lifecycle event occurs. These originate from the digital heritage network participation agreement, possibly amended with procedures imposed by the institution, the discipline, or personal preference.
 
 
 Security considerations {#security-considerations}
@@ -515,6 +541,14 @@ Appendix A: Implementation details {#implementation-details}
 		"title": "List of notifications",
 		"status": "Editor’s Draft",
 		"publisher": "ResearcherPod and ErfgoedPod project"
+	},
+  "cron": {
+		"authors": ["The Open Group"
+    ],
+		"href": "https://pubs.opengroup.org/onlinepubs/9699919799/",
+		"title": "crontab - schedule periodic background work",
+		"status": "Standard",
+		"publisher": "IEEE"
 	}
 }
 </pre>
