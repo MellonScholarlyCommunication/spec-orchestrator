@@ -245,7 +245,7 @@ Issue(8): What notifications do NOT trigger the orchestrator?
 
 When receiving a notification, the orchestrator validates the received notification to all notification-based triggers mentioned in its [=policy=].
 Linked Data Notification triggers SHOULD be defined as RDF data shapes, compliant to the [[!SHACL]] specification. 
-The shape definitions MAY also conform to the [SHEX](https://shex.io/) language.
+The shape definitions MAY also conform to the \[SHEX](https://shex.io/) language.
 
 
 <div class=example>
