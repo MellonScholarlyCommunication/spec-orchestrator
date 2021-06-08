@@ -216,6 +216,8 @@ An orchestrator MUST respond to the following three types of triggers:
 - an observed state changes to watched [=data pod=] resources
 - a scheduled trigger from the internal time-based event scheduler
 
+A trigger MUST be identifyable by a [[!URI]], such that the rules written in the [[spec-rulelanguage]] can refer to its occurence.
+
 ## Receving Linked Data Notifications ## {#trigger-ldn}
 
 Sending a Linked Data Notification is the primary way to provoke action from the Orchestrator. 
@@ -241,30 +243,31 @@ An orchestrator MUST at least supporte the following subset:
 
 Issue(8): What notifications do NOT trigger the orchestrator?
 
-When receiving a notification, the orchestrator validates the received notification to all notification-based triggers mentioned in its policy set.
-Linked Data Notification triggers MAY defined as RDF data shapes that can be referred to in the [=policy=].
-The used data shapes SHOULD be conform to [[SHACL]] and MAY be a [shex](https://shex.io/) shape.
+When receiving a notification, the orchestrator validates the received notification to all notification-based triggers mentioned in its [=policy=].
+Linked Data Notification triggers SHOULD be defined as RDF data shapes, compliant to the [[!SHACL]] specification. 
+The shape definitions MAY also conform to the [SHEX](https://shex.io/) language.
+
 
 <div class=example>
 Example of a Linked Data Notifications trigger using SHACL:
 ```
 ex:LDNTriggerShape
-	a sh:NodeShape ;
-	sh:targetClass as:Create ;    # Applies to all create notifications
-	sh:property [                 # _:b1
-		sh:path as:actor ;           # only select triggers from organizations
-		sh:maxCount 1 ;
-		sh:class schema:Organization ;
-		sh:nodeKind sh:IRI ;
-	] ;
+  a sh:NodeShape ;
+  sh:targetClass as:Create ;    # Applies to all create notifications
+  sh:property [                 # _:b1
+    sh:path as:actor ;          # only select triggers from organizations
+    sh:maxCount 1 ;
+    sh:class schema:Organization ;
+    sh:nodeKind sh:IRI ;
+  ] ;
   sh:property [                 # _:b2
-		sh:path as:object ;           # onll select triggers about dataset
-		sh:maxCount 1 ;
-		sh:class schema:Dataset ;
-		sh:nodeKind sh:IRI ;
-	] ;
-	sh:closed true ;
-	sh:ignoredProperties ( rdf:type ) .
+    sh:path as:object ;         # only select triggers about dataset
+    sh:maxCount 1 ;
+    sh:class schema:Dataset ;
+    sh:nodeKind sh:IRI ;
+  ] ;
+  sh:closed true ;
+  sh:ignoredProperties ( rdf:type ) .
 ```
 </div>
 
