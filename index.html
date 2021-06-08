@@ -1223,7 +1223,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 5f7b0e20, updated Tue Aug 18 15:46:28 2020 -0700" name="generator">
   <link href="https://mellonscholarlycommunication.github.io/spec-orchestrator" rel="canonical">
-  <meta content="8df86d65cf1a5531cd55a4addce7ccfe2fbd4167" name="document-revision">
+  <meta content="55b62f7253e46da926b6b494c2ce135786643a97" name="document-revision">
 <style>
 table {
   margin: 25px auto;
@@ -1497,7 +1497,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Orchestrator for a decentralized Web network</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Standard, <time class="dt-updated" datetime="2021-06-01">1 June 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Standard, <time class="dt-updated" datetime="2021-06-08">8 June 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1515,7 +1515,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 1 June 2021,
+In addition, as of 8 June 2021,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -2506,6 +2506,7 @@ An orchestrator MUST respond to the following three types of triggers:</p>
     <li data-md>
      <p>a scheduled trigger from the internal time-based event scheduler</p>
    </ul>
+   <p>A trigger MUST be identifyable by a <a data-link-type="biblio" href="#biblio-uri">[URI]</a>, such that the rules written in the <a data-link-type="biblio" href="#biblio-spec-rulelanguage">[spec-rulelanguage]</a> can refer to its occurence.</p>
    <h3 class="heading settled" data-level="7.1" id="trigger-ldn"><span class="secno">7.1. </span><span class="content">Receving Linked Data Notifications</span><a class="self-link" href="#trigger-ldn"></a></h3>
    <p>Sending a Linked Data Notification is the primary way to provoke action from the Orchestrator.
 Common senders of notifications are:</p>
@@ -2538,28 +2539,28 @@ An orchestrator MUST at least supporte the following subset:</p>
      <p><a href="https://www.w3.org/ns/activitystreams#Reject">as:Reject</a></p>
    </ul>
    <p class="issue" id="issue-7031d811"><a class="self-link" href="#issue-7031d811"></a> What notifications do NOT trigger the orchestrator? <a href="https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/8">&lt;https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/8></a></p>
-   <p>When receiving a notification, the orchestrator validates the received notification to all notification-based triggers mentioned in its policy set.
-Linked Data Notification triggers MAY defined as RDF data shapes that can be referred to in the <a data-link-type="dfn" href="#policy" id="ref-for-policy⑧">policy</a>.
-The used data shapes SHOULD be conform to <a data-link-type="biblio" href="#biblio-shacl">[SHACL]</a> and MAY be a <a href="https://shex.io/">shex</a> shape.</p>
-   <div class="example" id="example-986e4ea7">
-    <a class="self-link" href="#example-986e4ea7"></a> Example of a Linked Data Notifications trigger using SHACL: 
+   <p>When receiving a notification, the orchestrator validates the received notification to all notification-based triggers mentioned in its <a data-link-type="dfn" href="#policy" id="ref-for-policy⑧">policy</a>.
+Linked Data Notification triggers SHOULD be defined as RDF data shapes, compliant to the <a data-link-type="biblio" href="#biblio-shacl">[SHACL]</a> specification. 
+The shape definitions MAY also conform to the <a href="https://shex.io/">SHEX</a> language.</p>
+   <div class="example" id="example-f8dc3bd4">
+    <a class="self-link" href="#example-f8dc3bd4"></a> Example of a Linked Data Notifications trigger using SHACL: 
 <pre>ex:LDNTriggerShape
-	a sh:NodeShape ;
-	sh:targetClass as:Create ;    # Applies to all create notifications
-	sh:property [                 # _:b1
-		sh:path as:actor ;           # only select triggers from organizations
-		sh:maxCount 1 ;
-		sh:class schema:Organization ;
-		sh:nodeKind sh:IRI ;
-	] ;
+  a sh:NodeShape ;
+  sh:targetClass as:Create ;    # Applies to all create notifications
+  sh:property [                 # _:b1
+    sh:path as:actor ;          # only select triggers from organizations
+    sh:maxCount 1 ;
+    sh:class schema:Organization ;
+    sh:nodeKind sh:IRI ;
+  ] ;
   sh:property [                 # _:b2
-		sh:path as:object ;           # onll select triggers about dataset
-		sh:maxCount 1 ;
-		sh:class schema:Dataset ;
-		sh:nodeKind sh:IRI ;
-	] ;
-	sh:closed true ;
-	sh:ignoredProperties ( rdf:type ) .
+    sh:path as:object ;         # only select triggers about dataset
+    sh:maxCount 1 ;
+    sh:class schema:Dataset ;
+    sh:nodeKind sh:IRI ;
+  ] ;
+  sh:closed true ;
+  sh:ignoredProperties ( rdf:type ) .
 </pre>
    </div>
    <h3 class="heading settled" data-level="7.2" id="trigger-resource"><span class="secno">7.2. </span><span class="content">Observing resource state changes</span><a class="self-link" href="#trigger-resource"></a></h3>
@@ -2887,11 +2888,13 @@ There was an upcoming panel on signed notifications - TODO
    <dd>Guus Schreiber; Yves Raimond. <a href="https://www.w3.org/TR/rdf11-primer/">RDF 1.1 Primer</a>. 24 June 2014. NOTE. URL: <a href="https://www.w3.org/TR/rdf11-primer/">https://www.w3.org/TR/rdf11-primer/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-shacl">[SHACL]
+   <dd>Holger Knublauch; Dimitris Kontokostas. <a href="https://www.w3.org/TR/shacl/">Shapes Constraint Language (SHACL)</a>. 20 July 2017. REC. URL: <a href="https://www.w3.org/TR/shacl/">https://www.w3.org/TR/shacl/</a>
+   <dt id="biblio-uri">[URI]
+   <dd>T. Berners-Lee; R. Fielding; L. Masinter. <a href="https://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>. January 2005. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc3986">https://tools.ietf.org/html/rfc3986</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
-   <dt id="biblio-shacl">[SHACL]
-   <dd>Holger Knublauch; Dimitris Kontokostas. <a href="https://www.w3.org/TR/shacl/">Shapes Constraint Language (SHACL)</a>. 20 July 2017. REC. URL: <a href="https://www.w3.org/TR/shacl/">https://www.w3.org/TR/shacl/</a>
    <dt id="biblio-solid-oidc">[SOLID-OIDC]
    <dd>Aaron Coburn (Inrupt); elf Pavlik; Dmitri Zagidulin. <a href="https://solid.github.io/authentication-panel/solid-oidc/">SOLID-OIDC</a>. Editor’s Draft. URL: <a href="https://solid.github.io/authentication-panel/solid-oidc/">https://solid.github.io/authentication-panel/solid-oidc/</a>
    <dt id="biblio-solidwebac">[SOLIDWEBAC]
@@ -2900,8 +2903,6 @@ There was an upcoming panel on signed notifications - TODO
    <dd>Miel Vander Sande; et al. <a href="http://mellonscholarlycommunication.github.io/spec-notifications/">List of notifications</a>. Editor’s Draft. URL: <a href="http://mellonscholarlycommunication.github.io/spec-notifications/">http://mellonscholarlycommunication.github.io/spec-notifications/</a>
    <dt id="biblio-spec-rulelanguage">[SPEC-RULELANGUAGE]
    <dd>Miel Vander Sande; et al. <a href="http://mellonscholarlycommunication.github.io/spec-rulelanguage/">Rule language for decentralized business processes</a>. Editor’s Draft. URL: <a href="http://mellonscholarlycommunication.github.io/spec-rulelanguage/">http://mellonscholarlycommunication.github.io/spec-rulelanguage/</a>
-   <dt id="biblio-uri">[URI]
-   <dd>T. Berners-Lee; R. Fielding; L. Masinter. <a href="https://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>. January 2005. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc3986">https://tools.ietf.org/html/rfc3986</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
