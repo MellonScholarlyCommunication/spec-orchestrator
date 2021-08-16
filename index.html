@@ -1223,7 +1223,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 5f7b0e20, updated Tue Aug 18 15:46:28 2020 -0700" name="generator">
   <link href="https://mellonscholarlycommunication.github.io/spec-orchestrator" rel="canonical">
-  <meta content="c3921583828c6ebe0830d6e72b0c5dee7868eddd" name="document-revision">
+  <meta content="22e0df62c4e1bf6f5a034c4aee8adb4248383cd0" name="document-revision">
 <style>
 table {
   margin: 25px auto;
@@ -1439,7 +1439,7 @@ dfn > a.self-link::before      { content: "#"; }</style>
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Orchestrator for a decentralized Web network</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Standard, <time class="dt-updated" datetime="2021-06-08">8 June 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2021-08-16">16 August 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1457,7 +1457,7 @@ dfn > a.self-link::before      { content: "#"; }</style>
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 8 June 2021,
+In addition, as of 16 August 2021,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -1543,6 +1543,8 @@ Parts of this work may be from another specification document.  If so, those par
      <p><a href="/spec-eventlog/">Artefact Lifecycle Event Log</a></p>
     <li data-md>
      <p><a href="/spec-notifications/">Notifications</a></p>
+    <li data-md>
+     <p><a href="/spec-collector/">Collector</a></p>
    </ol>
    <h2 class="heading settled" data-level="2" id="intro"><span class="secno">2. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
    <p>In a <a href="https://solidproject.org/">Solid decentralized network</a>, data, and services the services that use them, do not resort in one place, but are intentionally distributed.
@@ -1596,11 +1598,14 @@ Its autonomy is supplied by the <a data-link-type="dfn" href="#policy" id="ref-f
       <td>as 
       <td>https://www.w3.org/ns/activitystreams# 
      <tr>
-      <td>acl 
-      <td>
+      <td>schema 
+      <td>https://schema.org 
      <tr>
-      <td>act 
-      <td>https://www.w3.org/ns/activitystreams# 
+      <td>ldp 
+      <td>http://www.w3.org/ns/ldp# 
+     <tr>
+      <td>acl 
+      <td>http://www.w3.org/ns/auth/acl# 
    </table>
    <h2 class="heading settled" data-level="5" id="high-level"><span class="secno">5. </span><span class="content">High-level overview</span><a class="self-link" href="#high-level"></a></h2>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="orchestrator">Orchestrator</dfn> is an <a data-link-type="dfn" href="#autonomous-agent" id="ref-for-autonomous-agent">Autonomous Agent</a> that dedicated to a single <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod⑤">Data Pod</a>, <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub">Service Hub</a>, or any other actor hosting the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log">Artefact Lifecycle Event Log</a> and a <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①">Inbox</a> resources.
@@ -2555,6 +2560,7 @@ A trigger MUST invoke an action on every matching pattern during the time the tr
 ex:trigger ex:pattern "15 3 * * 1-5"^^ex:crontab
 </pre>
    </div>
+   <p class="issue" id="issue-3009c49c"><a class="self-link" href="#issue-3009c49c"></a> How can you communicate a scheduled trigger from a institutional perspective? for instance, researchers all apply the institutional <a href="https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/11">&lt;https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/11></a></p>
    <h2 class="heading settled" data-level="9" id="actions"><span class="secno">9. </span><span class="content">Actions</span><a class="self-link" href="#actions"></a></h2>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="action">action</dfn> is a form of interation with other actors or resources in the network.
 An Orchestrator performs such <a data-link-type="dfn" href="#action" id="ref-for-action①⓪">actions</a> on behalf of a network <a data-link-type="dfn" href="#actor" id="ref-for-actor④">actor</a>.</p>
@@ -2884,6 +2890,7 @@ There was an upcoming panel on signed notifications - TODO
    <div class="issue"> define something like a trigger description?<a href="#issue-28992a97"> ↵ </a></div>
    <div class="issue"> What notifications do NOT trigger the orchestrator? <a href="https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/8">&lt;https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/8></a><a href="#issue-7031d811"> ↵ </a></div>
    <div class="issue"> Make resource state changes more concrete: how exactly using HTTP, eg. last modified<a href="#issue-21d3f57f"> ↵ </a></div>
+   <div class="issue"> How can you communicate a scheduled trigger from a institutional perspective? for instance, researchers all apply the institutional <a href="https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/11">&lt;https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/11></a><a href="#issue-3009c49c"> ↵ </a></div>
    <div class="issue"> does this make sense?<a href="#issue-23015a27"> ↵ </a></div>
    <div class="issue"> TODO<a href="#issue-b7b1e314"> ↵ </a></div>
   </div>

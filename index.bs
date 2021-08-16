@@ -2,7 +2,7 @@
 Title: Orchestrator for a decentralized Web network
 Shortname: orchestrator
 Level: 1
-Status: LS
+Status: LD
 URL: https://mellonscholarlycommunication.github.io/spec-orchestrator
 Editor: Miel Vander Sande, meemoo - [Flemish Institute for Archiving](https://meemoo.be), miel.vandersande@meemoo.be
 Editor: Patrick Hochstenbach, Ghent University, patrick.hochstenbach@ugent.be
@@ -51,6 +51,7 @@ This document is one of the specifications produced by the **ResearcherPod** and
 4. [Rule language](/spec-rulelanguage/)
 5. [Artefact Lifecycle Event Log](/spec-eventlog/)
 6. [Notifications](/spec-notifications/)
+7. [Collector](/spec-collector/)
 
 Introduction {#intro}
 =====================
@@ -93,20 +94,23 @@ This document uses the following defined terms from [[spec-overview#definitions]
 Within this document, the following namespace prefix bindings are used: 
 
 <table>
-<thead>
-<tr>
-<th>Prefix
-<th>Namespace
-<tbody>
-<tr>
-<td>as
-<td>https://www.w3.org/ns/activitystreams#
-<tr>
-<td>acl
-<td>
-<tr>
-<td>act
-<td>https://www.w3.org/ns/activitystreams#
+  <thead>
+    <tr>
+      <th>Prefix
+      <th>Namespace
+  <tbody>
+    <tr>
+      <td>as
+      <td>https://www.w3.org/ns/activitystreams#
+    <tr>
+      <td>schema
+      <td>https://schema.org
+    <tr>
+      <td>ldp
+      <td>http://www.w3.org/ns/ldp#
+    <tr>
+      <td>acl
+      <td>http://www.w3.org/ns/auth/acl#
 </table>
 
 High-level overview {#high-level}
@@ -330,6 +334,8 @@ A trigger MUST invoke an action on every matching pattern during the time the tr
 ex:trigger ex:pattern "15 3 * * 1-5"^^ex:crontab
 ```
 </div>
+
+Issue(11): How can you communicate a scheduled trigger from a institutional perspective? for instance, researchers all apply the institutional 
 
 Actions {#actions}
 =====================
