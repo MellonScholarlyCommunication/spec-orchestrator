@@ -2,7 +2,7 @@
 Title: Orchestrator for a decentralized Web network
 Shortname: orchestrator
 Level: 1
-Status: LS
+Status: LD
 URL: https://mellonscholarlycommunication.github.io/spec-orchestrator
 Editor: Miel Vander Sande, meemoo - [Flemish Institute for Archiving](https://meemoo.be), miel.vandersande@meemoo.be
 Editor: Patrick Hochstenbach, Ghent University, patrick.hochstenbach@ugent.be
@@ -10,6 +10,34 @@ Editor: Ruben Dedecker, Ghent University, ruben.dedecker@ugent.be
 Abstract: This specification describes the implementation requirements for the Ochestrator component.
 Markup Shorthands: markdown yes
 </pre>
+
+<style>
+table {
+  margin: 25px auto;
+  border-collapse: collapse;
+  border: 1px solid #eee;
+  border-bottom: 2px solid #005A9C;
+}
+table tr:hover {
+  background: #f4f4f4;
+}
+table tr:hover td {
+  color: #555;
+}
+table th, table td {
+  color: #999;
+  border: 1px solid #eee;
+  padding: 12px 12px;
+  border-collapse: collapse;
+}
+table th {
+  background: #005A9C;
+  color: #fff;
+}
+table th.last {
+  border-right: none;
+}
+</style>
 
 Set of documents {#set}
 =======================
@@ -21,6 +49,8 @@ This document is one of the specifications produced by the **ResearcherPod** and
 3. [Data Pod](/spec-datapod/)
 4. [Rule language](/spec-rulelanguage/)
 5. [Artefact Lifecycle Event Log](/spec-eventlog/)
+6. [Notifications](/spec-notifications/)
+7. [Collector](/spec-collector/)
 
 Introduction {#intro}
 =====================
@@ -45,8 +75,10 @@ The remainder of this document specifies the requirements for implementing an [=
 
 # Definitions
 
-This document uses the following defined terms from [[spec-overview]]:
+This document uses the following defined terms from [[spec-overview#definitions]]:
 
+- <dfn export>Autonomous Agent</dfn>
+- <dfn export>Policy Language</dfn>
 - <dfn export>Actor</dfn>
 - <dfn export>Artefact</dfn>
 - <dfn export>Maintainer</dfn>
@@ -56,6 +88,30 @@ This document uses the following defined terms from [[spec-overview]]:
 - <dfn export>Service Hub</dfn>
 - <dfn export>Policy</dfn>
 - <dfn export>Dashboard</dfn>
+
+# Document Conventions
+
+Within this document, the following namespace prefix bindings are used: 
+
+<table>
+  <thead>
+    <tr>
+      <th>Prefix
+      <th>Namespace
+  <tbody>
+    <tr>
+      <td>as
+      <td>https://www.w3.org/ns/activitystreams#
+    <tr>
+      <td>schema
+      <td>https://schema.org
+    <tr>
+      <td>ldp
+      <td>http://www.w3.org/ns/ldp#
+    <tr>
+      <td>acl
+      <td>http://www.w3.org/ns/auth/acl#
+</table>
 
 High-level overview {#high-level}
 =====================
@@ -136,20 +192,54 @@ Hence, a common interaction pattern is as follows:
 13. The [=Dashboard=] displays `Event log A` to the [=maintainer=] to show that the necessary 
    actions have been taken.
 
-<pre class='include'>
-path: images/high-level-comm.svg
-</pre>
+<img src="images/high-level-comm.svg" width="600">
 
+Data Pod Initialization  {#init}
+====================
 
+To operate autonomously, an Orchestrator has to obtain access to some resources in the [=Data Pod=].
+Solid Pod resources comform to the [Web Access Control](https://solidproject.org/TR/protocol#web-access-control)
+specification. Orchestrators that are complian with the [[solid-protocol#solid-app]] 
+Client-Side Implementation requirements can gain access to these resources and manage them on behalf
+of the maintainer.
 
-Creating an orchestrator {#init}
-=====================
+An Orchestrator instance requires a minimal setup on the Data Pod in order to function as intended.
 
-## Deployment
+This minimum setup on the [=Data Pod=] MUST have:
+
+- An LDN [=Inbox=] with:
+    - `acl:Read` access for the Orchestrator
+    - `acl:Append` access for the Orchestrator and the Network (that can be the whole world)
+- An [=Artefact Event Log=] with:
+    - `acl:Read` access for the Orchestrator and the Network (that can be the whole world)
+    - `acl:Append` access for the Orchestrator
+
+The maintainer SHOULD have:
+
+- A WebID profile entry for:
+    - The location of the Data Pod LDN [=Inbox=]
+    - The location of the [=Artefact Lifecycle Event Log=]
+    - The WebId of the Orchestrator
+
+The [=Data Pod=] MAY have:
+
+- An LDP Container or Resource that needs to be watched with:
+    - `acl:Read` access for the Orchestrator
+- An LDP Container with one or more [=Policy=] rules
+
+An Orchestrator MAY expose an initialization interface to assist the Data Pod [=Maintainer=] in 
+setting up the required resources and ACL settings.
+
+Issue: The section below is very unclear, should a Dashboard app be created that does this
+initialiation, or should the remote Orchestrator get rights to do this initialization?
+
+This provisioning MUST be possible using a `PUT` or `POST` to a dedicated [[!HTTP11]] resource if the orchestrator is deployed as a web service; see [[#deploy]].
+This interface MAY also use an [[LDP#ldpr-resource]] or even [[LDP#ldpr-container]] in case the information is supplied using a description in [[!RDF11-primer]].
 
 An Orchestrator is be deployable as a <dfn export>local background process</dfn> or as a <dfn export>remote web service</dfn>.
 In case of the latter, an actor SHOULD be able to spawn, initialize and trigger the instance over [[!HTTP11]], as defined in [[#init]] and [[#triggers]].
-The Orchestrator as an [=Inbox=] for communicating with the [=Data Pod=] maintainer using Linked Data Notifications [[LDN]] .
+
+The Orchestrator has an [=Inbox=] for communicating with the [=Data Pod=] maintainer using Linked Data Notifications [[LDN]] .
 This Orchestrator [=Inbox=] can live in the same [=Data Pod=] as the [=Maintainer=] [=Inbox=] and 
 [=Artefact Lifecycle Event Log=].
 
@@ -187,26 +277,8 @@ Content-Language: en
 
 </div>
 
-If deployed as a [=local background process=], an (custom) API MUST be present that is able perform these actions.
-
-## Solid app compliance
-
-An orchestrator is a <a href="https://solidproject.org/TR/protocol#solid-app">Solid client</a> and MUST be fully compliant with the [[solid-protocol]] Client-Side Implementation requirements.
-Orchestrators SHOULD also implement [[SOLID-OIDC]] to authenticate to most Solid [=data pods=] and implement the client requirements for [[solidwebac]] to receive authorization, such as checking the `WAC-Allow` header value.
-
-Note: PHOCHSTE : I am not sure this `WAC-Allow` is relevant anymore I dont't see it on all Pods.
-
-Note: PHOCHSTE : We need to be clearer which Solid protocols are used 
-
-## Additional interface
-
-When a new instance is created,
-an Orchestrator MUST allow actors to supply an [[URI]] pointing to an [=inbox=] to watch and read.
-It MAY also allow a list of [[LDP]] <a href="https://www.w3.org/TR/ldp/#ldpr-resource">resources</a> to watch.
-
-Note: MVS: because I'm not sure it's realistic to poll any HTTP resource, I limited the scope to LDP resources. But even then, I'm not sure how you would do this in practice without keeping a lot of state.
-
-Issue: MVS: is this registration of inbox, resources something we want to do at initialization or do we write this in the policy?
+Policy {#policy-sec}
+=====================
 
 Note: PHOCHSTE: The Inbox and Artefact Lifecycle Event Log to read can also be provided by the webid
 
@@ -217,16 +289,23 @@ Orchestrators solely execute business logic catured in [=policies=].
 Thus, they MUST allow actors to supply one or more [[URI]]s pointing to a [=policy=].
 These policies MUST be written in the [=policy language=].
 An actor SHOULD supply at least one [=policy=] in order to allow the orchestrator to function.
+The policy is a set of rules that determines the orchestrator's level of autonomy. 
+A rule dictates what [=action=] to take when a [=trigger=] occurs ([[#triggers]]) on behalf of the maintainer.
+In practice, the policy reflects a composition of procedures imposed by:
 
-To operate autonomeously, an Orchestrator has to obtain access to some resources in the [=Data Pod=],
-which <a href="https://solidproject.org/TR/protocol#web-access-control">conforms</a> to the Web Access Control specification [[solidwebac]].
-If access is not granted, an Orchestrator MUST request access to the following resources (noted in the <a href="http://www.w3.org/ns/auth/acl">Access Control List (ACL)</a> ontology):
+- the institution (ie. the employer of the maintainer and the owner of the artefacts);
+- the domain (ie. the broader collaboration context the institution is situated in);
+- legislation (ie. the legal obligations);
+- or personal preference (ie. the maintainer).
 
 - `acl:Read` to the [=inbox=] resource (discoverable with `http://www.w3.org/ns/ldp#inbox`)
 - `acl:Read` and `acl:Append` to the [=Artefact Lifecycle Event Log=] resource.
 - `acl:Read` to any watched [[LDP]] resource.
+Hence, different policies need to have a common language to achieve interoperability. 
+This rule language is described in [spec-rulelanguage].
 
-Issue: are there more necessary authorizations?
+A orchestrator MUST be able to interpret and executed policies that comply with [spec-rulelanguage].
+Requirements regarding [=actions=] and [=triggers=] are discussed in the next sections.
 
 Triggers {#triggers}
 =====================
@@ -241,7 +320,7 @@ An orchestrator MUST respond to the following three types of triggers:
 - an observed state changes to watched [=data pod=] resources
 - a scheduled trigger from the internal time-based event scheduler
 
-## Receving Linked Data Notifications ## {#trigger-ldn}
+A trigger MUST be identifyable by a [[!URI]], such that the rules written in the [[spec-rulelanguage]] can refer to its occurence.
 
 An [=Orchestrator=] MUST be a compliant [[!LDN]] [Consumer](https://www.w3.org/TR/ldn/#consumer).
 The [=Orchestrator=] MAY advertise multiple inboxes.
@@ -349,13 +428,40 @@ In the case that an observed [Linked Data Platform Resources](https://www.w3.org
 is also a [Linked Data Platform Container](https://www.w3.org/TR/ldp/#ldpc), the Orchestrator SHOULD
 observe state changes for all [Linked Data Platform Resources](https://www.w3.org/TR/ldp/#ldpr) 
 that are contained by the observed [Linked Data Platform Container](https://www.w3.org/TR/ldp/#ldpc).
+Issue: define something like a trigger description?
 
-The following state changes can be used as triggers:
-	- Creation of a resource - can only be observed for an [LDP Container](https://www.w3.org/TR/ldp/#ldpc)
-	- Update of a resource
-	- Deletion of a resource
+## Receving Linked Data Notifications ## {#trigger-ldn}
 
-Example of a trigger using resource state changes:
+Sending a Linked Data Notification is the primary way to provoke action from the Orchestrator. 
+Common senders of notifications are:
+- a [=maintainer=] by using the [=Dashboard=], who performed a manual operation on a artefact (eg. creating a new artefact) and wants to trigger consecutive action (eg. announcing that artefact);
+- a [=service hub=] or other [=actor=] who has performed an operation related to an artefact (eg. created a comment about that artefact) stored in the maintainer's data pod and is therefore of potential interest to the orchestrator.
+
+To be able to read the notifications from an [=inbox=],
+An orchestrator MUST be a compliant [[LDN#consumer]].
+It MAY watch zero or more advertise inboxes, as mentioned in [[#init]] and MUST retrieve incoming Linked Data Notifications from all advertised inboxes.
+Inboxes MAY be authenticated according to [[LDN#authenticated-inboxes]], which is discussed further in [[#security-considerations]].
+
+The definitions of all possible [[!LDN]] notifications using the [[!ACTIVITYSTREAMS-VOCABULARY]] are listed in the [[spec-notifications]]. 
+An orchestrator MUST at least support the following subset:
+
+- [as:Create](https://www.w3.org/ns/activitystreams#Create)
+- [as:Announce](https://www.w3.org/ns/activitystreams#Announce)
+- [as:Update](https://www.w3.org/ns/activitystreams#Update)
+- [as:Delete](https://www.w3.org/ns/activitystreams#Delete)
+- [as:Undo](https://www.w3.org/ns/activitystreams#Undo)
+- [as:Accept](https://www.w3.org/ns/activitystreams#Accept)
+- [as:Reject](https://www.w3.org/ns/activitystreams#Reject)
+
+Issue(8): What notifications do NOT trigger the orchestrator?
+
+When receiving a notification, the orchestrator validates the received notification to all notification-based triggers mentioned in its [=policy=].
+Linked Data Notification triggers SHOULD be defined as RDF data shapes, compliant to the [[!SHACL]] specification. 
+The shape definitions MAY also conform to the \[SHEX](https://shex.io/) language.
+
+
+<div class=example>
+Example of a Linked Data Notifications trigger using SHACL:
 ```
 {
   "@context": "https://www.example.org/ns/policy",
@@ -364,140 +470,182 @@ Example of a trigger using resource state changes:
   "state": ["Create", "Update"]
   "summary": "Linked Data Notification Trigger",
 }
+ex:LDNTriggerShape
+  a sh:NodeShape ;
+  sh:targetClass as:Create ;    # Applies to all create notifications
+  sh:property [                 # _:b1
+    sh:path as:actor ;          # only select triggers from organizations
+    sh:maxCount 1 ;
+    sh:class schema:Organization ;
+    sh:nodeKind sh:IRI ;
+  ] ;
+  sh:property [                 # _:b2
+    sh:path as:object ;         # only select triggers about dataset
+    sh:maxCount 1 ;
+    sh:class schema:Dataset ;
+    sh:nodeKind sh:IRI ;
+  ] ;
+  sh:closed true ;
+  sh:ignoredProperties ( rdf:type ) .
 ```
+</div>
 
 ## Scheduled trigger ## {#trigger-schedule}
 
 Note: PHOCHSTE: This needs some more work to explain how this could work.
 
 An Orchestrator MAY accept time scheduled triggers for policy actions.
+## Observing resource state changes  ## {#trigger-resource}
 
-### datetime trigger
-A datetime trigger is a trigger that MUST be evaluated automatically at set points in time, defined by the trigger.
-A datetime trigger can define multiple points in time to trigger an action.
-All passed ```datetime``` values MUST be valid ```xsd:dateTime``` literals.
+An orchestrator can also watch LDP resources ([[[LDP#ldpr]]) (e.g, by means of polling) whose state changes issue a trigger.
+Hence, an orchestrator MUST accept resource stage changes of [[LDP#ldpr]] as triggers for policy actions.
+In case the observed [[[LDP#ldpr]] is also a LDP container ([[LDP#ldpc]]), 
+the orchestrator MUST observe state changes for all [[LDP#ldpr]] that are contained by the observed [[LDP#ldpc]].
+The Orchestrator MUST request `acl:Read` access all observed [[[LDP#ldpr]] as noted in [[#init]].
 
-Example of a datetime trigger:
+At least following state changes MUST issue a trigger:
+	- Update of a resource by observing a change in the `Last-Modified` or `ETag` headers.
+	- Deletion of a resource by observing a `4XX` status code
+
+Issue: Make resource state changes more concrete: how exactly using HTTP, eg. last modified
+
+In case of an [[LDP#ldpc]], 
+the creation or deletion of a container member MUST also issue a trigger.
+Thus, the orchestrator SHOULD observe a difference in the set of `?resource` bindings by matching the triple pattern `?container ldp:contains ?resource` on the container's response.
+
+
+## Scheduled trigger ## {#trigger-schedule}
+
+Finally, some triggers might be configured as recurrent and activate the orchestrator on scheduled intervals.
+Therefore, an Orchestrator MUST accept triggers from a time-based job scheduler such as [[cron]]. 
+
+Scheduled trigger can be configured using the crontab; an orchestrator MUST be able to interpret the pattern syntax defined in [[!cron]].
+A trigger MUST invoke an action on every matching pattern during the time the trigger is active and the orchestrator is running.
+
+<div class=example>
 ```
-{
-  "@context": "https://www.example.org/ns/policy",
-  "summary": "Linked Data Notification Trigger",
-  "type": "DateTimeTrigger",
-  "dateTime":[
-    {
-      "@value": "2021-12-12T20:20:20.201Z",
-      "@type": xsd:dateTime
-    },
-    {
-      "@value": "2021-12-12T21:21:21.211Z",
-      "@type": xsd:dateTime
-    }]
-}
-```
+# Issue trigger every weekday morning at 3:15 am
 
-### time interval trigger
-A time interval trigger is a trigger that is fired at set intervals in time.
-A time interval trigger MUST trigger an action on every matching time interval during the time the trigger is active and the orchestrator is running.
-
-
-Example of a time interval trigger:
+ex:trigger ex:pattern "15 3 * * 1-5"^^ex:crontab
 ```
-{
-  "@context": "https://www.example.org/ns/policy",
-  "summary": "Linked Data Notification Trigger",
-  "type": "StateTrigger",
-  "resource": "https://mypod.org/resources/
-  "state": ["Create", "Update"]
-}
-```
+</div>
+
+Issue(11): How can you communicate a scheduled trigger from a institutional perspective? for instance, researchers all apply the institutional 
 
 Actions {#actions}
 =====================
 
 An <dfn>action</dfn> is a form of interation with other actors or resources in the network.
-Orchestrator performs such actions on behalf of a network [=actor=].
-There are three types of actions that an orchestrator can take:
--  sending Linked Data Notifications [[!LDN]] to the inbox of a [=Service Hub=] or [=Data Pod=].
--  manipulating [[!LDP]] resources of a [=Data Pod=].
--  reading any [[!HTTP11]] resource
+An Orchestrator performs such [=actions=] on behalf of a network [=actor=].
 
+There are three types of actions that an orchestrator MUST support:
+-  sending Linked Data Notifications [[!LDN]] to an [=inbox=] resource, likely belonging to a [=Service Hub=] or [=Data Pod=].
+-  manipulating [[!LDP]] resources of a [=Data Pod=].
+-  reading arbitrary [[!HTTP11]] resources
 
 ## Sending Linked Data notifications
 
-An orchestrator MUST be a compliant [[LDN]] [Sender](https://www.w3.org/TR/ldn/#sender).
-It MUST be able to send the following notifications from the [[ACTIVITYSTREAMS-VOCABULARY]]:
+Sending a Linked Data Notification is the primary way to provoke action from other actors in the network. 
+Hence, an orchestrator MUST be a compliant [[LDN#sender]].
+
+From the list of possible [[!LDN]] notifications in [[spec-notifications]],
+an orchestrator MUST at least be able to send the following subset:
 
 - [as:Create](https://www.w3.org/ns/activitystreams#Create)
 - [as:Announce](https://www.w3.org/ns/activitystreams#Announce)
 - [as:Update](https://www.w3.org/ns/activitystreams#Update)
 - [as:Delete](https://www.w3.org/ns/activitystreams#Delete)
-
-Within a notification, the following [Actor type](https://www.w3.org/TR/activitystreams-core/#actors) mapping MUST be used:
-- [=Service Hub=] --> [as:Service](https://www.w3.org/ns/activitystreams#Service)
-- [=Maintainer=] --> [as:Organization](https://www.w3.org/ns/activitystreams#Organization) or [as:Person](https://www.w3.org/ns/activitystreams#Person)
-
-The object MUST contain the artefact to which the action has effect.
-It SHOULD have one of the following types:
-- https://www.w3.org/ns/activitystreams#Object
-
-
-Example:
-
-``` json
-
-{
-  "@context": "https://www.w3.org/ns/activitystreams",
-  "summary": "Koninklijke Bibliotheek announces Alba",
-  "type": "Create",
-  "actor": {
-    "@context": "https://schema.org/",
-    "@type": "Organization",
-    "name": "Koninklijke Bibliotheek",
-    "@id": "https://www.kb.nl/"
-  },
-  "object": {
-    "@context": "https://schema.org/",
-    "@type": "Dataset",
-    "@id": "https://data.bibliotheken.nl/doc/dataset/rise-alba",
-  },
-  "origin": {
-    "@context": "https://schema.org/",
-    "@id": "http://example.org/Adlib",
-    "@type": "SoftwareApplication"
-  },
-  "updated": "2021-01-28T19:56:20.114Z"
-}
-
-```
-
-## Manipulating LDP resources
-
-An Orchestrator MUST implement the following [[HTTP11]]  :
-
-Issue: TODO
-
-- Create: `PUT`
-- Read: `GET`
-- Update: `PATCH`
-- Delete: `DELETE`
+- [as:Undo](https://www.w3.org/ns/activitystreams#Undo)
+- [as:Accept](https://www.w3.org/ns/activitystreams#Accept)
+- [as:Reject](https://www.w3.org/ns/activitystreams#Reject)
 
 ## Reading HTTP resources
 
-An Orchestrator MUST implement the following :
+A second type of action is reading [[HTTP11]] resources.
+Thus, an orchestrator MUST be able to construct a `GET` request.
+
+Issue: does this make sense?
+
+## Manipulating LDP resources
+
+A final action is performing create, read, update and delete operations on a [[LDP#ldpr]] and [[LDP#ldpc]]
+Therefore, an Orchestrator MUST be a [[LDP#dfn-ldp-client]] and implement at least the verbs `PUT`, `PATCH` and `DELETE`.
 
 Issue: TODO
 
 - Read: `GET`
 
+## Action descriptions
 
+When a policy rule executed in response to a [=trigger=], it produces zero or more actions.
+Each of these actions is captured in a <dfn>action description</dfn>, which uses a simple vocabulary:
 
+: Class
+:: `act:Action`
+: Subclasses 
+:: `act:NotifyAction` | `act:HTTPAction`
+: Properties
+:: `act:payload` | `act:target` | `act:description`
 
+This vocabulary MUST be interpretable by the orchestrator and MUST result in an executed action.
+The specific requirements are discussed per action type below.
 
+<div class='example'>
+```
+{
+  "@context": "https://mellonscholarlycommunication.github.io/vocabulary/act/context",
+  "type": "NotifyAction",
+  "description": "Notify service hub of artefact creation.",
+  "target": "https://servicehub.org/inbox",
+  "payload": {
+	  "@type": "as:Create",
+	  ...
+  }
+}
+```
+</div>
 
-Policy {#policy-sec}
+<div class='example'>
+```
+{
+  "@context": "https://mellonscholarlycommunication.github.io/context",
+  "type": "HttpAction",
+  "description": "Notify service hub of artefact creation.",
+  "target": "https://servicehub.org/resource",
+  "payload": {
+	  "@type": "http:Request", 
+	  "http:methodName": "POST",
+	  ...
+  }
+}
+```
+</div>
+
+Deploying an orchestrator {#deploy}
 =====================
 
-Set of rules that dictates what actions need to be taken when a lifecycle event occurs. These originate from the digital heritage network participation agreement, possibly amended with procedures imposed by the institution, the discipline, or personal preference.
+An Orchestrator MUST be deployable as a <dfn export>local background process</dfn> or as a <dfn export>remote web service</dfn>.
+In case of the latter, an actor SHOULD be able to spawn, initialize and trigger the instance over [[!HTTP11]], as defined in [[#deploy]] and [[#triggers]].
+The Orchestrator MAY also serve an [=inbox=] for communicating with third-parties using Linked Data Notifications [[LDN]] .
+
+Example of spawning an orchestrator using Linked Data Notifications:
+```
+
+POST /inbox HTTP/1.1
+Host: example.org
+Content-Type: application/ld+json;profile="https://www.w3.org/ns/activitystreams"
+Content-Language: en
+
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "summary": "Spawn orchestrator",
+  "type": "Create",
+  "actor": "http://kb.nl#me",
+  "object": "http://example.org/orchestrator/1"
+}
+```
+
+If deployed as a [=local background process=], an (custom) API MUST be present that is able perform these actions.
 
 
 Security considerations {#security-considerations}
@@ -558,12 +706,50 @@ Appendix A: Implementation details {#implementation-details}
 	},
   "spec-overview": {
 		"authors": [
-      "Miel Vander Sande"
+      "Miel Vander Sande",
+      "Patrick Hochstenbach",
+      "Ruben Dedecker",
+      "Jeroen Werbrouck",
+      "Herbert Van de Sompel"
     ],
 		"href": "http://mellonscholarlycommunication.github.io/spec-overview/",
 		"title": "Overview of the ResearcherPod specifications",
 		"status": "Editor’s Draft",
-		"publisher": "ResearcherPod project"
+		"publisher": "ResearcherPod and ErfgoedPod project"
+	},
+  "spec-rulelanguage": {
+		"authors": [
+      "Miel Vander Sande",
+      "Patrick Hochstenbach",
+      "Ruben Dedecker",
+      "Jeroen Werbrouck",
+      "Herbert Van de Sompel"
+    ],
+		"href": "http://mellonscholarlycommunication.github.io/spec-rulelanguage/",
+		"title": "Rule language for decentralized business processes",
+		"status": "Editor’s Draft",
+		"publisher": "ResearcherPod and ErfgoedPod project"
+	},
+  "spec-notifications": {
+		"authors": [
+      "Miel Vander Sande",
+      "Patrick Hochstenbach",
+      "Ruben Dedecker",
+      "Jeroen Werbrouck",
+      "Herbert Van de Sompel"
+    ],
+		"href": "http://mellonscholarlycommunication.github.io/spec-notifications/",
+		"title": "List of notifications",
+		"status": "Editor’s Draft",
+		"publisher": "ResearcherPod and ErfgoedPod project"
+	},
+  "cron": {
+		"authors": ["The Open Group"
+    ],
+		"href": "https://pubs.opengroup.org/onlinepubs/9699919799/",
+		"title": "crontab - schedule periodic background work",
+		"status": "Standard",
+		"publisher": "IEEE"
 	}
 }
 </pre>
