@@ -19,12 +19,12 @@ jobs:
           src: diagrams/high-level-comm.drawio
           dest: images/high-level-comm.svg
 
-      - name: Output high-level-datapod to SVG
+      - name: Output high-level to SVG
         uses: Burnett01/actions-drawio@1.0
         with:
           scale: 1.0
-          src: diagrams/high-level-datapod.drawio
-          dest: images/high-level-datapod.svg
+          src: diagrams/high-level.drawio
+          dest: images/high-level.svg
 
       - name: Output high-level-servicehub to SVG
         uses: Burnett01/actions-drawio@1.0
