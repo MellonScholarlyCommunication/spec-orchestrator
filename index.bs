@@ -350,9 +350,9 @@ An [=Orchestrator=] SHOULD be able to differentiate between Linked Data Notifica
 should prevent sending the [=Orchestrator=] in a loop responding to its own triggers.
 
 An [=Orchestrator=] SHOULD have some form data validation of incoming triggers and only respond to  
-triggers that correspond to a RDF data shape. Technologies such as [SHACL](https://www.w3.org/TR/shacl/),
-[SHeX](https://www.w3.org/TR/shacl/), [SPARQL](https://www.w3.org/TR/sparql11-query/) CONSTRUCT or
-[Notation3](https://w3c.github.io/N3/spec/) can be used to validate triggers.
+triggers that correspond to a RDF data shape. Technologies such as \[SHACL](https://www.w3.org/TR/shacl/),
+\[https://shex.io/), \[SPARQL](https://www.w3.org/TR/sparql11-query/) CONSTRUCT or
+\[Notation3](https://w3c.github.io/N3/spec/) can be used to validate triggers.
 
 An [=Orchestrator=] MAY have some mechanism in place to validate the origin of the triggers. Technologies
 such as [Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) can by used to sign all 
