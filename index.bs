@@ -2,7 +2,7 @@
 Title: Orchestrator for a decentralized Web network
 Shortname: orchestrator
 Level: 1
-Status: LD
+Status: iso/WD
 URL: https://mellonscholarlycommunication.github.io/spec-orchestrator
 Editor: Miel Vander Sande, meemoo - [Flemish Institute for Archiving](https://meemoo.be), miel.vandersande@meemoo.be
 Editor: Patrick Hochstenbach, Ghent University, patrick.hochstenbach@ugent.be
@@ -68,7 +68,8 @@ Possible triggers are incoming notifications, perceived changes in the data, or 
 Possible actions are sending notifications to other actors, requesting access to resources in a [=Data Pod=], reading data from a [=Data Pod=], or writing data to a [=Data Pod=].
 
 The Orchestrator implements the autonomous agent model: an intelligent software instance that operates on an actor's behalf but without any interference of that actor.
-In practice, an Orchestrator is dedicated to a single [=Data Pod=] for which is has access rights to all relevant resources, including the Linked Data Notification [[!LDN]] [=inbox=].
+In practice, an Orchestrator is dedicated to a single [=Data Pod=] for which is has access rights to all relevant resources, including the Linked Data Notification [[!LDN]] [=inbox=]
+and the [=Artefact Lifecycle Event Log=].
 Its autonomy is supplied by the [=Policy=], which dictates business rules in a declarative manner using a [=policy language=].
 
 The remainder of this document specifies the requirements for implementing an [=Orchestrator=] component.
@@ -116,41 +117,54 @@ Within this document, the following namespace prefix bindings are used:
 High-level overview {#high-level}
 =====================
 
-An <dfn export>Orchestrator</dfn> is an [=Autonomous Agent=] that dedicated to a single [=Data Pod=], [=Service Hub=], or any other actor hosting the [=Artefact Lifecycle Event Log=] and a [=Inbox=] resources.
-On behalf of that actor, the orchestrator interprets and executes business rules described in a [=policy=] that lead to taking zero or more actions ([[#actions]]) in the network.
-It therefore watches the [=Inbox=] for possible triggers ([[#triggers]]), while it records the actions it takes to the to the [=Artefact Lifecycle Event Log=].
+An <dfn export>Orchestrator</dfn> instance is an [=Autonomous Agent=] dedicated to a single [=Data Pod=], [=Service Hub=], or any other actor hosting the [=Artefact Lifecycle Event Log=] and a [=Inbox=] resources.
+It interprets and executes business rules described in a [=policy=].
+The Orchestrator watches the [=Inbox=] for possible triggers, while it records the actions it takes to the to the [=Artefact Lifecycle Event Log=].
 
 ## Perspectives
 
+### Data Pod
+
 From a [=Data Pod=] perspective,
-the [=Orchestrator=] participates in the network on behalf of the [=Data Pod=]'s owner or [=Maintainer=].
+a Data Pod [=Orchestrator=] participates in the network on behalf of the [=Data Pod=]'s owner or [=Maintainer=].
 At instantiation time,
-a [=Maintainer=] connects the [=Orchestrator=] with the [=Artefact Lifecycle Event Log=] and [=Inbox=] resources from its [=Data Pod=],
-which it watches in order to receive a possible [=Trigger=].
-This an [=Orchestrator=] instance dedicated to a single [=Data Pod=].
-From that point on,
-the [=Maintainer=] only interacts **indirectly** with the [=Orchestrator=] via the [=Data Pod=], by using a [=Dashboard=] to append the [=Artefact Lifecycle Event Log=] and/or [=Inbox=].
+a [=Maintainer=] connects an [=Orchestrator=] to the [=Inbox=] and [=Artefact Lifecycle Event Log=]
+of its [=Data Pod=]. 
+
+This Data Pod [=Orchestrator=] executes [=Policy=] rules based on incoming [=Triggers=]. There are two main sources
+of triggers: 
+
+- Incoming notifications that are send from the network to the LDN [=Inbox=] of the [=Data Pod=]. 
+- Outgoing notifications that are send by the [=Maintainer=] to the LDN [=Inbox=] of the [=Orchestrator=].
 
 When a trigger arrives,
-the [=Orchestrator=] consults the [=policy=] - a set of business rules fixed an maintained by the [=Maintainer=] using the [=Dashboard=],
-which results in zero or more [=actions=] to take.
-An [=Action=] involves reading resources from or sending notifications to [=data pods=] (including the one it's connected to) or [=Service Hubs=].
+the Data Pod [=Orchestrator=] consults the [=policy=] - a set of business rules fixed an maintained by the [=Maintainer=] using the [=Dashboard=],
+which results in zero or more [=actions=] .
+An [=Action=] can involve reading resources from or sending notifications to other [=data pods=] (including the one it's connected to) or [=Service Hubs=].
 
-The [=Orchestrator=] records every taken [=action=] in the [=data pod=]'s [=Artefact Lifecycle Event Log=].
-When the [=Orchestrator=] requires input from the [=Maintainer=],
-it can communicate this via the [=Artefact Lifecycle Event Log=],
-which is shared with the [=Dashboard=].
-The [=Dashboard=] presents this event to the [=Maintainer=] in an actionable way, resulting in a new [=trigger=].
+The Data Pod [=Orchestrator=] records taken actions in the Data Pod [=Artefact Lifecycle Event Log=].
+When the Data Pod [=Orchestrator=] requires manual input from the [=Maintainer=],
+it can communicate this via the LDN [=Inbox=] of the Data Pod. The [=Dashboard=] presents this event 
+to the [=Maintainer=] in an actionable way. These actions by the [=Maintainer=] could result 
+in a new [=trigger=].
 
 <pre class='include'>
 path: images/high-level.svg
 </pre>
 
+### Service Hub
+
 From a [=Service Hub=] perspective,
-the [=Orchestrator=] establishes automated response to notifications from other network [=actors=] and [=orchestrators=] in context of the provided service.
+a Service Hub [=Orchestrator=] can work on behalf of the [=Service Hub=] to establishes automated response to 
+notifications from other network [=actors=] and [=orchestrators=] in context of the provided service.
 As a possible side-effect, it can also actively consults additional [=actors=] in order to complete the service.
-The [=Orchestrator=] responds by delivering a new notification in the [=inbox=] of the actor that invoked the service.
-It is the [=policy=] that dictates what response to construct and what consecutive [=actions=] (reading resources from or sending notifications to [=data pods=] or other [=service hubs=]) need to be performed.
+The Service Hub [=Orchestrator=] responds by delivering a new notification in the [=Inbox=] of the actor that invoked the service.
+It is the [=Policy=] that dictates what response to construct and what consecutive [=actions=] (reading resources from or sending notifications to [=data pods=] or other [=service hubs=]) need to be performed.
+
+Also the Service Hub [=Orchestrator=] maintains a Service Hub [=Artefact Lifecycle Event Log=] of all
+actions taken on behalf of the [=Service Hub=].
+
+In this way [=Orchestrator=]s mimic the services provided to the [=Data Pod=] and [=Service Hub=].
 
 <pre class='include'>
 path: images/high-level-servicehub.svg
@@ -159,65 +173,139 @@ path: images/high-level-servicehub.svg
 
 ## Common interaction pattern
 
-A common activity is the [=Maintainer=] of a [=Data Pod=] invoking a service provided by a [=Service Hub=].
+A common activity starts when the [=Maintainer=] of a [=Data Pod=] requires a service provided by a [=Service Hub=].
 Both [=actors=] can be considered operating an [=orchestrator=] to automate their participation in the network.
 Hence, a common interaction pattern is as follows:
 
-1. The [=maintainer=] performs an action that affects or interests other actors in the network (eg. adding a new artefact in the data pod).
-2. The [=maintainer=] uses the [=Dashboard=] to reflect this action on the [=Artefact Lifecycle Event Log=] `event log A` that is stored in the [=Data Pod=].
-3. The new event triggers the `Orchestrator A` to take consecutive [=action=].
-4. `Orchestrator A` consults its `Policy A` for the received [=trigger=], which dictates that it needs to inform the [=service hub=] about the event.
-5. `Orchestrator A` sends a notification to `Inbox B` of the [=service hub=].
-6. The notification's reception triggers `Orchestrator B` to take consecutive [=action=].
-7. `Orchestrator B` consults its `Policy B` for the received [=trigger=], which dictates that it needs to process the artefact and inform the [=maintainer=] about the outcome.
-8. `Orchestrator B` processes the contents of the notification using an internal process (eg. index the new artefact in the repository).
-9. When completed, `Orchestrator B` adds to `Event log B` that the contents of the notification have been processed.
-10. `Orchestrator B` sends a notification to `Inbox A` of the [=maintainer=].
-11. `Orchestrator A` adds to `Event log A` that the original event has been processed by the [=service hub=].
-12. The [=Dashboard=] displays `Event log A` to the [=maintainer=] to show that the necessary actions have been taken.
+1. The [=maintainer=] at [=Data Pod=] `A` performs an action that affects or interests other actors in the network (eg. adding a new artefact in the data pod).
+2. The [=maintainer=] uses the [=Dashboard=] to reflect this action by sending trigger `event A` to the [=Inbox=] of [=Orchestrator=] `A`.
+3. This trigger `event A` results in [=Orchestrator=] `A` to take consecutive [=action=]s.
+4. [=Orchestrator=] `A` consults its `Policy A` for the received [=trigger=], which, for instance, dictates that it needs to inform the [=Service Hub=] `B` about the event.
+5. [=Orchestrator=] `A` sends a notification to `Inbox B` of [=Service Hub=] `B`.
+6. The [=Orchestrator=] `B` of the [=Service Hub=] `B` monitors `Inbox B` and is triggered by the new notification in `Inbox B` to take consecutive [=action=]s.
+7. [=Orchestrator=] `B` consults its `Policy B` for the received [=trigger=], which, for instance, dictates that the `event A` needs to be appended to the [=Service Hub=] `B` [=Artefact Lifecycle Event Log=].
+8. [=Service Hub=] `B` processes the contents of the received notification using an internal process (e.g. manual evaluation the contents, adding metadata, creating a new artefact in the repository). How this is done is not specified.
+9. When [=Service Hub=] `B` has completed the process it sends a trigger `event B` to the [=Orchestrator=] `B` to notify the maintainer of [=Data Pod=] A.
+10. [=Orchestrator=] `B` consults its `Policy B` which requires not only to send the notification to the `Inbox A` of the [=Data Pod=] `A`, but also to append `event B` to the [=Service Hub=] `B` [=Artefact Lifecycle Event Log=].
+11. The [=Orchestrator=] `A` of the [=Data Pod=] `A` monitors `Inbox A` and is triggered by the new notification in `Inbox A` to take consecutive [=action=]s.
+12. [=Orchestrator=] `A` consults its `Policy A`, which dictates that the new event should be added to the [=Data Pod=] `A` [=Artefact Lifecycle Event Log=].
+13. The [=Dashboard=] displays [=Artefact Lifecycle Event Log=] `A` to the [=maintainer=] of [=Data Pod=] `A` to show that the necessary actions have been taken.
 
 <img src="images/high-level-comm.svg" width="600">
 
-Initialization interface {#init}
+Data Pod Initialization  {#init}
 ====================
 
-When deployed, an orchestrator instance requires a minimal set of information in order to function. 
-Therefore, it MUST expose a initialization interface so a external actor (eg., a maintainer) is able to supply it. 
-This provisioning MUST be possible using a `PUT` or `POST` to a dedicated [[!HTTP11]] resource if the orchestrator is deployed as a web service; see [[#deploy]].
-This interface MAY also use an [[LDP#ldpr-resource]] or even [[LDP#ldpr-container]] in case the information is supplied using a description in [[!RDF11-primer]].
+To operate autonomously, an [=Orchestrator=] has to obtain access to some resources 
+in the [=Data Pod=], respectively in the [=Service Hub=] (in case the [=Orchestrator=] is working
+on behalf of the Service Hub).
+These resources are made available in a secure matter to the [=Orchestrator=] using the
+[Web Access Control](https://solidproject.org/TR/protocol#web-access-control)
+specification. [=Orchestrator=]s that are compliant with the [[solid-protocol#solid-app]] 
+Client-Side Implementation requirements can gain access to these resources and manage them on behalf
+of the maintainer. 
 
-<pre class='include'>
-path: images/high-level-init.svg
+The following section will use the `acl:` prefix to specify Web Access Control settings.
+
+The minimum setup the [=Data Pod=] (or [=Service Hub=]) MUST have:
+
+- An LDN [=Inbox=] with:
+    - `acl:Read` access for the [=Orchestrator=].
+    - `acl:Append` access for the [=Orchestrator=] and the Network.
+- An [=Artefact Lifecycle Event Log=] with:
+    - `acl:Read` access for the [=Orchestrator=] and the Network.
+    - `acl:Append` access for the [=Orchestrator=].
+
+The maintainer of the [=Data Pod=] (or [=Service Hub=]) SHOULD have:
+
+- A WebID profile entry for:
+    - The location of the LDN [=Inbox=]
+    - The location of the [=Artefact Lifecycle Event Log=]
+    - The WebId of the [=Orchestrator=]
+
+A [=Data Pod=] MAY have:
+
+- An LDN [=Inbox=] for the [=Orchestrator=] with:
+    - `acl:Read` access for the [=Orchestrator=].
+- An LDP Container with one or more [=Policy=] rules.
+
+The latter requirements are for use cases where the [=Data Pod=] (or [=Service Hub=]) shares
+resources with its [=Orchestrator=].
+
+All actors in the network have an WebId with a profile document that document the web locations 
+of the resources they manage.
+
+An example WebId profile of a [=Data Pod=] maintainer can be:
+
+<div class="example">
+<pre>
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;.
+@prefix solid: &lt;http://www.w3.org/ns/solid/terms#&gt;.
+@prefix as: &lt;http://www.w3.org/ns/activitystreams#&gt;.
+@prefix ex: &lt;https://www.example.org/&gt;.
+
+&lt;&gt;
+    a foaf:PersonalProfileDocument;
+    foaf:maker &lt;https://alice.institution.org/profile/card#me&gt;;
+    foaf:primaryTopic &lt;https://alice.institution.org/profile/card#me&gt;.
+
+&lt;https://alice.institution.org/profile/card#me&gt;
+    foaf:name "Alice";
+    as:inbox &lt;https://alice.institution.org/inbox/&gt;;
+    as:outbox &lt;https://alice.institution.org/lifecycle_events/&gt;;
+    ex:orchestrator &lt;https://my.institution.org/orchestrator/profile/card.ttl#me&gt;;
+    ex:policies &lt;https://alice.institution.org/policies/&gt;;
+    a foaf:Person.
 </pre>
+</div>
 
-First, an Orchestrator MUST allow actors to supply an [[URI]] pointing to an [=inbox=] to watch and read.
-In addition, it MAY also allow actors to provide a list of [[LDP#ldpr-resource]] to watch.
+The WebId profile of the [=Orchestrator=] for the [=Data Pod=] above can look like:
 
-Issue: MVS: because I'm not sure it's realistic to poll any HTTP resource, I limited the scope to LDP resources. But even then, I'm not sure how you would do this in practice without keeping a lot of state.
+<div class="example">
+<pre>
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;.
+@prefix solid: &lt;http://www.w3.org/ns/solid/terms#&gt;.
+@prefix as: &lt;http://www.w3.org/ns/activitystreams#&gt;.
+@prefix ex: &lt;https://www.example.org/&gt;.
 
-Issue(9): MVS: is this registration of inbox, resources something we want to do at initialization or do we write this in the policy?
+&lt;&gt;
+    a foaf:PersonalProfileDocument;
+    foaf:maker &lt;https://my.institution.org/orchestrator/profile/card.ttl#me&gt;;
+    foaf:primaryTopic &lt;https://my.institution.org/orchestrator/profile/card.ttl#me&gt;.
 
-Next, Orchestrators solely execute business logic catured in [=policies=].
-Thus, they MUST allow actors to supply one or more [[URI]]s pointing to a [=policy=].
-These policies MUST be written in the rule language defined in [[spec-rulelanguage]].
-An actor SHOULD supply at least one [=policy=] in order to allow the orchestrator to function.
+&lt;https://my.institution.org/orchestrator/profile/card.ttl#me&gt;
+    foaf:name "Alice's Orchestrator";
+    as:inbox &lt;https://alice.institution.org/orchestrator/inbox/&gt;;
+    a foaf:Service.
+</pre>
+</div>
 
-To operate autonomeously, an Orchestrator has to obtain access to some resources in the [=Data Pod=],
-which [conforms](https://solidproject.org/TR/protocol#web-access-control) to the Web Access Control specification [[solidwebac]].
-Therefore, an orchestrator is a Solid app and MUST be fully compliant with the [[solid-protocol#solid-app]] Client-Side Implementation requirements.
-Orchestrators SHOULD also implement [[SOLID-OIDC]] to authenticate to most Solid [=data pods=] and implement the client requirements for [[solidwebac]] to receive authorization, such as checking the `WAC-Allow` header value.
+In the two examples above we have specified:
 
-If access is not granted, an Orchestrator MUST request access to the following resources (noted in the [Access Control List (ACL)](http://www.w3.org/ns/auth/acl) ontology):
+- An LDN [=Inbox=] for the [=Data Pod=] maintainer `Alice` at: `https://alice.institution.org/inbox/`.
+- An [=Artefact Lifecycle Event Log=] for `Alice` at: `https://alice.institution.org/lifecycle_events/`.
+- An [=Orchestrator=] for `Alice` defined by: `https://my.institution.org/orchestrator/profile/card.ttl#me`.
+- Policies that `Alice` maintains at: `https://alice.institution.org/policies/`.
 
-- `acl:Read` to the [=inbox=] resource (discoverable with `http://www.w3.org/ns/ldp#inbox`)
-- `acl:Read` and `acl:Write` to the [=Artefact Lifecycle Event Log=] resource.
-- `acl:Read` to any watched [[LDP]] resource.
+For the [=Orchestrator=] of `Alice` we specified:
 
-Issue(#10): are there more necessary authorizations?
+- An LDN [=Inbox=] on the [=Data Pod=] of `Alice` at: `https://alice.institution.org/orchestrator/inbox/`.
+
+For the [=Service Hub=] a similar WebId profile can be created. The decentralized location of all
+the [=Inbox=]-s , [=Artefact Lifecycle Event Log=]-s, [=Orchestrator=]-s and [=Policy=] documents can
+be discovered by knowing the WebId of all the actors in the network.
+
+An [=Orchestrator=] MAY expose an initialization interface to assist the [=Data Pod=] [=Maintainer=] in 
+setting up the required resources, WebId profile and Web Access Control settings.
+
 
 Policy {#policy-sec}
 =====================
 
+Orchestrators solely execute business logic catured in [=policies=].
+Thus, they MUST allow actors to supply one or more [[URI]]s pointing to a [=policy=].
+These policies MUST be written in the [=policy language=].
+An actor SHOULD supply at least one [=policy=] in order to allow the orchestrator to function.
 The policy is a set of rules that determines the orchestrator's level of autonomy. 
 A rule dictates what [=action=] to take when a [=trigger=] occurs ([[#triggers]]) on behalf of the maintainer.
 In practice, the policy reflects a composition of procedures imposed by:
@@ -226,6 +314,10 @@ In practice, the policy reflects a composition of procedures imposed by:
 - the domain (ie. the broader collaboration context the institution is situated in);
 - legislation (ie. the legal obligations);
 - or personal preference (ie. the maintainer).
+
+- `acl:Read` to the [=inbox=] resource (discoverable with `http://www.w3.org/ns/ldp#inbox`)
+- `acl:Read` and `acl:Append` to the [=Artefact Lifecycle Event Log=] resource.
+- `acl:Read` to any watched [[LDP]] resource.
 
 Hence, different policies need to have a common language to achieve interoperability. 
 This rule language is described in [spec-rulelanguage].
@@ -239,12 +331,121 @@ Triggers {#triggers}
 A <dfn>trigger</dfn> is an event to which an orchestrator can respond by taking [=actions=].
 An orchestrator MUST respond to the following three types of triggers:
 
-- an new incoming Linked Data Notification [[!LDN]] in the [=inbox=]
+- a new incoming Linked Data Notification [[!LDN]] in the [=inbox=] of the [=Data Pod=]
+    - This inbox should be appendable by the whole network
+- a new incoming Linked Data Notification [[!LDN]] in the [=inbox=] of the Orchestrator 
+    - This inbox can be private to the Maintainer and Orchestrator
 - an observed state changes to watched [=data pod=] resources
 - a scheduled trigger from the internal time-based event scheduler
 
 A trigger MUST be identifyable by a [[!URI]], such that the rules written in the [[spec-rulelanguage]] can refer to its occurence.
 
+An [=Orchestrator=] MUST be a compliant [[!LDN]] [Consumer](https://www.w3.org/TR/ldn/#consumer).
+The [=Orchestrator=] MAY advertise multiple inboxes.
+In this case, the [=Orchestrator=] MUST retrieve incoming Linked Data Notifications from all advertised inboxes.
+Inbox security is discussed in the [security considerations](#security-considerations) sections.
+
+An [=Orchestrator=] SHOULD be able to differentiate between Linked Data Notification sent by the
+[=Maintainer=] of the [=Data pod=], a [=Service Hub=] and by the [=Orchestrator=] itself. This
+should prevent sending the [=Orchestrator=] in a loop responding to its own triggers.
+
+An [=Orchestrator=] SHOULD have some form data validation of incoming triggers and only respond to  
+triggers that correspond to a RDF data shape. Technologies such as \[SHACL](https://www.w3.org/TR/shacl/),
+\[https://shex.io/), \[SPARQL](https://www.w3.org/TR/sparql11-query/) CONSTRUCT or
+\[Notation3](https://w3c.github.io/N3/spec/) can be used to validate triggers.
+
+An [=Orchestrator=] MAY have some mechanism in place to validate the origin of the triggers. Technologies
+such as [Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) can by used to sign all 
+Linked Data Notifications that are sent over the network, and are validated by the Orchestrator.
+
+An [=Orchestrator=] SHOULD be able to process any notification descrived in the 
+[List of Notifications](https://mellonscholarlycommunication.github.io/spec-notifications/).
+
+An [=Orchestrator=] SHOULD be able to execute one or more [=Policy=] documents that are defined by 
+the [=Maintainer=]. An example how [=Policy=] documents can be written is available in the
+[Rule language for decentralized business processes](https://mellonscholarlycommunication.github.io/spec-rulelanguage/).
+
+Example of a `Create` trigger using Linked Data Notifications:
+
+<div class="example">
+
+<pre>
+
+POST /orchestrator/inbox HTTP/1.1
+Host: alice.institution.org 
+Content-Type: application/ld+json;profile="https://www.w3.org/ns/activitystreams"
+Content-Language: en
+{
+    "@context": "https://www.w3.org/ns/activitystreams",
+    "id": "urn:uuid:AD02A16E-2F5C-408E-8A4D-D596C6421969",
+    "type": "Create",
+    "summary": "Alice created an artefact",
+    "actor": {
+      "id": "https://alice.institution.org/profiles/card#me",
+      "type": ["Person"],
+      "inbox": "https://alice.institution.org/inbox",
+      "name": "Alice"   
+    },
+    "origin": {
+      "id": "https://acme.net/shinyapps/DashBoard123",
+      "type": "Application",
+      "name": "Dashboard of Alice" 
+    },
+    "object": "http://alice.institution.org/artefacts/1",
+    "published": "2014-09-30T12:34:56Z"
+}
+</pre>
+
+</div>
+
+Example of a [=Policy=] to forward all `Create` events from `Alice` to `Bob` using 
+a [=Policy=] rule:
+
+<div class="example">
+
+<pre>
+<b>rule</b> "Forward to Bob"
+
+as:   &lt;https://www.w3.org/ns/activitystreams#&gt;
+pol:  &lt;https://www.example.org/ns/policy#&gt;
+fno:  &lt;https://w3id.org/function/ontology#&gt;
+ex:   &lt;https://www.example.org/&gt;
+alice:        &lt;https://alice.institution.org/profiles/card#me&gt;
+bob:          &lt;https://bob.institution.org/profiles/card#me&gt;
+orchestrator: &lt;https://instutition.org/orchestrator/profile/card#me&gt;
+
+<b>when</b>
+
+ ?notification a as:Create  
+ ?notification as:actor alice:
+
+<b>then</b>
+
+ ?notifiction as:target bob:
+
+ [ pol:policy  [
+      a fno:Execution ;
+      fno:executes ex:sendTarget [
+        ex:notification ?notification
+      ]
+   ]
+ ]
+</pre>
+
+</div>
+
+## Observing resource state changes  ## {#trigger-resource}
+
+Note: PHOCHSTE: This needs some more work to explain how this could work.
+
+An Orchestrator MAY accept resource stage changes of 
+[Linked Data Platform Resources](https://www.w3.org/TR/ldp/#ldpr) as triggers for policy actions.
+In this case, the Orchestrator MUST be granted READ-acess all observed 
+[Linked Data Platform Resources](https://www.w3.org/TR/ldp/#ldpr).
+In the case that an observed [Linked Data Platform Resources](https://www.w3.org/TR/ldp/#ldpr) 
+is also a [Linked Data Platform Container](https://www.w3.org/TR/ldp/#ldpc), the Orchestrator SHOULD
+observe state changes for all [Linked Data Platform Resources](https://www.w3.org/TR/ldp/#ldpr) 
+that are contained by the observed [Linked Data Platform Container](https://www.w3.org/TR/ldp/#ldpc).
 Issue: define something like a trigger description?
 
 ## Receving Linked Data Notifications ## {#trigger-ldn}
@@ -280,6 +481,13 @@ The shape definitions MAY also conform to the \[SHEX](https://shex.io/) language
 <div class=example>
 Example of a Linked Data Notifications trigger using SHACL:
 ```
+{
+  "@context": "https://www.example.org/ns/policy",
+  "type": "StateTrigger",
+  "resource": "https://mypod.org/resources/,
+  "state": ["Create", "Update"]
+  "summary": "Linked Data Notification Trigger",
+}
 ex:LDNTriggerShape
   a sh:NodeShape ;
   sh:targetClass as:Create ;    # Applies to all create notifications
@@ -300,6 +508,11 @@ ex:LDNTriggerShape
 ```
 </div>
 
+## Scheduled trigger ## {#trigger-schedule}
+
+Note: PHOCHSTE: This needs some more work to explain how this could work.
+
+An Orchestrator MAY accept time scheduled triggers for policy actions.
 ## Observing resource state changes  ## {#trigger-resource}
 
 An orchestrator can also watch LDP resources ([[[LDP#ldpr]]) (e.g, by means of polling) whose state changes issue a trigger.
