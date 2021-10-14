@@ -242,6 +242,7 @@ An example WebId profile of a [=Data Pod=] maintainer can be:
 @prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;.
 @prefix solid: &lt;http://www.w3.org/ns/solid/terms#&gt;.
 @prefix as: &lt;http://www.w3.org/ns/activitystreams#&gt;.
+@prefix ldp: &lt;http://www.w3.org/ns/ldp#&gt;.
 @prefix ex: &lt;https://www.example.org/&gt;.
 
 &lt;&gt;
@@ -251,7 +252,7 @@ An example WebId profile of a [=Data Pod=] maintainer can be:
 
 &lt;https://alice.institution.org/profile/card#me&gt;
     foaf:name "Alice";
-    as:inbox &lt;https://alice.institution.org/inbox/&gt;;
+    ldp:inbox &lt;https://alice.institution.org/inbox/&gt;;
     as:outbox &lt;https://alice.institution.org/lifecycle_events/&gt;;
     ex:orchestrator &lt;https://my.institution.org/orchestrator/profile/card.ttl#me&gt;;
     ex:policies &lt;https://alice.institution.org/policies/&gt;;
@@ -266,6 +267,7 @@ The WebId profile of the [=Orchestrator=] for the [=Data Pod=] above can look li
 @prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;.
 @prefix solid: &lt;http://www.w3.org/ns/solid/terms#&gt;.
 @prefix as: &lt;http://www.w3.org/ns/activitystreams#&gt;.
+@prefix ldp: &lt;http://www.w3.org/ns/ldp#&gt;.
 @prefix ex: &lt;https://www.example.org/&gt;.
 
 &lt;&gt;
@@ -275,7 +277,7 @@ The WebId profile of the [=Orchestrator=] for the [=Data Pod=] above can look li
 
 &lt;https://my.institution.org/orchestrator/profile/card.ttl#me&gt;
     foaf:name "Alice's Orchestrator";
-    as:inbox &lt;https://alice.institution.org/orchestrator/inbox/&gt;;
+    ldp:inbox &lt;https://alice.institution.org/orchestrator/inbox/&gt;;
     a foaf:Service.
 </pre>
 </div>

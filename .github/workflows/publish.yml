@@ -12,27 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Output high-level-comm to SVG
-        uses: Burnett01/actions-drawio@1.0
-        with:
-          scale: 1.0
-          src: diagrams/high-level-comm.drawio
-          dest: images/high-level-comm.svg
-
-      - name: Output high-level to SVG
-        uses: Burnett01/actions-drawio@1.0
-        with:
-          scale: 1.0
-          src: diagrams/high-level.drawio
-          dest: images/high-level.svg
-
-      - name: Output high-level-servicehub to SVG
-        uses: Burnett01/actions-drawio@1.0
-        with:
-          scale: 1.0
-          src: diagrams/high-level-servicehub.drawio
-          dest: images/high-level-servicehub.svg
-
       - name: Output Bikeshed to HTML
         uses: netwerk-digitaal-erfgoed/bikeshed-action@v1
 
