@@ -304,28 +304,40 @@ setting up the required resources, WebId profile and Web Access Control settings
 Policy {#policy-sec}
 =====================
 
-Orchestrators solely execute business logic catured in [=policies=].
-Thus, they MUST allow actors to supply one or more [[URI]]s pointing to a [=policy=].
-These policies MUST be written in the [=policy language=].
-An actor SHOULD supply at least one [=policy=] in order to allow the orchestrator to function.
-The policy is a set of rules that determines the orchestrator's level of autonomy. 
-A rule dictates what [=action=] to take when a [=trigger=] occurs ([[#triggers]]) on behalf of the maintainer.
-In practice, the policy reflects a composition of procedures imposed by:
+To execute business logic for handling notifications, the [=Orchestrator=] makes use
+of one or more [=policy=] documents that are written by the actors in the network.
+These policies MUST be written in a [=policy language=] that the [=Orchestrator=] understands.
+In the [Rule language](/spec-rulelanguage/) examples are provided how these policies can be created.
 
-- the institution (ie. the employer of the maintainer and the owner of the artefacts);
-- the domain (ie. the broader collaboration context the institution is situated in);
+Each policy dictates what should happen when [=trigger=] occurs on behalf of the maintainer of
+a [=Data Pod=] or [=Service Hub=].
+
+In practice, the policies reflects a composition of procedures imposed by:
+
+- personal preference (ie. defined the maintainer);
+- service requirements (ie. defined by the service hub);
+- institutional requiments (ie. the employer of the maintainer and the owner of the artefacts);
+- domain rules (ie. the broader collaboration context the institution is situated in);
 - legislation (ie. the legal obligations);
-- or personal preference (ie. the maintainer).
 
-- `acl:Read` to the [=inbox=] resource (discoverable with `http://www.w3.org/ns/ldp#inbox`)
-- `acl:Read` and `acl:Append` to the [=Artefact Lifecycle Event Log=] resource.
-- `acl:Read` to any watched [[LDP]] resource.
+Policy documents are published as resources at in a [=Data Pod=] or [=Service Hub=] LDP Container.
+This container can be under the controll of the [=Orchestrator=] or a [=Data Pod=]/[=Service Hub=]
+maintainer. In the WebID profile document of maintaier the location of the policies need to be
+made available.
 
-Hence, different policies need to have a common language to achieve interoperability. 
-This rule language is described in [spec-rulelanguage].
+In the Example 1 above, the [=policy=] documents of Alice were made available at the location 
+`https://alice.institution.org/policies/`.
 
-A orchestrator MUST be able to interpret and executed policies that comply with [spec-rulelanguage].
-Requirements regarding [=actions=] and [=triggers=] are discussed in the next sections.
+The [=Orchestrator=] MUST have `acl:Read` permissions in order to execute the business logic
+specified in these documents.
+
+When a [=trigger=] occers the [=Orchestrator=] will consult all the [=policies=] in the 
+supplied locations and follows the instructions.
+
+The [=Orchestrator=] MAY offer only a limited number of [=policy=] rules to the maintainer.
+
+When a [=policy=] can't be executed due to errors, the [=Orchestrator=] may send a notification
+to the maintainer about this fact.
 
 Triggers {#triggers}
 =====================
@@ -475,40 +487,9 @@ An orchestrator MUST at least support the following subset:
 
 Issue(8): What notifications do NOT trigger the orchestrator?
 
-When receiving a notification, the orchestrator validates the received notification to all notification-based triggers mentioned in its [=policy=].
-Linked Data Notification triggers SHOULD be defined as RDF data shapes, compliant to the [[!SHACL]] specification. 
-The shape definitions MAY also conform to the \[SHEX](https://shex.io/) language.
-
-
-<div class=example>
-Example of a Linked Data Notifications trigger using SHACL:
-```
-{
-  "@context": "https://www.example.org/ns/policy",
-  "type": "StateTrigger",
-  "resource": "https://mypod.org/resources/,
-  "state": ["Create", "Update"]
-  "summary": "Linked Data Notification Trigger",
-}
-ex:LDNTriggerShape
-  a sh:NodeShape ;
-  sh:targetClass as:Create ;    # Applies to all create notifications
-  sh:property [                 # _:b1
-    sh:path as:actor ;          # only select triggers from organizations
-    sh:maxCount 1 ;
-    sh:class schema:Organization ;
-    sh:nodeKind sh:IRI ;
-  ] ;
-  sh:property [                 # _:b2
-    sh:path as:object ;         # only select triggers about dataset
-    sh:maxCount 1 ;
-    sh:class schema:Dataset ;
-    sh:nodeKind sh:IRI ;
-  ] ;
-  sh:closed true ;
-  sh:ignoredProperties ( rdf:type ) .
-```
-</div>
+When receiving a notification, the orchestrator validates the received notification to 
+all notification-based triggers mentioned in its [=policy=]. Technologies such as
+[[!SHACL]] and \[SHEX](https://shex.io/)  can be used to validate notifications.
 
 ## Scheduled trigger ## {#trigger-schedule}
 
