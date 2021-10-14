@@ -1223,7 +1223,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version 5f7b0e20, updated Tue Aug 18 15:46:28 2020 -0700" name="generator">
   <link href="https://mellonscholarlycommunication.github.io/spec-orchestrator" rel="canonical">
-  <meta content="ddfde42717a678d19e23214a9e967deffb8d96f6" name="document-revision">
+  <meta content="dbed339bff960481f0f4287af6f738a753fe6215" name="document-revision">
 <style>
 table {
   margin: 25px auto;
@@ -2424,69 +2424,72 @@ be discovered by knowing the WebId of all the actors in the network.</p>
    <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④⓪">Orchestrator</a> MAY expose an initialization interface to assist the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod②⑨">Data Pod</a> <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer①①">Maintainer</a> in
 setting up the required resources, WebId profile and Web Access Control settings.</p>
    <h2 class="heading settled" data-level="7" id="policy-sec"><span class="secno">7. </span><span class="content">Policy</span><a class="self-link" href="#policy-sec"></a></h2>
-   <p>Orchestrators solely execute business logic catured in <a data-link-type="dfn" href="#policy" id="ref-for-policy⑧">policies</a>.
-Thus, they MUST allow actors to supply one or more <a data-link-type="biblio" href="#biblio-uri">[URI]</a>s pointing to a <a data-link-type="dfn" href="#policy" id="ref-for-policy⑨">policy</a>.
-These policies MUST be written in the <a data-link-type="dfn" href="#policy-language" id="ref-for-policy-language①">policy language</a>.
-An actor SHOULD supply at least one <a data-link-type="dfn" href="#policy" id="ref-for-policy①⓪">policy</a> in order to allow the orchestrator to function.
-The policy is a set of rules that determines the orchestrator’s level of autonomy. 
-A rule dictates what <a data-link-type="dfn" href="#action" id="ref-for-action⑦">action</a> to take when a <a data-link-type="dfn" href="#trigger" id="ref-for-trigger⑤">trigger</a> occurs (<a href="#triggers">§ 8 Triggers</a>) on behalf of the maintainer.
-In practice, the policy reflects a composition of procedures imposed by:</p>
+   <p>To execute business logic for handling notifications, the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④①">Orchestrator</a> makes use
+of one or more <a data-link-type="dfn" href="#policy" id="ref-for-policy⑧">policy</a> documents that are written by the actors in the network.
+These policies MUST be written in a <a data-link-type="dfn" href="#policy-language" id="ref-for-policy-language①">policy language</a> that the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④②">Orchestrator</a> understands.
+In the <a href="/spec-rulelanguage/">Rule language</a> examples are provided how these policies can be created.</p>
+   <p>Each policy dictates what should happen when <a data-link-type="dfn" href="#trigger" id="ref-for-trigger⑤">trigger</a> occurs on behalf of the maintainer of
+a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③⓪">Data Pod</a> or <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub②⓪">Service Hub</a>.</p>
+   <p>In practice, the policies reflects a composition of procedures imposed by:</p>
    <ul>
     <li data-md>
-     <p>the institution (ie. the employer of the maintainer and the owner of the artefacts);</p>
+     <p>personal preference (ie. defined the maintainer);</p>
     <li data-md>
-     <p>the domain (ie. the broader collaboration context the institution is situated in);</p>
+     <p>service requirements (ie. defined by the service hub);</p>
+    <li data-md>
+     <p>institutional requiments (ie. the employer of the maintainer and the owner of the artefacts);</p>
+    <li data-md>
+     <p>domain rules (ie. the broader collaboration context the institution is situated in);</p>
     <li data-md>
      <p>legislation (ie. the legal obligations);</p>
-    <li data-md>
-     <p>or personal preference (ie. the maintainer).</p>
-    <li data-md>
-     <p><code>acl:Read</code> to the <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①⑤">inbox</a> resource (discoverable with <code>http://www.w3.org/ns/ldp#inbox</code>)</p>
-    <li data-md>
-     <p><code>acl:Read</code> and <code>acl:Append</code> to the <a data-link-type="dfn" href="#artefact-lifecycle-event-log" id="ref-for-artefact-lifecycle-event-log①④">Artefact Lifecycle Event Log</a> resource.</p>
-    <li data-md>
-     <p><code>acl:Read</code> to any watched <a data-link-type="biblio" href="#biblio-ldp">[LDP]</a> resource.</p>
    </ul>
-   <p>Hence, different policies need to have a common language to achieve interoperability.
-This rule language is described in [spec-rulelanguage].</p>
-   <p>A orchestrator MUST be able to interpret and executed policies that comply with [spec-rulelanguage].
-Requirements regarding <a data-link-type="dfn" href="#action" id="ref-for-action⑧">actions</a> and <a data-link-type="dfn" href="#trigger" id="ref-for-trigger⑥">triggers</a> are discussed in the next sections.</p>
+   <p>Policy documents are published as resources at in a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③①">Data Pod</a> or <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub②①">Service Hub</a> LDP Container.
+This container can be under the controll of the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④③">Orchestrator</a> or a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③②">Data Pod</a>/<a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub②②">Service Hub</a> maintainer. In the WebID profile document of maintaier the location of the policies need to be
+made available.</p>
+   <p>In the Example 1 above, the <a data-link-type="dfn" href="#policy" id="ref-for-policy⑨">policy</a> documents of Alice were made available at the location <code>https://alice.institution.org/policies/</code>.</p>
+   <p>The <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④④">Orchestrator</a> MUST have <code>acl:Read</code> permissions in order to execute the business logic
+specified in these documents.</p>
+   <p>When a <a data-link-type="dfn" href="#trigger" id="ref-for-trigger⑥">trigger</a> occers the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④⑤">Orchestrator</a> will consult all the <a data-link-type="dfn" href="#policy" id="ref-for-policy①⓪">policies</a> in the
+supplied locations and follows the instructions.</p>
+   <p>The <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④⑥">Orchestrator</a> MAY offer only a limited number of <a data-link-type="dfn" href="#policy" id="ref-for-policy①①">policy</a> rules to the maintainer.</p>
+   <p>When a <a data-link-type="dfn" href="#policy" id="ref-for-policy①②">policy</a> can’t be executed due to errors, the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④⑦">Orchestrator</a> may send a notification
+to the maintainer about this fact.</p>
    <h2 class="heading settled" data-level="8" id="triggers"><span class="secno">8. </span><span class="content">Triggers</span><a class="self-link" href="#triggers"></a></h2>
-   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="trigger">trigger</dfn> is an event to which an orchestrator can respond by taking <a data-link-type="dfn" href="#action" id="ref-for-action⑨">actions</a>.
+   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="trigger">trigger</dfn> is an event to which an orchestrator can respond by taking <a data-link-type="dfn" href="#action" id="ref-for-action⑦">actions</a>.
 An orchestrator MUST respond to the following three types of triggers:</p>
    <ul>
     <li data-md>
-     <p>a new incoming Linked Data Notification <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> in the <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①⑥">inbox</a> of the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③⓪">Data Pod</a></p>
+     <p>a new incoming Linked Data Notification <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> in the <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①⑤">inbox</a> of the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③③">Data Pod</a></p>
      <ul>
       <li data-md>
        <p>This inbox should be appendable by the whole network</p>
      </ul>
     <li data-md>
-     <p>a new incoming Linked Data Notification <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> in the <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①⑦">inbox</a> of the Orchestrator</p>
+     <p>a new incoming Linked Data Notification <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> in the <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①⑥">inbox</a> of the Orchestrator</p>
      <ul>
       <li data-md>
        <p>This inbox can be private to the Maintainer and Orchestrator</p>
      </ul>
     <li data-md>
-     <p>an observed state changes to watched <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③①">data pod</a> resources</p>
+     <p>an observed state changes to watched <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③④">data pod</a> resources</p>
     <li data-md>
      <p>a scheduled trigger from the internal time-based event scheduler</p>
    </ul>
    <p>A trigger MUST be identifyable by a <a data-link-type="biblio" href="#biblio-uri">[URI]</a>, such that the rules written in the <a data-link-type="biblio" href="#biblio-spec-rulelanguage">[spec-rulelanguage]</a> can refer to its occurence.</p>
-   <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④①">Orchestrator</a> MUST be a compliant <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> <a href="https://www.w3.org/TR/ldn/#consumer">Consumer</a>.
-The <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④②">Orchestrator</a> MAY advertise multiple inboxes.
-In this case, the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④③">Orchestrator</a> MUST retrieve incoming Linked Data Notifications from all advertised inboxes.
+   <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④⑧">Orchestrator</a> MUST be a compliant <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> <a href="https://www.w3.org/TR/ldn/#consumer">Consumer</a>.
+The <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④⑨">Orchestrator</a> MAY advertise multiple inboxes.
+In this case, the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑤⓪">Orchestrator</a> MUST retrieve incoming Linked Data Notifications from all advertised inboxes.
 Inbox security is discussed in the <a href="#security-considerations">security considerations</a> sections.</p>
-   <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④④">Orchestrator</a> SHOULD be able to differentiate between Linked Data Notification sent by the <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer①②">Maintainer</a> of the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③②">Data pod</a>, a <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub②⓪">Service Hub</a> and by the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④⑤">Orchestrator</a> itself. This
-should prevent sending the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④⑥">Orchestrator</a> in a loop responding to its own triggers.</p>
-   <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④⑦">Orchestrator</a> SHOULD have some form data validation of incoming triggers and only respond to
+   <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑤①">Orchestrator</a> SHOULD be able to differentiate between Linked Data Notification sent by the <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer①②">Maintainer</a> of the <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③⑤">Data pod</a>, a <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub②③">Service Hub</a> and by the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑤②">Orchestrator</a> itself. This
+should prevent sending the <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑤③">Orchestrator</a> in a loop responding to its own triggers.</p>
+   <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑤④">Orchestrator</a> SHOULD have some form data validation of incoming triggers and only respond to
 triggers that correspond to a RDF data shape. Technologies such as <a href="https://www.w3.org/TR/shacl/">SHACL</a>, <a href="https://www.w3.org/TR/sparql11-query/">https://shex.io/), [SPARQL</a> CONSTRUCT or <a href="https://w3c.github.io/N3/spec/">Notation3</a> can be used to validate triggers.</p>
-   <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④⑧">Orchestrator</a> MAY have some mechanism in place to validate the origin of the triggers. Technologies
+   <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑤⑤">Orchestrator</a> MAY have some mechanism in place to validate the origin of the triggers. Technologies
 such as <a href="https://w3c-ccg.github.io/ld-proofs/">Linked Data Proofs</a> can by used to sign all 
 Linked Data Notifications that are sent over the network, and are validated by the Orchestrator.</p>
-   <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator④⑨">Orchestrator</a> SHOULD be able to process any notification descrived in the <a href="https://mellonscholarlycommunication.github.io/spec-notifications/">List of Notifications</a>.</p>
-   <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑤⓪">Orchestrator</a> SHOULD be able to execute one or more <a data-link-type="dfn" href="#policy" id="ref-for-policy①①">Policy</a> documents that are defined by
-the <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer①③">Maintainer</a>. An example how <a data-link-type="dfn" href="#policy" id="ref-for-policy①②">Policy</a> documents can be written is available in the <a href="https://mellonscholarlycommunication.github.io/spec-rulelanguage/">Rule language for decentralized business processes</a>.</p>
+   <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑤⑥">Orchestrator</a> SHOULD be able to process any notification descrived in the <a href="https://mellonscholarlycommunication.github.io/spec-notifications/">List of Notifications</a>.</p>
+   <p>An <a data-link-type="dfn" href="#orchestrator" id="ref-for-orchestrator⑤⑦">Orchestrator</a> SHOULD be able to execute one or more <a data-link-type="dfn" href="#policy" id="ref-for-policy①③">Policy</a> documents that are defined by
+the <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer①③">Maintainer</a>. An example how <a data-link-type="dfn" href="#policy" id="ref-for-policy①④">Policy</a> documents can be written is available in the <a href="https://mellonscholarlycommunication.github.io/spec-rulelanguage/">Rule language for decentralized business processes</a>.</p>
    <p>Example of a <code>Create</code> trigger using Linked Data Notifications:</p>
    <div class="example" id="example-29be3678">
     <a class="self-link" href="#example-29be3678"></a> 
@@ -2515,8 +2518,8 @@ Content-Language: en
 }
 </pre>
    </div>
-   <p>Example of a <a data-link-type="dfn" href="#policy" id="ref-for-policy①③">Policy</a> to forward all <code>Create</code> events from <code>Alice</code> to <code>Bob</code> using
-a <a data-link-type="dfn" href="#policy" id="ref-for-policy①④">Policy</a> rule:</p>
+   <p>Example of a <a data-link-type="dfn" href="#policy" id="ref-for-policy①⑤">Policy</a> to forward all <code>Create</code> events from <code>Alice</code> to <code>Bob</code> using
+a <a data-link-type="dfn" href="#policy" id="ref-for-policy①⑥">Policy</a> rule:</p>
    <div class="example" id="example-67465577">
     <a class="self-link" href="#example-67465577"></a> 
 <pre><b>rule</b> "Forward to Bob"
@@ -2561,9 +2564,9 @@ Common senders of notifications are:</p>
     <li data-md>
      <p>a <a data-link-type="dfn" href="#maintainer" id="ref-for-maintainer①④">maintainer</a> by using the <a data-link-type="dfn" href="#dashboard" id="ref-for-dashboard④">Dashboard</a>, who performed a manual operation on a artefact (eg. creating a new artefact) and wants to trigger consecutive action (eg. announcing that artefact);</p>
     <li data-md>
-     <p>a <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub②①">service hub</a> or other <a data-link-type="dfn" href="#actor" id="ref-for-actor③">actor</a> who has performed an operation related to an artefact (eg. created a comment about that artefact) stored in the maintainer’s data pod and is therefore of potential interest to the orchestrator.</p>
+     <p>a <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub②④">service hub</a> or other <a data-link-type="dfn" href="#actor" id="ref-for-actor③">actor</a> who has performed an operation related to an artefact (eg. created a comment about that artefact) stored in the maintainer’s data pod and is therefore of potential interest to the orchestrator.</p>
    </ul>
-   <p>To be able to read the notifications from an <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①⑧">inbox</a>,
+   <p>To be able to read the notifications from an <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①⑦">inbox</a>,
 An orchestrator MUST be a compliant <a href="https://www.w3.org/TR/ldn/#consumer">Linked Data Notifications §consumer</a>.
 It MAY watch zero or more advertise inboxes, as mentioned in <a href="#init">§ 6 Data Pod Initialization</a> and MUST retrieve incoming Linked Data Notifications from all advertised inboxes.
 Inboxes MAY be authenticated according to <a href="https://www.w3.org/TR/ldn/#authenticated-inboxes">Linked Data Notifications §authenticated-inboxes</a>, which is discussed further in <a href="#security-considerations">§ 11 Security considerations</a>.</p>
@@ -2586,37 +2589,8 @@ An orchestrator MUST at least support the following subset:</p>
      <p><a href="https://www.w3.org/ns/activitystreams#Reject">as:Reject</a></p>
    </ul>
    <p class="issue" id="issue-7031d811"><a class="self-link" href="#issue-7031d811"></a> What notifications do NOT trigger the orchestrator? <a href="https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/8">&lt;https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/8></a></p>
-   <p>When receiving a notification, the orchestrator validates the received notification to all notification-based triggers mentioned in its <a data-link-type="dfn" href="#policy" id="ref-for-policy①⑤">policy</a>.
-Linked Data Notification triggers SHOULD be defined as RDF data shapes, compliant to the <a data-link-type="biblio" href="#biblio-shacl">[SHACL]</a> specification. 
-The shape definitions MAY also conform to the <a href="https://shex.io/">SHEX</a> language.</p>
-   <div class="example" id="example-1c8f008b">
-    <a class="self-link" href="#example-1c8f008b"></a> Example of a Linked Data Notifications trigger using SHACL: 
-<pre>{
-  "@context": "https://www.example.org/ns/policy",
-  "type": "StateTrigger",
-  "resource": "https://mypod.org/resources/,
-  "state": ["Create", "Update"]
-  "summary": "Linked Data Notification Trigger",
-}
-ex:LDNTriggerShape
-  a sh:NodeShape ;
-  sh:targetClass as:Create ;    # Applies to all create notifications
-  sh:property [                 # _:b1
-    sh:path as:actor ;          # only select triggers from organizations
-    sh:maxCount 1 ;
-    sh:class schema:Organization ;
-    sh:nodeKind sh:IRI ;
-  ] ;
-  sh:property [                 # _:b2
-    sh:path as:object ;         # only select triggers about dataset
-    sh:maxCount 1 ;
-    sh:class schema:Dataset ;
-    sh:nodeKind sh:IRI ;
-  ] ;
-  sh:closed true ;
-  sh:ignoredProperties ( rdf:type ) .
-</pre>
-   </div>
+   <p>When receiving a notification, the orchestrator validates the received notification to
+all notification-based triggers mentioned in its <a data-link-type="dfn" href="#policy" id="ref-for-policy①⑦">policy</a>. Technologies such as <a data-link-type="biblio" href="#biblio-shacl">[SHACL]</a> and <a href="https://shex.io/">SHEX</a> can be used to validate notifications.</p>
    <h3 class="heading settled" data-level="8.3" id="trigger-schedule"><span class="secno">8.3. </span><span class="content">Scheduled trigger</span><a class="self-link" href="#trigger-schedule"></a></h3>
    <p class="note" role="note"><span>Note:</span> PHOCHSTE: This needs some more work to explain how this could work.</p>
    <p>An Orchestrator MAY accept time scheduled triggers for policy actions.</p>
@@ -2652,13 +2626,13 @@ ex:trigger ex:pattern "15 3 * * 1-5"^^ex:crontab
    <p class="issue" id="issue-3009c49c"><a class="self-link" href="#issue-3009c49c"></a> How can you communicate a scheduled trigger from a institutional perspective? for instance, researchers all apply the institutional <a href="https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/11">&lt;https://github.com/MellonScholarlyCommunication/spec-orchestrator/issues/11></a></p>
    <h2 class="heading settled" data-level="9" id="actions"><span class="secno">9. </span><span class="content">Actions</span><a class="self-link" href="#actions"></a></h2>
    <p>An <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="action">action</dfn> is a form of interation with other actors or resources in the network.
-An Orchestrator performs such <a data-link-type="dfn" href="#action" id="ref-for-action①⓪">actions</a> on behalf of a network <a data-link-type="dfn" href="#actor" id="ref-for-actor④">actor</a>.</p>
+An Orchestrator performs such <a data-link-type="dfn" href="#action" id="ref-for-action⑧">actions</a> on behalf of a network <a data-link-type="dfn" href="#actor" id="ref-for-actor④">actor</a>.</p>
    <p>There are three types of actions that an orchestrator MUST support:</p>
    <ul>
     <li data-md>
-     <p>sending Linked Data Notifications <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> to an <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①⑨">inbox</a> resource, likely belonging to a <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub②②">Service Hub</a> or <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③③">Data Pod</a>.</p>
+     <p>sending Linked Data Notifications <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> to an <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①⑧">inbox</a> resource, likely belonging to a <a data-link-type="dfn" href="#service-hub" id="ref-for-service-hub②⑤">Service Hub</a> or <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③⑥">Data Pod</a>.</p>
     <li data-md>
-     <p>manipulating <a data-link-type="biblio" href="#biblio-ldp">[LDP]</a> resources of a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③④">Data Pod</a>.</p>
+     <p>manipulating <a data-link-type="biblio" href="#biblio-ldp">[LDP]</a> resources of a <a data-link-type="dfn" href="#data-pod" id="ref-for-data-pod③⑦">Data Pod</a>.</p>
     <li data-md>
      <p>reading arbitrary <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a> resources</p>
    </ul>
@@ -2742,7 +2716,7 @@ The specific requirements are discussed per action type below.</p>
    <h2 class="heading settled" data-level="10" id="deploy"><span class="secno">10. </span><span class="content">Deploying an orchestrator</span><a class="self-link" href="#deploy"></a></h2>
    <p>An Orchestrator MUST be deployable as a <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="local-background-process">local background process</dfn> or as a <dfn data-dfn-type="dfn" data-export id="remote-web-service">remote web service<a class="self-link" href="#remote-web-service"></a></dfn>.
 In case of the latter, an actor SHOULD be able to spawn, initialize and trigger the instance over <a data-link-type="biblio" href="#biblio-http11">[HTTP11]</a>, as defined in <a href="#deploy">§ 10 Deploying an orchestrator</a> and <a href="#triggers">§ 8 Triggers</a>.
-The Orchestrator MAY also serve an <a data-link-type="dfn" href="#inbox" id="ref-for-inbox②⓪">inbox</a> for communicating with third-parties using Linked Data Notifications <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> .</p>
+The Orchestrator MAY also serve an <a data-link-type="dfn" href="#inbox" id="ref-for-inbox①⑨">inbox</a> for communicating with third-parties using Linked Data Notifications <a data-link-type="biblio" href="#biblio-ldn">[LDN]</a> .</p>
    <p>Example of spawning an orchestrator using Linked Data Notifications:</p>
 <pre>
 POST /inbox HTTP/1.1
@@ -3014,8 +2988,9 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-data-pod①①">5.1.2. Service Hub</a> <a href="#ref-for-data-pod①②">(2)</a>
     <li><a href="#ref-for-data-pod①③">5.2. Common interaction pattern</a> <a href="#ref-for-data-pod①④">(2)</a> <a href="#ref-for-data-pod①⑤">(3)</a> <a href="#ref-for-data-pod①⑥">(4)</a> <a href="#ref-for-data-pod①⑦">(5)</a> <a href="#ref-for-data-pod①⑧">(6)</a> <a href="#ref-for-data-pod①⑨">(7)</a>
     <li><a href="#ref-for-data-pod②⓪">6. Data Pod Initialization</a> <a href="#ref-for-data-pod②①">(2)</a> <a href="#ref-for-data-pod②②">(3)</a> <a href="#ref-for-data-pod②③">(4)</a> <a href="#ref-for-data-pod②④">(5)</a> <a href="#ref-for-data-pod②⑤">(6)</a> <a href="#ref-for-data-pod②⑥">(7)</a> <a href="#ref-for-data-pod②⑦">(8)</a> <a href="#ref-for-data-pod②⑧">(9)</a> <a href="#ref-for-data-pod②⑨">(10)</a>
-    <li><a href="#ref-for-data-pod③⓪">8. Triggers</a> <a href="#ref-for-data-pod③①">(2)</a> <a href="#ref-for-data-pod③②">(3)</a>
-    <li><a href="#ref-for-data-pod③③">9. Actions</a> <a href="#ref-for-data-pod③④">(2)</a>
+    <li><a href="#ref-for-data-pod③⓪">7. Policy</a> <a href="#ref-for-data-pod③①">(2)</a> <a href="#ref-for-data-pod③②">(3)</a>
+    <li><a href="#ref-for-data-pod③③">8. Triggers</a> <a href="#ref-for-data-pod③④">(2)</a> <a href="#ref-for-data-pod③⑤">(3)</a>
+    <li><a href="#ref-for-data-pod③⑥">9. Actions</a> <a href="#ref-for-data-pod③⑦">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="inbox">
@@ -3027,11 +3002,10 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-inbox⑦">5.1.2. Service Hub</a>
     <li><a href="#ref-for-inbox⑧">5.2. Common interaction pattern</a>
     <li><a href="#ref-for-inbox⑨">6. Data Pod Initialization</a> <a href="#ref-for-inbox①⓪">(2)</a> <a href="#ref-for-inbox①①">(3)</a> <a href="#ref-for-inbox①②">(4)</a> <a href="#ref-for-inbox①③">(5)</a> <a href="#ref-for-inbox①④">(6)</a>
-    <li><a href="#ref-for-inbox①⑤">7. Policy</a>
-    <li><a href="#ref-for-inbox①⑥">8. Triggers</a> <a href="#ref-for-inbox①⑦">(2)</a>
-    <li><a href="#ref-for-inbox①⑧">8.2. Receving Linked Data Notifications</a>
-    <li><a href="#ref-for-inbox①⑨">9. Actions</a>
-    <li><a href="#ref-for-inbox②⓪">10. Deploying an orchestrator</a>
+    <li><a href="#ref-for-inbox①⑤">8. Triggers</a> <a href="#ref-for-inbox①⑥">(2)</a>
+    <li><a href="#ref-for-inbox①⑦">8.2. Receving Linked Data Notifications</a>
+    <li><a href="#ref-for-inbox①⑧">9. Actions</a>
+    <li><a href="#ref-for-inbox①⑨">10. Deploying an orchestrator</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="artefact-lifecycle-event-log">
@@ -3043,7 +3017,6 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-artefact-lifecycle-event-log⑤">5.1.2. Service Hub</a>
     <li><a href="#ref-for-artefact-lifecycle-event-log⑥">5.2. Common interaction pattern</a> <a href="#ref-for-artefact-lifecycle-event-log⑦">(2)</a> <a href="#ref-for-artefact-lifecycle-event-log⑧">(3)</a> <a href="#ref-for-artefact-lifecycle-event-log⑨">(4)</a>
     <li><a href="#ref-for-artefact-lifecycle-event-log①⓪">6. Data Pod Initialization</a> <a href="#ref-for-artefact-lifecycle-event-log①①">(2)</a> <a href="#ref-for-artefact-lifecycle-event-log①②">(3)</a> <a href="#ref-for-artefact-lifecycle-event-log①③">(4)</a>
-    <li><a href="#ref-for-artefact-lifecycle-event-log①④">7. Policy</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="service-hub">
@@ -3054,9 +3027,10 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-service-hub②">5.1.2. Service Hub</a> <a href="#ref-for-service-hub③">(2)</a> <a href="#ref-for-service-hub④">(3)</a> <a href="#ref-for-service-hub⑤">(4)</a> <a href="#ref-for-service-hub⑥">(5)</a>
     <li><a href="#ref-for-service-hub⑦">5.2. Common interaction pattern</a> <a href="#ref-for-service-hub⑧">(2)</a> <a href="#ref-for-service-hub⑨">(3)</a> <a href="#ref-for-service-hub①⓪">(4)</a> <a href="#ref-for-service-hub①①">(5)</a> <a href="#ref-for-service-hub①②">(6)</a> <a href="#ref-for-service-hub①③">(7)</a> <a href="#ref-for-service-hub①④">(8)</a>
     <li><a href="#ref-for-service-hub①⑤">6. Data Pod Initialization</a> <a href="#ref-for-service-hub①⑥">(2)</a> <a href="#ref-for-service-hub①⑦">(3)</a> <a href="#ref-for-service-hub①⑧">(4)</a> <a href="#ref-for-service-hub①⑨">(5)</a>
-    <li><a href="#ref-for-service-hub②⓪">8. Triggers</a>
-    <li><a href="#ref-for-service-hub②①">8.2. Receving Linked Data Notifications</a>
-    <li><a href="#ref-for-service-hub②②">9. Actions</a>
+    <li><a href="#ref-for-service-hub②⓪">7. Policy</a> <a href="#ref-for-service-hub②①">(2)</a> <a href="#ref-for-service-hub②②">(3)</a>
+    <li><a href="#ref-for-service-hub②③">8. Triggers</a>
+    <li><a href="#ref-for-service-hub②④">8.2. Receving Linked Data Notifications</a>
+    <li><a href="#ref-for-service-hub②⑤">9. Actions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="policy">
@@ -3067,9 +3041,9 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-policy③">5.1.1. Data Pod</a> <a href="#ref-for-policy④">(2)</a>
     <li><a href="#ref-for-policy⑤">5.1.2. Service Hub</a>
     <li><a href="#ref-for-policy⑥">6. Data Pod Initialization</a> <a href="#ref-for-policy⑦">(2)</a>
-    <li><a href="#ref-for-policy⑧">7. Policy</a> <a href="#ref-for-policy⑨">(2)</a> <a href="#ref-for-policy①⓪">(3)</a>
-    <li><a href="#ref-for-policy①①">8. Triggers</a> <a href="#ref-for-policy①②">(2)</a> <a href="#ref-for-policy①③">(3)</a> <a href="#ref-for-policy①④">(4)</a>
-    <li><a href="#ref-for-policy①⑤">8.2. Receving Linked Data Notifications</a>
+    <li><a href="#ref-for-policy⑧">7. Policy</a> <a href="#ref-for-policy⑨">(2)</a> <a href="#ref-for-policy①⓪">(3)</a> <a href="#ref-for-policy①①">(4)</a> <a href="#ref-for-policy①②">(5)</a>
+    <li><a href="#ref-for-policy①③">8. Triggers</a> <a href="#ref-for-policy①④">(2)</a> <a href="#ref-for-policy①⑤">(3)</a> <a href="#ref-for-policy①⑥">(4)</a>
+    <li><a href="#ref-for-policy①⑦">8.2. Receving Linked Data Notifications</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="dashboard">
@@ -3088,7 +3062,8 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-orchestrator⑧">5.1.2. Service Hub</a> <a href="#ref-for-orchestrator⑨">(2)</a> <a href="#ref-for-orchestrator①⓪">(3)</a> <a href="#ref-for-orchestrator①①">(4)</a> <a href="#ref-for-orchestrator①②">(5)</a>
     <li><a href="#ref-for-orchestrator①③">5.2. Common interaction pattern</a> <a href="#ref-for-orchestrator①④">(2)</a> <a href="#ref-for-orchestrator①⑤">(3)</a> <a href="#ref-for-orchestrator①⑥">(4)</a> <a href="#ref-for-orchestrator①⑦">(5)</a> <a href="#ref-for-orchestrator①⑧">(6)</a> <a href="#ref-for-orchestrator①⑨">(7)</a> <a href="#ref-for-orchestrator②⓪">(8)</a> <a href="#ref-for-orchestrator②①">(9)</a> <a href="#ref-for-orchestrator②②">(10)</a> <a href="#ref-for-orchestrator②③">(11)</a>
     <li><a href="#ref-for-orchestrator②④">6. Data Pod Initialization</a> <a href="#ref-for-orchestrator②⑤">(2)</a> <a href="#ref-for-orchestrator②⑥">(3)</a> <a href="#ref-for-orchestrator②⑦">(4)</a> <a href="#ref-for-orchestrator②⑧">(5)</a> <a href="#ref-for-orchestrator②⑨">(6)</a> <a href="#ref-for-orchestrator③⓪">(7)</a> <a href="#ref-for-orchestrator③①">(8)</a> <a href="#ref-for-orchestrator③②">(9)</a> <a href="#ref-for-orchestrator③③">(10)</a> <a href="#ref-for-orchestrator③④">(11)</a> <a href="#ref-for-orchestrator③⑤">(12)</a> <a href="#ref-for-orchestrator③⑥">(13)</a> <a href="#ref-for-orchestrator③⑦">(14)</a> <a href="#ref-for-orchestrator③⑧">(15)</a> <a href="#ref-for-orchestrator③⑨">(16)</a> <a href="#ref-for-orchestrator④⓪">(17)</a>
-    <li><a href="#ref-for-orchestrator④①">8. Triggers</a> <a href="#ref-for-orchestrator④②">(2)</a> <a href="#ref-for-orchestrator④③">(3)</a> <a href="#ref-for-orchestrator④④">(4)</a> <a href="#ref-for-orchestrator④⑤">(5)</a> <a href="#ref-for-orchestrator④⑥">(6)</a> <a href="#ref-for-orchestrator④⑦">(7)</a> <a href="#ref-for-orchestrator④⑧">(8)</a> <a href="#ref-for-orchestrator④⑨">(9)</a> <a href="#ref-for-orchestrator⑤⓪">(10)</a>
+    <li><a href="#ref-for-orchestrator④①">7. Policy</a> <a href="#ref-for-orchestrator④②">(2)</a> <a href="#ref-for-orchestrator④③">(3)</a> <a href="#ref-for-orchestrator④④">(4)</a> <a href="#ref-for-orchestrator④⑤">(5)</a> <a href="#ref-for-orchestrator④⑥">(6)</a> <a href="#ref-for-orchestrator④⑦">(7)</a>
+    <li><a href="#ref-for-orchestrator④⑧">8. Triggers</a> <a href="#ref-for-orchestrator④⑨">(2)</a> <a href="#ref-for-orchestrator⑤⓪">(3)</a> <a href="#ref-for-orchestrator⑤①">(4)</a> <a href="#ref-for-orchestrator⑤②">(5)</a> <a href="#ref-for-orchestrator⑤③">(6)</a> <a href="#ref-for-orchestrator⑤④">(7)</a> <a href="#ref-for-orchestrator⑤⑤">(8)</a> <a href="#ref-for-orchestrator⑤⑥">(9)</a> <a href="#ref-for-orchestrator⑤⑦">(10)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="trigger">
@@ -3108,9 +3083,8 @@ There was an upcoming panel on signed notifications - TODO
     <li><a href="#ref-for-action①">5.1.1. Data Pod</a> <a href="#ref-for-action②">(2)</a>
     <li><a href="#ref-for-action③">5.1.2. Service Hub</a>
     <li><a href="#ref-for-action④">5.2. Common interaction pattern</a> <a href="#ref-for-action⑤">(2)</a> <a href="#ref-for-action⑥">(3)</a>
-    <li><a href="#ref-for-action⑦">7. Policy</a> <a href="#ref-for-action⑧">(2)</a>
-    <li><a href="#ref-for-action⑨">8. Triggers</a>
-    <li><a href="#ref-for-action①⓪">9. Actions</a>
+    <li><a href="#ref-for-action⑦">8. Triggers</a>
+    <li><a href="#ref-for-action⑧">9. Actions</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="local-background-process">
