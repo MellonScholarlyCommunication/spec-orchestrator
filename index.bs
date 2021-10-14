@@ -306,24 +306,55 @@ Policy {#policy-sec}
 
 To execute business logic for handling notifications, the [=Orchestrator=] makes use
 of one or more [=policy=] documents that are written by the actors in the network.
-These policies MUST be written in a [=policy language=] that the [=Orchestrator=] understands.
-In the [Rule language](/spec-rulelanguage/) examples are provided how these policies can be created.
+These policies should be written in a [=policy language=] that the [=Orchestrator=] understands.
+In the [Rule language](/spec-rulelanguage/) examples are provided how policies can be
+written in a Rule language with possible implementations using \[SHACL](https://www.w3.org/TR/shacl/),
+ \[SPARQL](https://www.w3.org/TR/sparql11-query/) or \[Notation3](https://w3c.github.io/N3/spec/) .
 
 Each policy dictates what should happen when [=trigger=] occurs on behalf of the maintainer of
-a [=Data Pod=] or [=Service Hub=].
+a [=Data Pod=] or [=Service Hub=]. The [Rule language](/spec-rulelanguage/) provides an 
+implementation neutral way to express possible [=policy=] rules. 
 
-In practice, the policies reflects a composition of procedures imposed by:
+In the example below we send a notification to Bob when Alice creates a new artefact.
 
-- personal preference (ie. defined the maintainer);
-- service requirements (ie. defined by the service hub);
-- institutional requiments (ie. the employer of the maintainer and the owner of the artefacts);
+<div class="example">
+<pre>
+<b>rule</b> "Notify Bob about new created artefacts"
+
+<b>when</b>
+
+   ?notification a as:Create .
+
+<b>then</b>
+
+   ?notification as:target &lt;http://bob.institution.org/profile/card#me&gt; .
+
+   [ a fno:Execution ;
+     fno:executed ex:sendNotification
+        ex:notification ?notification
+   ] .
+</pre>
+</div>
+
+When Alice provides this [=policy=] document to her [=Orchestrator=], then each time 
+when the [=Orchestrator=] is triggered with an `as:Create` notification , this [=policy=]
+will be activated and Bob will receive a copy of the notification. 
+
+In practise, [=policy=] documents can originate from many source and are a composition 
+of procedures imposed by:
+
+- personal preferences (ie. defined the maintainer);
+- service preferences (ie. the orchestrator works on behalf of a [=Service Hub=]);
+- institutional requirements (ie. the employer of the maintainer and the owner of the artefacts);
 - domain rules (ie. the broader collaboration context the institution is situated in);
 - legislation (ie. the legal obligations);
 
-Policy documents are published as resources at in a [=Data Pod=] or [=Service Hub=] LDP Container.
+## Publication of Policies
+
+Policy documents are published as resources in a [=Data Pod=] or [=Service Hub=] LDP Container.
 This container can be under the controll of the [=Orchestrator=] or a [=Data Pod=]/[=Service Hub=]
-maintainer. In the WebID profile document of maintaier the location of the policies need to be
-made available.
+maintainer. The WebID profile document of maintaier SHOULD contain the location of the
+policies that should be made available to the orchestrator.
 
 In the Example 1 above, the [=policy=] documents of Alice were made available at the location 
 `https://alice.institution.org/policies/`.
@@ -331,12 +362,12 @@ In the Example 1 above, the [=policy=] documents of Alice were made available at
 The [=Orchestrator=] MUST have `acl:Read` permissions in order to execute the business logic
 specified in these documents.
 
-When a [=trigger=] occers the [=Orchestrator=] will consult all the [=policies=] in the 
+When a [=trigger=] occurs the [=Orchestrator=] will consult all the [=policies=] in the 
 supplied locations and follows the instructions.
 
-The [=Orchestrator=] MAY offer only a limited number of [=policy=] rules to the maintainer.
+The [=Orchestrator=] MAY offer only a limited number of [=policy=] execution types to the maintainer.
 
-When a [=policy=] can't be executed due to errors, the [=Orchestrator=] may send a notification
+When a [=policy=] can't be executed due to errors, the [=Orchestrator=] SHOULD send a notification
 to the maintainer about this fact.
 
 Triggers {#triggers}
