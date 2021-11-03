@@ -56,23 +56,50 @@ This document is one of the specifications produced by the **ResearcherPod** and
 Introduction {#intro}
 =====================
 
-In a [Solid decentralized network](https://solidproject.org/), data, and services the services that use them, do not resort in one place, but are intentionally distributed.
-As a result, actors in the network, such as institutions or service providers, need to potentionally involve and communicate with multiple services in order to execute a business process or workflow,
-where each services executes a dedicated task (eg. registering or archiving a dataset).
-Hence, to avoid excessive manual work, this document specifies the Orchestrator component, which is able to automate such task orchestration.
+In a decentralized network containing many [=Data Pod=]s and [=Service Hub=]s, data and
+services do not resort in one place, but are intentionally distributed. As a result of
+this decentralization, the actors in the network (such as researchers, institutions or service providers), 
+need to potentionally involve and communicate with multiple services in order to 
+execute a desired business process or workflow. Workflows can be tasks such as the
+registration of datasets, the certification of research, publishing in a journal, 
+indexing data in a search engine and the archivation of data. Each of these tasks in 
+a can in principle be executed by a dedicated service component. To keep track
+of the interactions between [=Artefact=]s (the data) and the [=Service Hub=]s, provenance
+trails in the form of [=Artefact Lifecycle Event Log=]s are generated and the actors are
+notified about the new events in the network.  To avoid excessive manual work 
+by [=Data Pod=] and [=Service Hub=] mantainers, an Orchestrator component is introduced 
+in this document to automate part of the required interactions between the actors and 
+all other components of the network.
 
-Network actors maintain their data in a [=Data Pod=],
-which is by design a "passive" component: it offers secure data access via Linked Data Platform [[!LDP]] to others, but cannot perform actions such as invoking remote services on the network or reading and writing network content.
-These capabilities are therefore delegated to the Orchestrator. On behalf of the actor, the Orchestrator responds to [=triggers=] by executing a number of [=actions=] dictated by a machine-readable [=policy=].
-Possible triggers are incoming notifications, perceived changes in the data, or manual invocation by an actor.
-Possible actions are sending notifications to other actors, requesting access to resources in a [=Data Pod=], reading data from a [=Data Pod=], or writing data to a [=Data Pod=].
+Network actors maintain their data in a [=Data Pod=], which is by design a "passive" component.
+The [=Data Pod=] can offer secure data access via Linked Data Platform [[!LDP]] to others, but 
+cannot perform actions such as invoking remote services on the network or reading and writing 
+network content.  These capabilities are delegated to [=Dashboard=] applications where actors
+can manually interact with the [=Data Pod=] and network and [=Orchestrator=]s that can work on 
+behalf of actors in an automated way.
 
-The Orchestrator implements the autonomous agent model: an intelligent software instance that operates on an actor's behalf but without any interference of that actor.
-In practice, an Orchestrator is dedicated to a single [=Data Pod=] for which is has access rights to all relevant resources, including the Linked Data Notification [[!LDN]] [=inbox=]
+On behalf of the actor, an [=Orchestrator=] responds to [=Trigger=]s by executing a number 
+of [=Action=]s dictated by a machine-readable [=Policy=]. Possible triggers are incoming 
+notifications, perceived changes in [=Artefact=]s, or manual invocation by an actor.
+Possible actions are:
+
+-  Sending notifications to other actors; 
+-  Requesting access to resources in a [=Data Pod=];
+-  Reading data from a [=Data Pod=];
+-  Writing or appending data to a [=Data Pod=].
+
+The Orchestrator implements the [=Autonomous Agent=] model: an intelligent software instance 
+that operates on an actor's behalf but without any interference of that actor.
+
+In practice, an Orchestrator is dedicated to a single [=Data Pod=] for which is has access 
+rights to all relevant resources, including the Linked Data Notification [[!LDN]] [=inbox=]
 and the [=Artefact Lifecycle Event Log=].
-Its autonomy is supplied by the [=Policy=], which dictates business rules in a declarative manner using a [=policy language=].
 
-The remainder of this document specifies the requirements for implementing an [=Orchestrator=] component.
+Its autonomy is supplied by the [=Policy=], which dictates business rules in a declarative manner 
+using a [=policy language=].
+
+The remainder of this document specifies the requirements for implementing an [=Orchestrator=] 
+component.
 
 # Definitions
 
@@ -101,80 +128,116 @@ Within this document, the following namespace prefix bindings are used:
       <th>Namespace
   <tbody>
     <tr>
+      <td>acl
+      <td>http://www.w3.org/ns/auth/acl#
+    <tr>
       <td>as
       <td>https://www.w3.org/ns/activitystreams#
     <tr>
-      <td>schema
-      <td>https://schema.org
+      <td>ex
+      <td>https://www.example.org/
+    <tr>
+      <td>fno
+      <td>https://w3id.org/function/ontology#
+    <tr>
+      <td>foaf
+      <td>http://xmlns.com/foaf/0.1/
     <tr>
       <td>ldp
       <td>http://www.w3.org/ns/ldp#
     <tr>
-      <td>acl
-      <td>http://www.w3.org/ns/auth/acl#
+      <td>pol
+      <td>https://www.example.org/ns/policy#
+    <tr>
+      <td>solid
+      <td>http://www.w3.org/ns/solid/terms#
+ 
 </table>
 
 High-level overview {#high-level}
 =====================
 
-An <dfn export>Orchestrator</dfn> instance is an [=Autonomous Agent=] dedicated to a single [=Data Pod=], [=Service Hub=], or any other actor hosting the [=Artefact Lifecycle Event Log=] and a [=Inbox=] resources.
-It interprets and executes business rules described in a [=policy=].
-The Orchestrator watches the [=Inbox=] for possible triggers, while it records the actions it takes to the to the [=Artefact Lifecycle Event Log=].
+An <dfn export>Orchestrator</dfn> instance is an [=Autonomous Agent=] dedicated to a single [=Data Pod=], [=Service Hub=], or any other actor hosting the [=Artefact Lifecycle Event Log=] and [=Inbox=] resources.
+It interprets and executes business rules described in one or more [=Policy=] documents.
+The Orchestrator watches the [=Inbox=] for possible triggers, while it records the actions it 
+takes in the [=Artefact Lifecycle Event Log=].
 
 ## Perspectives
 
 ### Data Pod
 
-From a [=Data Pod=] perspective,
-a Data Pod [=Orchestrator=] participates in the network on behalf of the [=Data Pod=]'s owner or [=Maintainer=].
-At instantiation time,
-a [=Maintainer=] connects an [=Orchestrator=] to the [=Inbox=] and [=Artefact Lifecycle Event Log=]
-of its [=Data Pod=]. 
-
-This Data Pod [=Orchestrator=] executes [=Policy=] rules based on incoming [=Triggers=]. There are two main sources
-of triggers: 
-
-- Incoming notifications that are send from the network to the LDN [=Inbox=] of the [=Data Pod=]. 
-- Outgoing notifications that are send by the [=Maintainer=] to the LDN [=Inbox=] of the [=Orchestrator=].
-
-When a trigger arrives,
-the Data Pod [=Orchestrator=] consults the [=policy=] - a set of business rules fixed an maintained by the [=Maintainer=] using the [=Dashboard=],
-which results in zero or more [=actions=] .
-An [=Action=] can involve reading resources from or sending notifications to other [=data pods=] (including the one it's connected to) or [=Service Hubs=].
-
-The Data Pod [=Orchestrator=] records taken actions in the Data Pod [=Artefact Lifecycle Event Log=].
-When the Data Pod [=Orchestrator=] requires manual input from the [=Maintainer=],
-it can communicate this via the LDN [=Inbox=] of the Data Pod. The [=Dashboard=] presents this event 
-to the [=Maintainer=] in an actionable way. These actions by the [=Maintainer=] could result 
-in a new [=trigger=].
-
 <pre class='include'>
 path: images/high-level.svg
 </pre>
 
+From a [=Data Pod=] perspective, a [=Maintainer=] operates the [=Data Pod=] with help of
+one or more [=Dashboard=] applications. A Scholarly [=Dashboard=] has the capability to
+present the [=Inbox=] and [=Artefact Lifecycle Event Log=] in a human friendly way to the
+[=Maintainer=].
+
+When a [=Maintainer=] wants to send an notification to the network, this message is first
+send to the [=Orchestrator=]. With help of [=Policies=] the [=Orchestrator=] will forward
+the notification to an external [=Data Pod=] or [=Service Hub=] and update the 
+[=Artefact Lifecycle Event Log=].
+
+The [=Orchestrator=] watches the [=Data Pod=] [=Inbox=] for incoming notifications.
+
+Based on incoming notifications the [=Orchestrator=] executes the [=Policies=] rules that are 
+contained in one or more [=Policy=] documents.
+
+Notifications are one type of [=Trigger=] that will start the [=Orchestrator=] executing 
+[=Policy=] rules.  See the **Triggers** section to find other types of [=Tiggers=].
+
+There are two main sources of Triggers: 
+
+- Outgoing notifications that are send by the [=Maintainer=] to the LDN [=Inbox=] of the [=Orchestrator=].
+- Incoming notifications that are send from the network to the LDN [=Inbox=] of the [=Data Pod=]. 
+
+When a trigger arrives, the Data Pod [=Orchestrator=] consults the [=Policy=] documents for zero
+or more rules matching the trigger. Each matching rule will result in zero or more [=Actions=].
+
+Basic [=Actions=] can involve reading resources from or sending notifications to [=Service Hubs=] 
+or other [=Data Pods=] (including the one it's connected to). In general, an [=Orchestrator=] is free
+to implement any kind of local defined [=Action=]. This document will provide the minimum set of 
+actions that are shared and supported for all [=Orchestrator=] implementations to support the 
+ResearchPod and ErfgoedPod network.
+
+All actions taken by the [=Orchestrator=] are recorded in the Data Pod [=Artefact Lifecycle Event Log=]. 
+When the Data Pod [=Orchestrator=] requires manual input from the [=Maintainer=], it can communicate 
+this via the LDN [=Inbox=] of the Data Pod. The [=Dashboard=] presents this event 
+to the [=Maintainer=] in an actionable way. These actions by the [=Maintainer=] could result 
+in a new [=Trigger=].
+
 ### Service Hub
 
-From a [=Service Hub=] perspective,
-a Service Hub [=Orchestrator=] can work on behalf of the [=Service Hub=] to establishes automated response to 
-notifications from other network [=actors=] and [=orchestrators=] in context of the provided service.
-As a possible side-effect, it can also actively consults additional [=actors=] in order to complete the service.
+<pre class='include'>
+path: images/high-level-servicehub.svg
+</pre>
+
+From a [=Service Hub=] perspective, a Service Hub [=Orchestrator=] can work on behalf of 
+the [=Service Hub=] to establishes automated response to notifications from other 
+network [=actors=] and [=orchestrators=] in context of the provided service.
+
+As a possible side-effect, it can also actively consults additional [=actors=] in order 
+to complete the service.
+
 The Service Hub [=Orchestrator=] responds by delivering a new notification in the [=Inbox=] of the actor that invoked the service.
-It is the [=Policy=] that dictates what response to construct and what consecutive [=actions=] (reading resources from or sending notifications to [=data pods=] or other [=service hubs=]) need to be performed.
+It is the [=Policy=] that dictates what response to construct and what consecutive [=Actions=] 
+(reading resources from or sending notifications to [=Data Pods=] or other [=Service Hubs=]) 
+need to be performed.
 
 Also the Service Hub [=Orchestrator=] maintains a Service Hub [=Artefact Lifecycle Event Log=] of all
 actions taken on behalf of the [=Service Hub=].
 
 In this way [=Orchestrator=]s mimic the services provided to the [=Data Pod=] and [=Service Hub=].
 
-<pre class='include'>
-path: images/high-level-servicehub.svg
-</pre>
-
 
 ## Common interaction pattern
 
+<img src="images/high-level-comm.svg" width="900">
+
 A common activity starts when the [=Maintainer=] of a [=Data Pod=] requires a service provided by a [=Service Hub=].
-Both [=actors=] can be considered operating an [=orchestrator=] to automate their participation in the network.
+Both [=actors=] can be considered operating an [=Orchestrator=] to automate their participation in the network.
 Hence, a common interaction pattern is as follows:
 
 1. The [=maintainer=] at [=Data Pod=] `A` performs an action that affects or interests other actors in the network (eg. adding a new artefact in the data pod).
@@ -190,8 +253,6 @@ Hence, a common interaction pattern is as follows:
 11. The [=Orchestrator=] `A` of the [=Data Pod=] `A` monitors `Inbox A` and is triggered by the new notification in `Inbox A` to take consecutive [=action=]s.
 12. [=Orchestrator=] `A` consults its `Policy A`, which dictates that the new event should be added to the [=Data Pod=] `A` [=Artefact Lifecycle Event Log=].
 13. The [=Dashboard=] displays [=Artefact Lifecycle Event Log=] `A` to the [=maintainer=] of [=Data Pod=] `A` to show that the necessary actions have been taken.
-
-<img src="images/high-level-comm.svg" width="600">
 
 Data Pod Initialization  {#init}
 ====================
@@ -292,6 +353,9 @@ In the two examples above we have specified:
 For the [=Orchestrator=] of `Alice` we specified:
 
 - An LDN [=Inbox=] on the [=Data Pod=] of `Alice` at: `https://alice.institution.org/orchestrator/inbox/`.
+
+Note: In a decentralized network the inbox of the Orchestrator can be at any network location 
+and doesn't need to live in the Data Pod of Alice.
 
 For the [=Service Hub=] a similar WebId profile can be created. The decentralized location of all
 the [=Inbox=]-s , [=Artefact Lifecycle Event Log=]-s, [=Orchestrator=]-s and [=Policy=] documents can
@@ -403,7 +467,7 @@ An [=Orchestrator=] MAY have some mechanism in place to validate the origin of t
 such as [Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) can by used to sign all 
 Linked Data Notifications that are sent over the network, and are validated by the Orchestrator.
 
-An [=Orchestrator=] SHOULD be able to process any notification descrived in the 
+An [=Orchestrator=] SHOULD be able to process any notification described in the 
 [List of Notifications](https://mellonscholarlycommunication.github.io/spec-notifications/).
 
 An [=Orchestrator=] SHOULD be able to execute one or more [=Policy=] documents that are defined by 
