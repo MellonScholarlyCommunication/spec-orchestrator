@@ -648,12 +648,13 @@ From the list of possible [[!LDN]] notifications in [[spec-notifications]],
 an orchestrator MUST at least be able to send the following subset:
 
 - [as:Create](https://www.w3.org/ns/activitystreams#Create)
-- [as:Announce](https://www.w3.org/ns/activitystreams#Announce)
 - [as:Update](https://www.w3.org/ns/activitystreams#Update)
 - [as:Delete](https://www.w3.org/ns/activitystreams#Delete)
-- [as:Undo](https://www.w3.org/ns/activitystreams#Undo)
+- [as:Announce](https://www.w3.org/ns/activitystreams#Announce)
 - [as:Accept](https://www.w3.org/ns/activitystreams#Accept)
+- [as:Offer](https://www.w3.org/ns/activitystreams#Offer)
 - [as:Reject](https://www.w3.org/ns/activitystreams#Reject)
+- [as:Undo](https://www.w3.org/ns/activitystreams#Undo)
 
 ## Reading HTTP resources
 
