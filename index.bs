@@ -62,8 +62,8 @@ this decentralization, the actors in the network (such as researchers, instituti
 need to potentionally involve and communicate with multiple services in order to 
 execute a desired business process or workflow. Workflows can be tasks such as the
 registration of datasets, the certification of research, publishing in a journal, 
-indexing data in a search engine and the archivation of data. Each of these tasks in 
-a can in principle be executed by a dedicated service component. To keep track
+indexing data in a search engine and the archivation of data. Each of these tasks 
+can in principle be executed by a dedicated service component. To keep track
 of the interactions between [=Artefact=]s (the data) and the [=Service Hub=]s, provenance
 trails in the form of [=Artefact Lifecycle Event Log=]s are generated and the actors are
 notified about the new events in the network.  To avoid excessive manual work 
@@ -91,7 +91,7 @@ Possible actions are:
 The Orchestrator implements the [=Autonomous Agent=] model: an intelligent software instance 
 that operates on an actor's behalf but without any interference of that actor.
 
-In practice, an Orchestrator is dedicated to a single [=Data Pod=] for which is has access 
+In practice, an Orchestrator is dedicated to a single [=Data Pod=] for which it has access 
 rights to all relevant resources, including the Linked Data Notification [[!LDN]] [=inbox=]
 and the [=Artefact Lifecycle Event Log=].
 
@@ -175,8 +175,8 @@ one or more [=Dashboard=] applications. A Scholarly [=Dashboard=] has the capabi
 present the [=Inbox=] and [=Artefact Lifecycle Event Log=] in a human friendly way to the
 [=Maintainer=].
 
-When a [=Maintainer=] wants to send an notification to the network, this message is first
-send to the [=Orchestrator=]. With help of [=Policies=] the [=Orchestrator=] will forward
+When a [=Maintainer=] wants to send a notification to the network, this message is first
+sent to the [=Orchestrator=]. With help of [=Policies=],  the [=Orchestrator=] will forward
 the notification to an external [=Data Pod=] or [=Service Hub=] and update the 
 [=Artefact Lifecycle Event Log=].
 
@@ -190,8 +190,8 @@ Notifications are one type of [=Trigger=] that will start the [=Orchestrator=] e
 
 There are two main sources of Triggers: 
 
-- Outgoing notifications that are send by the [=Maintainer=] to the LDN [=Inbox=] of the [=Orchestrator=].
-- Incoming notifications that are send from the network to the LDN [=Inbox=] of the [=Data Pod=]. 
+- Outgoing notifications that are sent by the [=Maintainer=] to the LDN [=Inbox=] of the [=Orchestrator=].
+- Incoming notifications that are sent from the network to the LDN [=Inbox=] of the [=Data Pod=]. 
 
 When a trigger arrives, the Data Pod [=Orchestrator=] consults the [=Policy=] documents for zero
 or more rules matching the trigger. Each matching rule will result in zero or more [=Actions=].
@@ -293,7 +293,7 @@ A [=Data Pod=] MAY have:
 The latter requirements are for use cases where the [=Data Pod=] (or [=Service Hub=]) shares
 resources with its [=Orchestrator=].
 
-All actors in the network have an WebId with a profile document that document the web locations 
+All actors in the network have a WebId with a profile document that document the web locations 
 of the resources they manage.
 
 An example WebId profile of a [=Data Pod=] maintainer can be:
@@ -416,8 +416,8 @@ of procedures imposed by:
 ## Publication of Policies
 
 Policy documents are published as resources in a [=Data Pod=] or [=Service Hub=] LDP Container.
-This container can be under the controll of the [=Orchestrator=] or a [=Data Pod=]/[=Service Hub=]
-maintainer. The WebID profile document of maintaier SHOULD contain the location of the
+This container can be under the control of the [=Orchestrator=] or a [=Data Pod=]/[=Service Hub=]
+maintainer. The WebID profile document of maintainer SHOULD contain the location of the
 policies that should be made available to the orchestrator.
 
 In the Example 1 above, the [=policy=] documents of Alice were made available at the location 
@@ -438,7 +438,7 @@ Triggers {#triggers}
 =====================
 
 A <dfn>trigger</dfn> is an event to which an orchestrator can respond by taking [=actions=].
-An orchestrator MUST respond to the following three types of triggers:
+An orchestrator MUST respond to the following four types of triggers:
 
 - a new incoming Linked Data Notification [[!LDN]] in the [=inbox=] of the [=Data Pod=]
     - This inbox should be appendable by the whole network
@@ -464,7 +464,7 @@ triggers that correspond to a RDF data shape. Technologies such as \[SHACL](http
 \[Notation3](https://w3c.github.io/N3/spec/) can be used to validate triggers.
 
 An [=Orchestrator=] MAY have some mechanism in place to validate the origin of the triggers. Technologies
-such as [Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) can by used to sign all 
+such as [Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) can be used to sign all 
 Linked Data Notifications that are sent over the network, and are validated by the Orchestrator.
 
 An [=Orchestrator=] SHOULD be able to process any notification described in the 
@@ -549,7 +549,7 @@ Note: PHOCHSTE: This needs some more work to explain how this could work.
 
 An Orchestrator MAY accept resource stage changes of 
 [Linked Data Platform Resources](https://www.w3.org/TR/ldp/#ldpr) as triggers for policy actions.
-In this case, the Orchestrator MUST be granted READ-acess all observed 
+In this case, the Orchestrator MUST be granted READ-access all observed 
 [Linked Data Platform Resources](https://www.w3.org/TR/ldp/#ldpr).
 In the case that an observed [Linked Data Platform Resources](https://www.w3.org/TR/ldp/#ldpr) 
 is also a [Linked Data Platform Container](https://www.w3.org/TR/ldp/#ldpc), the Orchestrator SHOULD
@@ -561,7 +561,7 @@ Issue: define something like a trigger description?
 
 Sending a Linked Data Notification is the primary way to provoke action from the Orchestrator. 
 Common senders of notifications are:
-- a [=maintainer=] by using the [=Dashboard=], who performed a manual operation on a artefact (eg. creating a new artefact) and wants to trigger consecutive action (eg. announcing that artefact);
+- a [=maintainer=] by using the [=Dashboard=], who performed a manual operation on an artefact (eg. creating a new artefact) and wants to trigger consecutive action (eg. announcing that artefact);
 - a [=service hub=] or other [=actor=] who has performed an operation related to an artefact (eg. created a comment about that artefact) stored in the maintainer's data pod and is therefore of potential interest to the orchestrator.
 
 To be able to read the notifications from an [=inbox=],
@@ -593,7 +593,7 @@ Note: PHOCHSTE: This needs some more work to explain how this could work.
 An Orchestrator MAY accept time scheduled triggers for policy actions.
 ## Observing resource state changes  ## {#trigger-resource}
 
-An orchestrator can also watch LDP resources ([[[LDP#ldpr]]) (e.g, by means of polling) whose state changes issue a trigger.
+An orchestrator can also watch LDP resources ([[[LDP#ldpr]]) (e.g. by means of polling) whose state changes issue a trigger.
 Hence, an orchestrator MUST accept resource stage changes of [[LDP#ldpr]] as triggers for policy actions.
 In case the observed [[[LDP#ldpr]] is also a LDP container ([[LDP#ldpc]]), 
 the orchestrator MUST observe state changes for all [[LDP#ldpr]] that are contained by the observed [[LDP#ldpc]].
@@ -631,7 +631,7 @@ Issue(11): How can you communicate a scheduled trigger from a institutional pers
 Actions {#actions}
 =====================
 
-An <dfn>action</dfn> is a form of interation with other actors or resources in the network.
+An <dfn>action</dfn> is a form of interaction with other actors or resources in the network.
 An Orchestrator performs such [=actions=] on behalf of a network [=actor=].
 
 There are three types of actions that an orchestrator MUST support:
@@ -675,7 +675,7 @@ Issue: TODO
 ## Action descriptions
 
 When a policy rule executed in response to a [=trigger=], it produces zero or more actions.
-Each of these actions is captured in a <dfn>action description</dfn>, which uses a simple vocabulary:
+Each of these actions is captured in an <dfn>action description</dfn>, which uses a simple vocabulary:
 
 : Class
 :: `act:Action`
@@ -753,7 +753,7 @@ In case the Orchestrator supports [triggers from incoming Linked Data Notificati
 Requiring authentication on the pod inbox can prevent unwanted parties from forging notifications to be processed by the Orchestrator.
 
 ## Signed notifications
-Instead of requiring authentication to post notifications to the pod inbox, the Orchestrator may require notifications to be singed by the sender before accepting notifications.
+Instead of requiring authentication to post notifications to the pod inbox, the Orchestrator may require notifications to be signed by the sender before accepting notifications.
 There was an upcoming panel on signed notifications - TODO
 
 
