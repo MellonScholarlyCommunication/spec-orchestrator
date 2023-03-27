@@ -190,8 +190,8 @@ Notifications are one type of [=Trigger=] that will start the [=Orchestrator=] e
 
 There are two main sources of Triggers: 
 
-- Outgoing notifications that are send by the [=Maintainer=] to the LDN [=Inbox=] of the [=Orchestrator=].
-- Incoming notifications that are send from the network to the LDN [=Inbox=] of the [=Data Pod=]. 
+- Outgoing notifications that are sent by the [=Maintainer=] to the LDN [=Inbox=] of the [=Orchestrator=].
+- Incoming notifications that are sent from the network to the LDN [=Inbox=] of the [=Data Pod=]. 
 
 When a trigger arrives, the Data Pod [=Orchestrator=] consults the [=Policy=] documents for zero
 or more rules matching the trigger. Each matching rule will result in zero or more [=Actions=].
@@ -215,10 +215,10 @@ path: images/high-level-servicehub.svg
 </pre>
 
 From a [=Service Hub=] perspective, a Service Hub [=Orchestrator=] can work on behalf of 
-the [=Service Hub=] to establishes automated response to notifications from other 
+the [=Service Hub=] to establish automated response to notifications from other 
 network [=actors=] and [=orchestrators=] in context of the provided service.
 
-As a possible side-effect, it can also actively consults additional [=actors=] in order 
+As a possible side-effect, it can also actively consult additional [=actors=] in order 
 to complete the service.
 
 The Service Hub [=Orchestrator=] responds by delivering a new notification in the [=Inbox=] of the actor that invoked the service.
@@ -293,7 +293,7 @@ A [=Data Pod=] MAY have:
 The latter requirements are for use cases where the [=Data Pod=] (or [=Service Hub=]) shares
 resources with its [=Orchestrator=].
 
-All actors in the network have an WebId with a profile document that document the web locations 
+All actors in the network have a WebId with a profile document that document the web locations 
 of the resources they manage.
 
 An example WebId profile of a [=Data Pod=] maintainer can be:
@@ -416,8 +416,8 @@ of procedures imposed by:
 ## Publication of Policies
 
 Policy documents are published as resources in a [=Data Pod=] or [=Service Hub=] LDP Container.
-This container can be under the controll of the [=Orchestrator=] or a [=Data Pod=]/[=Service Hub=]
-maintainer. The WebID profile document of maintaier SHOULD contain the location of the
+This container can be under the control of the [=Orchestrator=] or a [=Data Pod=]/[=Service Hub=]
+maintainer. The WebID profile document of the maintainer SHOULD contain the location of the
 policies that should be made available to the orchestrator.
 
 In the Example 1 above, the [=policy=] documents of Alice were made available at the location 
