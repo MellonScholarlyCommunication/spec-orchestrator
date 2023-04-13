@@ -4,7 +4,7 @@ Shortname: orchestrator
 Level: 1
 Status: iso/WD
 URL: https://mellonscholarlycommunication.github.io/spec-orchestrator
-Editor: Miel Vander Sande, meemoo - [Flemish Institute for Archiving](https://meemoo.be), miel.vandersande@meemoo.be
+Editor: Miel Vander Sande, meemoo - [Flemish Institute for Archives](https://meemoo.be), miel.vandersande@meemoo.be
 Editor: Patrick Hochstenbach, [IDLab - Ghent University](https://knows.idlab.ugent.be), patrick.hochstenbach@ugent.be
 Editor: Ruben Dedecker, [IDLab - Ghent University](https://knows.idlab.ugent.be), ruben.dedecker@ugent.be
 Editor: Jeroen Werbrouck, [IDLab - Ghent University](https://knows.idlab.ugent.be), Jeroen.Werbrouck@ugent.be
@@ -100,22 +100,6 @@ using a [=policy language=].
 
 The remainder of this document specifies the requirements for implementing an [=Orchestrator=] 
 component.
-
-# Definitions
-
-This document uses the following defined terms from [[spec-overview#definitions]]:
-
-- <dfn export>Autonomous Agent</dfn>
-- <dfn export>Policy Language</dfn>
-- <dfn export>Actor</dfn>
-- <dfn export>Artefact</dfn>
-- <dfn export>Maintainer</dfn>
-- <dfn export>Data Pod</dfn>
-- <dfn export>Inbox</dfn>
-- <dfn export>Artefact Lifecycle Event Log</dfn>
-- <dfn export>Service Hub</dfn>
-- <dfn export>Policy</dfn>
-- <dfn export>Dashboard</dfn>
 
 # Document Conventions
 
@@ -365,7 +349,7 @@ An [=Orchestrator=] MAY expose an initialization interface to assist the [=Data 
 setting up the required resources, WebId profile and Web Access Control settings.
 
 
-Policy {#policy-sec}
+Rulebook {#rulebook-sec}
 =====================
 
 To execute business logic for handling notifications, the [=Orchestrator=] makes use
@@ -593,8 +577,8 @@ Note: PHOCHSTE: This needs some more work to explain how this could work.
 An Orchestrator MAY accept time scheduled triggers for policy actions.
 ## Observing resource state changes  ## {#trigger-resource}
 
-An orchestrator can also watch LDP resources ([[[LDP#ldpr]]) (e.g. by means of polling) whose state changes issue a trigger.
-Hence, an orchestrator MUST accept resource stage changes of [[LDP#ldpr]] as triggers for policy actions.
+An orchestrator can also watch LDP resources ([[[LDP#ldpr]]) (e.g, by means of polling) whose state changes issue a trigger.
+Hence, an orchestrator MUST accept resource stage changes of [[LDP#ldpr]] as triggers for rulebook actions.
 In case the observed [[[LDP#ldpr]] is also a LDP container ([[LDP#ldpc]]), 
 the orchestrator MUST observe state changes for all [[LDP#ldpr]] that are contained by the observed [[LDP#ldpc]].
 The Orchestrator MUST request `acl:Read` access all observed [[[LDP#ldpr]] as noted in [[#init]].
@@ -674,7 +658,7 @@ Issue: TODO
 
 ## Action descriptions
 
-When a policy rule executed in response to a [=trigger=], it produces zero or more actions.
+When a rulebook rule executed in response to a [=trigger=], it produces zero or more actions.
 Each of these actions is captured in an <dfn>action description</dfn>, which uses a simple vocabulary:
 
 : Class
